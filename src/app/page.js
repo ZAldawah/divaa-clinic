@@ -15,7 +15,7 @@ export default function Home() {
                 At Divaa Beauty Clinic, we combine artistic precision with the
                 latest aesthetic advancements, delivering personalized
                 treatments that enhance your natural beauty and confidence.
-                Recognized as Houston's top-rated Med Spa, we specialize in
+                Recognized as Houston&apos;s top-rated Med Spa, we specialize in
                 Botox, Dermal Fillers, Skin Rejuvenation, and so much more. We
                 ensure every experience is tailored uniquely for you—because
                 exceptional care should never be a luxury. Schedule your
