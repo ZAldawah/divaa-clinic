@@ -53,7 +53,7 @@ const services = [
     href: "/facials",
     className: "service-facials",
     title: "Facials",
-    desc: "Product Use",
+    desc: "Revitalize your complexion with deeply hydrating and exfoliating facials tailored to your skin's needs.",
   },
   {
     href: "/hydrofacial",
@@ -65,7 +65,7 @@ const services = [
     href: "/microneedling",
     className: "service-microneedling",
     title: "Microneedling",
-    desc: "Product Use",
+    desc: "Restore a youthful glow with collagen-boosting microneedling designed to refine texture and reduce imperfections.",
   },
 ];
 export default function Home() {
