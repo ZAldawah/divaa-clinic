@@ -36,7 +36,7 @@ export default function Home() {
             <div class="services">
               <h2 class="section-title">Our Services</h2>
               <div class="service-list">
-                <a href="botox.html" class="service-link">
+                <a href="/botox" class="service-link">
                   <div class="service-item service-botox">
                     <h3>Botox and Dysport</h3>
                     <p>
@@ -44,7 +44,7 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="lip-filler.html" class="service-link">
+                <a href="/lip-filler" class="service-link">
                   <div class="service-item service-filler-lips">
                     <h3>Lip Filler</h3>
                     <p>
@@ -53,7 +53,7 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="cheek-filler.html" class="service-link">
+                <a href="/cheek-filler" class="service-link">
                   <div class="service-item service-filler-cheeks">
                     <h3>Cheek Filler</h3>
                     <p>
@@ -62,7 +62,7 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="undereye-filler.html" class="service-link">
+                <a href="/undereye-filler" class="service-link">
                   <div class="service-item service-filler-under-eye">
                     <h3>Under-Eye Filler</h3>
                     <p>
@@ -70,19 +70,19 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="radiesse.html" class="service-link">
+                <a href="/radiesse" class="service-link">
                   <div class="service-item service-radiesse">
                     <h3>Radiesse</h3>
                     <p>Hydrating injectable treatment for overall skin glow.</p>
                   </div>
                 </a>
-                <a href="sculptra.html" class="service-link">
+                <a href="/sculptra" class="service-link">
                   <div class="service-item service-sculptra">
                     <h3>Sculptra</h3>
                     <p>Deep revitalization and skin elasticity improvement.</p>
                   </div>
                 </a>
-                <a href="prp.html" class="service-link">
+                <a href="/prp" class="service-link">
                   <div class="service-item service-prptreatment">
                     <h3>PRP Treatment</h3>
                     <p>
@@ -91,7 +91,7 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="rrf.html" class="service-link">
+                <a href="/rrf" class="service-link">
                   <div class="service-item service-rrf">
                     <h3>Radiofrequency Facial</h3>
                     <p>
@@ -99,13 +99,13 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="facials.html" class="service-link">
+                <a href="/facials" class="service-link">
                   <div class="service-item service-facials">
                     <h3>Facials</h3>
                     <p>Product Use</p>
                   </div>
                 </a>
-                <a href="hydrofacial.html" class="service-link">
+                <a href="/hydrofacial" class="service-link">
                   <div class="service-item service-hydrofacial">
                     <h3>Hydrofacial</h3>
                     <p>
@@ -114,7 +114,7 @@ export default function Home() {
                     </p>
                   </div>
                 </a>
-                <a href="microneedling.html" class="service-link">
+                <a href="/microneedling" class="service-link">
                   <div class="service-item service-microneedling">
                     <h3>Microneedling</h3>
                     <p>Product Use</p>
