@@ -2,102 +2,129 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+    <>
+      <main>
+        <section id="home" class="hero-section">
+          <div class="hero">
+            <div class="hero-text">
+              <h1 class="hero-text-hook">Your Beauty, Our Expertise</h1>
+              <p class="hero-text-hook2">
+                Beauty awaits-are you ready to embrace it?
+              </p>
+              <p class="hero-text-introduction">
+                At Divaa Beauty Clinic, we combine artistic precision with the
+                latest aesthetic advancements, delivering personalized
+                treatments that enhance your natural beauty and confidence.
+                Recognized as Houston's top-rated Med Spa, we specialize in
+                Botox, Dermal Fillers, Skin Rejuvenation, and so much more. We
+                ensure every experience is tailored uniquely for you—because
+                exceptional care should never be a luxury. Schedule your
+                complimentary consultation today, and take the first step toward
+                revealing your most radiant self.
+              </p>
+              <a
+                href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20Botox%20services%20at%20Divaa"
+                class="contact-button"
+              >
+                CONSULT NOW: (832) 992-9422
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="services-section">
+          <div class="container">
+            <div class="services">
+              <h2 class="section-title">Our Services</h2>
+              <div class="service-list">
+                <a href="botox.html" class="service-link">
+                  <div class="service-item service-botox">
+                    <h3>Botox and Dysport</h3>
+                    <p>
+                      Effective wrinkle reduction and youthful skin enhancement.
+                    </p>
+                  </div>
+                </a>
+                <a href="lip-filler.html" class="service-link">
+                  <div class="service-item service-filler-lips">
+                    <h3>Lip Filler</h3>
+                    <p>
+                      Enhance volume and contour for fuller, natural-looking
+                      lips.
+                    </p>
+                  </div>
+                </a>
+                <a href="cheek-filler.html" class="service-link">
+                  <div class="service-item service-filler-cheeks">
+                    <h3>Cheek Filler</h3>
+                    <p>
+                      Restore youthful definition and lift through subtle cheek
+                      enhancement.
+                    </p>
+                  </div>
+                </a>
+                <a href="undereye-filler.html" class="service-link">
+                  <div class="service-item service-filler-under-eye">
+                    <h3>Under-Eye Filler</h3>
+                    <p>
+                      Reduce hollowness and dark circles for a refreshed look.
+                    </p>
+                  </div>
+                </a>
+                <a href="radiesse.html" class="service-link">
+                  <div class="service-item service-radiesse">
+                    <h3>Radiesse</h3>
+                    <p>Hydrating injectable treatment for overall skin glow.</p>
+                  </div>
+                </a>
+                <a href="sculptra.html" class="service-link">
+                  <div class="service-item service-sculptra">
+                    <h3>Sculptra</h3>
+                    <p>Deep revitalization and skin elasticity improvement.</p>
+                  </div>
+                </a>
+                <a href="prp.html" class="service-link">
+                  <div class="service-item service-prptreatment">
+                    <h3>PRP Treatment</h3>
+                    <p>
+                      Stimulates skin regeneration and collagen production using
+                      your own plasma.
+                    </p>
+                  </div>
+                </a>
+                <a href="rrf.html" class="service-link">
+                  <div class="service-item service-rrf">
+                    <h3>Radiofrequency Facial</h3>
+                    <p>
+                      Tighten and rejuvenate skin using advanced RF technology.
+                    </p>
+                  </div>
+                </a>
+                <a href="facials.html" class="service-link">
+                  <div class="service-item service-facials">
+                    <h3>Facials</h3>
+                    <p>Product Use</p>
+                  </div>
+                </a>
+                <a href="hydrofacial.html" class="service-link">
+                  <div class="service-item service-hydrofacial">
+                    <h3>Hydrofacial</h3>
+                    <p>
+                      Deep cleansing, exfoliation, and hydration for radiant
+                      skin.
+                    </p>
+                  </div>
+                </a>
+                <a href="microneedling.html" class="service-link">
+                  <div class="service-item service-microneedling">
+                    <h3>Microneedling</h3>
+                    <p>Product Use</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
