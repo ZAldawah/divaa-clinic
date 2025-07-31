@@ -1,17 +1,85 @@
 import Image from "next/image";
-
+import Link from "next/link";
+const services = [
+  {
+    href: "/botox",
+    className: "service-botox",
+    title: "Botox and Dysport",
+    desc: "Effective wrinkle reduction and youthful skin enhancement.",
+  },
+  {
+    href: "/lip-filler",
+    className: "service-filler-lips",
+    title: "Lip Filler",
+    desc: "Enhance volume and contour for fuller, natural-looking lips.",
+  },
+  {
+    href: "/cheek-filler",
+    className: "service-filler-cheeks",
+    title: "Cheek Filler",
+    desc: "Restore youthful definition and lift through subtle cheek enhancement.",
+  },
+  {
+    href: "/undereye-filler",
+    className: "service-filler-under-eye",
+    title: "Under-Eye Filler",
+    desc: "Reduce hollowness and dark circles for a refreshed look.",
+  },
+  {
+    href: "/radiesse",
+    className: "service-radiesse",
+    title: "Radiesse",
+    desc: "Hydrating injectable treatment for overall skin glow.",
+  },
+  {
+    href: "/sculptra",
+    className: "service-sculptra",
+    title: "Sculptra",
+    desc: "Deep revitalization and skin elasticity improvement.",
+  },
+  {
+    href: "/prp",
+    className: "service-prptreatment",
+    title: "PRP Treatment",
+    desc: "Stimulates skin regeneration and collagen production using your own plasma.",
+  },
+  {
+    href: "/rrf",
+    className: "service-rrf",
+    title: "Radiofrequency Facial",
+    desc: "Tighten and rejuvenate skin using advanced RF technology.",
+  },
+  {
+    href: "/facials",
+    className: "service-facials",
+    title: "Facials",
+    desc: "Product Use",
+  },
+  {
+    href: "/hydrofacial",
+    className: "service-hydrofacial",
+    title: "Hydrofacial",
+    desc: "Deep cleansing, exfoliation, and hydration for radiant skin.",
+  },
+  {
+    href: "/microneedling",
+    className: "service-microneedling",
+    title: "Microneedling",
+    desc: "Product Use",
+  },
+];
 export default function Home() {
   return (
     <>
       <main>
-        <section id="home" class="hero-section">
-          <div class="hero">
-            <div class="hero-text">
-              <h1 class="hero-text-hook">Your Beauty, Our Expertise</h1>
-              <p class="hero-text-hook2">
+        <div id="home" className="hero-section">
+          <div className="hero">
+            <div className="hero-text">
+              <h1 className="hero-text-hook">Your Beauty, Our Expertise</h1>
+              <p className="hero-text-hook2">
                 Beauty awaits-are you ready to embrace it?
               </p>
-              <p class="hero-text-introduction">
+              <p className="hero-text-introduction">
                 At Divaa Beauty Clinic, we combine artistic precision with the
                 latest aesthetic advancements, delivering personalized
                 treatments that enhance your natural beauty and confidence.
@@ -24,106 +92,30 @@ export default function Home() {
               </p>
               <a
                 href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20Botox%20services%20at%20Divaa"
-                class="contact-button"
+                className="contact-button"
               >
                 CONSULT NOW: (832) 992-9422
               </a>
             </div>
           </div>
-        </section>
-        <section class="services-section">
-          <div class="container">
-            <div class="services">
-              <h2 class="section-title">Our Services</h2>
-              <div class="service-list">
-                <a href="/botox" class="service-link">
-                  <div class="service-item service-botox">
-                    <h3>Botox and Dysport</h3>
-                    <p>
-                      Effective wrinkle reduction and youthful skin enhancement.
-                    </p>
-                  </div>
-                </a>
-                <a href="/lip-filler" class="service-link">
-                  <div class="service-item service-filler-lips">
-                    <h3>Lip Filler</h3>
-                    <p>
-                      Enhance volume and contour for fuller, natural-looking
-                      lips.
-                    </p>
-                  </div>
-                </a>
-                <a href="/cheek-filler" class="service-link">
-                  <div class="service-item service-filler-cheeks">
-                    <h3>Cheek Filler</h3>
-                    <p>
-                      Restore youthful definition and lift through subtle cheek
-                      enhancement.
-                    </p>
-                  </div>
-                </a>
-                <a href="/undereye-filler" class="service-link">
-                  <div class="service-item service-filler-under-eye">
-                    <h3>Under-Eye Filler</h3>
-                    <p>
-                      Reduce hollowness and dark circles for a refreshed look.
-                    </p>
-                  </div>
-                </a>
-                <a href="/radiesse" class="service-link">
-                  <div class="service-item service-radiesse">
-                    <h3>Radiesse</h3>
-                    <p>Hydrating injectable treatment for overall skin glow.</p>
-                  </div>
-                </a>
-                <a href="/sculptra" class="service-link">
-                  <div class="service-item service-sculptra">
-                    <h3>Sculptra</h3>
-                    <p>Deep revitalization and skin elasticity improvement.</p>
-                  </div>
-                </a>
-                <a href="/prp" class="service-link">
-                  <div class="service-item service-prptreatment">
-                    <h3>PRP Treatment</h3>
-                    <p>
-                      Stimulates skin regeneration and collagen production using
-                      your own plasma.
-                    </p>
-                  </div>
-                </a>
-                <a href="/rrf" class="service-link">
-                  <div class="service-item service-rrf">
-                    <h3>Radiofrequency Facial</h3>
-                    <p>
-                      Tighten and rejuvenate skin using advanced RF technology.
-                    </p>
-                  </div>
-                </a>
-                <a href="/facials" class="service-link">
-                  <div class="service-item service-facials">
-                    <h3>Facials</h3>
-                    <p>Product Use</p>
-                  </div>
-                </a>
-                <a href="/hydrofacial" class="service-link">
-                  <div class="service-item service-hydrofacial">
-                    <h3>Hydrofacial</h3>
-                    <p>
-                      Deep cleansing, exfoliation, and hydration for radiant
-                      skin.
-                    </p>
-                  </div>
-                </a>
-                <a href="/microneedling" class="service-link">
-                  <div class="service-item service-microneedling">
-                    <h3>Microneedling</h3>
-                    <p>Product Use</p>
-                  </div>
-                </a>
+        </div>
+        <div className="services-section">
+          <div className="container">
+            <div className="services">
+              <h2 className="section-title">Our Services</h2>
+              <div className="service-list">
+                {services.map(({ href, className, title, desc }) => (
+                  <Link key={href} href={href} className="service-link">
+                    <div className={`service-item ${className}`}>
+                      <h3>{title}</h3>
+                      <p>{desc}</p>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
     </>
   );

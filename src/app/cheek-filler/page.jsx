@@ -1,13 +1,13 @@
 const Page = () => {
     return     <main>
 
-      <section class="subhero">
-        <div class="subhero-hook1">
-          <div class="subhero-hook1-text">
+      <div className="subhero">
+        <div className="subhero-hook1">
+          <div className="subhero-hook1-text">
             <h1>CHEEK FILLER</h1>
             <a
               href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20cheek%20filler%20services%20at%20Divaa"
-              class="contact-button"
+              className="contact-button"
             >
               CONSULT NOW: (832) 992-9422
             </a>
@@ -17,18 +17,18 @@ const Page = () => {
               features.
             </p>
           </div>
-          <div class="subhero-hook1-logo">
+          <div className="subhero-hook1-logo">
             <img
               src="pictures/cheek-filler.JPG"
               alt="Client receiving cheek filler at Divaa Beauty"
             />
           </div>
         </div>
-      </section>
+    </div>
 
-      <section class="treatment-information">
-        <div class="treatment-introduction">
-          <div class="treatment-introduction-text">
+      <div className="treatment-information">
+        <div className="treatment-introduction">
+          <div className="treatment-introduction-text">
             <h3>What is Cheek Filler?</h3>
             <p>
               Cheek filler is a dermal injectable used to restore mid-face
@@ -40,8 +40,8 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-function">
-          <div class="treatment-function-text">
+        <div className="treatment-function">
+          <div className="treatment-function-text">
             <h3>What can Cheek Filler help with?</h3>
             <ul>
               <li>Lift and contour the cheek area</li>
@@ -54,7 +54,7 @@ const Page = () => {
         </div>
 
 
-        <div class="treatment-faq">
+        <div className="treatment-faq">
           <details>
             <summary>How long do cheek fillers last?</summary>
             <p>
@@ -71,7 +71,7 @@ const Page = () => {
             </p>
           </details>
         </div>
-      </section>
+    </div>
     </main>
 }
 
