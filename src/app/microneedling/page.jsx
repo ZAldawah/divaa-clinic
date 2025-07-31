@@ -1,12 +1,12 @@
 const Page = () => {
     return     <main>
-      <section class="subhero">
-        <div class="subhero-hook1">
-          <div class="subhero-hook1-text">
+      <div className="subhero">
+        <div className="subhero-hook1">
+          <div className="subhero-hook1-text">
             <h1>MICRONEEDLING</h1>
             <a
               href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20Microneedling%20at%20Divaa"
-              class="contact-button"
+              className="contact-button"
             >
               CONSULT NOW: (832) 992-9422
             </a>
@@ -16,18 +16,18 @@ const Page = () => {
               enhances your natural glow.
             </p>
           </div>
-          <div class="subhero-hook1-logo">
+          <div className="subhero-hook1-logo">
             <img
               src="pictures/microneedling-image1.JPG"
               alt="Microneedling session at Divaa Beauty"
             />
           </div>
         </div>
-      </section>
+    </div>
 
-      <section class="treatment-information">
-        <div class="treatment-introduction">
-          <div class="treatment-introduction-text">
+      <div className="treatment-information">
+        <div className="treatment-introduction">
+          <div className="treatment-introduction-text">
             <h3>What is Microneedling?</h3>
             <p>
               Microneedling, also known as collagen induction therapy, uses
@@ -39,8 +39,8 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-function">
-          <div class="treatment-function-text">
+        <div className="treatment-function">
+          <div className="treatment-function-text">
             <h3>What can Microneedling help with?</h3>
             <ul>
               <li>Acne scars and pitted skin</li>
@@ -52,7 +52,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-faq">
+        <div className="treatment-faq">
           <details>
             <summary>Does microneedling hurt?</summary>
             <p>
@@ -70,7 +70,7 @@ const Page = () => {
             </p>
           </details>
         </div>
-      </section>
+    </div>
     </main>
 }
 

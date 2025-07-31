@@ -1,12 +1,12 @@
 const Page = () => {
     return <main>
-      <section class="subhero">
-        <div class="subhero-hook1">
-          <div class="subhero-hook1-text">
+      <div className="subhero">
+        <div className="subhero-hook1">
+          <div className="subhero-hook1-text">
             <h1>HYDROFACIAL</h1>
             <a
               href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20a%20Hydrofacial%20at%20Divaa"
-              class="contact-button"
+              className="contact-button"
             >
               CONSULT NOW: (832) 992-9422
             </a>
@@ -16,18 +16,18 @@ const Page = () => {
               you instantly glowing.
             </p>
           </div>
-          <div class="subhero-hook1-logo">
+          <div className="subhero-hook1-logo">
             <img
               src="pictures/hydrofacial.png"
               alt="Client receiving Hydrofacial at Divaa Beauty"
             />
           </div>
         </div>
-      </section>
+    </div>
 
-      <section class="treatment-information">
-        <div class="treatment-introduction">
-          <div class="treatment-introduction-text">
+      <div className="treatment-information">
+        <div className="treatment-introduction">
+          <div className="treatment-introduction-text">
             <h3>What is a Hydrofacial?</h3>
             <p>
               A Hydrofacial is a multi-step facial treatment that combines
@@ -39,8 +39,8 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-function">
-          <div class="treatment-function-text">
+        <div className="treatment-function">
+          <div className="treatment-function-text">
             <h3>What can a Hydrofacial help with?</h3>
             <ul>
               <li>Clogged or enlarged pores</li>
@@ -52,7 +52,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-faq">
+        <div className="treatment-faq">
           <details>
             <summary>Is there any downtime with a Hydrofacial?</summary>
             <p>
@@ -70,7 +70,7 @@ const Page = () => {
             </p>
           </details>
         </div>
-      </section>
+    </div>
     </main>
 
 }

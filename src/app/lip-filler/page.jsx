@@ -1,12 +1,12 @@
 const Page = () => {
     return     <main>
-      <section class="subhero">
-        <div class="subhero-hook1">
-          <div class="subhero-hook1-text">
+      <div className="subhero">
+        <div className="subhero-hook1">
+          <div className="subhero-hook1-text">
             <h1>LIP FILLER</h1>
             <a
               href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20lip%20filler%20services%20at%20Divaa"
-              class="contact-button"
+              className="contact-button"
             >
               CONSULT NOW: (832) 992-9422
             </a>
@@ -15,18 +15,18 @@ const Page = () => {
               filler techniques designed to enhance your natural beauty.
             </p>
           </div>
-          <div class="subhero-hook1-logo">
+          <div className="subhero-hook1-logo">
             <img
               src="pictures/lip-filler.JPG"
               alt="Client receiving Lip Filler at Divaa Beauty"
             />
           </div>
         </div>
-      </section>
+    </div>
 
-      <section class="treatment-information">
-        <div class="treatment-introduction">
-          <div class="treatment-introduction-text">
+      <div className="treatment-information">
+        <div className="treatment-introduction">
+          <div className="treatment-introduction-text">
             <h3>What is Lip Filler?</h3>
             <p>
               Lip filler is a hyaluronic acid-based injectable used to enhance
@@ -38,8 +38,8 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-function">
-          <div class="treatment-function-text">
+        <div className="treatment-function">
+          <div className="treatment-function-text">
             <h3>What can Lip Filler help with?</h3>
             <ul>
               <li>Adds volume to thin or aging lips</li>
@@ -51,7 +51,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div class="treatment-faq">
+        <div className="treatment-faq">
           <details>
             <summary>Does lip filler hurt?</summary>
             <p>
@@ -67,7 +67,7 @@ const Page = () => {
             </p>
           </details>
         </div>
-      </section>
+    </div>
     </main>
 }
 
