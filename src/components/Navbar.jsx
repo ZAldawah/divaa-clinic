@@ -2,7 +2,7 @@ const Navbar = () => {
     return <header>
         <section class="navbar-section">
           <div class="navbar">
-            <a href="index.html" class="navbar-logo">
+            <a href="/" class="navbar-logo">
               <img src="/pictures/logo5.png" alt="Divaa Logo" />
             </a>
             <div class="navbar-links">
