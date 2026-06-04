@@ -15,22 +15,6 @@ This application is built for high performance and SEO optimization using indust
 - **Styling**: Custom CSS & Tailwind CSS
 - **Deployment**: Vercel (Recommended)
 
-## Getting Started
-
-First, install the dependencies:
-
-```bash
-npm install
-```
-
-Then, run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 ## Structure Highlights
 - `src/app/`: Contains the Next.js App Router pages and global CSS.
 - `src/components/`: Reusable UI components (Navbar, Footer, Carousels).
