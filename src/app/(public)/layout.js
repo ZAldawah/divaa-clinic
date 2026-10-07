@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Navbar from "../components/Navbar";
+import "../globals.css";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AnalyticsConsent from "@/components/AnalyticsConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+  referrer: "no-referrer",
   title: "Divaa Beauty",
   description:
     "Discover the art of rejuvenation with Botox, fillers, facials and more at Divaa Beauty Clinic in Houston.",
@@ -29,6 +31,7 @@ export default function RootLayout({ children }) {
 
         {children}
         <Footer />
+        {process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true" && <AnalyticsConsent />}
       </body>
     </html>
   );

@@ -1,5 +1,4 @@
-// Privacy boundary: only static values may cross into a future GA4 transport.
-// Deliberately not mounted: property setup and transport review remain pending.
+// Privacy boundary: only static values may cross into the GA4 transport.
 const SERVICE_PATHS = new Set([
   '/botox', '/filler', '/radiesse', '/sculptra', '/prp', '/rrf',
   '/facials', '/microneedling', '/collagen',
