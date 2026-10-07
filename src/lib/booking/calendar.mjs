@@ -18,18 +18,19 @@ export function calendar(db=getStore()) {
   if(isMock()) return {
     async busy(min,max) { return (await db.query('SELECT body FROM booking_mock_events')).rows.map(r=>JSON.parse(r.body)).filter(e=>e.start<max && e.end>min).map(({start,end})=>({start,end})); },
     async get(id) { const r=(await db.query('SELECT body FROM booking_mock_events WHERE id=$1',[id])).rows[0]; return r?JSON.parse(r.body):null; },
-    async insert(event) { await db.query('INSERT INTO booking_mock_events VALUES($1,$2) ON CONFLICT DO NOTHING',[event.id,JSON.stringify(event)]); return this.get(event.id); },
+    async insert(event,beforeSend) { if(!await beforeSend())return null;await db.query('INSERT INTO booking_mock_events VALUES($1,$2) ON CONFLICT DO NOTHING',[event.id,JSON.stringify(event)]); return this.get(event.id); },
   };
   const id=process.env.GOOGLE_CALENDAR_ID;
   if(!id) throw upstream();
   const base=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(id)}/events`;
-  async function request(url,method='GET',body) {
+  async function request(url,method='GET',body,beforeSend) {
     try {
       const stored=(await db.query('SELECT value FROM booking_tokens WHERE id=1')).rows[0];
       if(!stored) throw upstream();
       const client=oauthClient(); client.setCredentials({refresh_token:unseal(stored.value)});
       const token=await client.getAccessToken();
       if(!token.token) throw upstream();
+      if(beforeSend && !await beforeSend())return null;
       // Never retry insert blindly; callers reconcile by stable event ID.
       const response=await fetch(url,{method,headers:{Authorization:`Bearer ${token.token}`,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(10000),cache:'no-store'});
       if(response.status===404 && method==='GET') return null;
@@ -51,8 +52,9 @@ export function calendar(db=getStore()) {
       return c.busy.map(b=>{const start=Date.parse(b.start),end=Date.parse(b.end);if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start) throw upstream();return {start,end};});
     },
     async get(eventId) {return eventValue(await request(`${base}/${eventId}`));},
-    async insert(event) {
-      const result=await request(`${base}?sendUpdates=none`,'POST',{id:event.id,summary:'Reserved appointment',visibility:'private',transparency:'opaque',start:{dateTime:new Date(event.start).toISOString()},end:{dateTime:new Date(event.end).toISOString()},extendedProperties:{private:{bookingReference:event.id}}});
+    async insert(event,beforeSend) {
+      if(typeof beforeSend!=='function')throw upstream();
+      const result=await request(`${base}?sendUpdates=none`,'POST',{id:event.id,summary:'Reserved appointment',visibility:'private',transparency:'opaque',start:{dateTime:new Date(event.start).toISOString()},end:{dateTime:new Date(event.end).toISOString()},extendedProperties:{private:{bookingReference:event.id}}},beforeSend);
       return eventValue(result);
     },
   };

@@ -63,6 +63,7 @@ async function finish(db,job,status) {
 async function runJob(db,upstream,job) {
  const row=await find(db,job.reservation_id);
  try {
+  if(row.status==='rejected')return await finish(db,job,'rejected')?'rejected':'stale';
   const event=await upstream.get(row.id);
   const matches=event?.start===row.occupied_start && event?.end===row.occupied_end;
   if(matches){return await finish(db,job,'confirmed')?'confirmed':'stale';}
@@ -70,10 +71,39 @@ async function runJob(db,upstream,job) {
   if(event || job.attempted || row.status!=='pending'){return await finish(db,job,'review')?'review':'stale';}
   const busy=await upstream.busy(row.occupied_start,row.occupied_end);
   if(busy.some(b=>b.start<row.occupied_end && b.end>row.occupied_start)){return await finish(db,job,'rejected')?'rejected':'stale';}
-  // Durable intent BEFORE network side effect, guarded by live lease. Future workers only GET.
-  const {rowCount}=await db.query(`UPDATE booking_jobs SET attempted=true WHERE reservation_id=$1 AND lease_token=$2 AND lease_until>clock_timestamp() AND attempted=false`,[row.id,job.lease_token]);
-  if(!rowCount)return 'stale';
-  const inserted=await upstream.insert({id:row.id,start:row.occupied_start,end:row.occupied_end});
+  // Revalidate AFTER upstream checks. Serialize current policy and insert intent
+  // with settings writes; database time is authoritative, not a request timestamp.
+  let intent;
+  const beforeSend=async()=>{
+   if(intent)throw new Error('Insert authorization must only run once.');
+   intent=await transaction(db,async c=>{
+    const {settings}=await readSettings(c,true);
+    // Acquire the job lock before reading time: UPDATE predicates alone may be
+    // evaluated before waiting for an unchanged row locked by another transaction.
+    const {rows:[current]}=await c.query('SELECT * FROM booking_jobs WHERE reservation_id=$1 FOR UPDATE',[row.id]);
+    if(!current || current.lease_token!==job.lease_token || current.attempted)return 'stale';
+    const {rows:[clock]}=await c.query('SELECT floor(extract(epoch FROM clock_timestamp())*1000)::bigint AS now');
+    const service=settings.services.find(s=>s.id===row.service_id && s.enabled);
+    const date=Temporal.Instant.fromEpochMilliseconds(row.start).toZonedDateTimeISO(settings.timezone).toPlainDate().toString();
+    const eligible=service && row.end===row.start+service.duration*60000 &&
+     row.occupied_start===row.start-service.before*60000 && row.occupied_end===row.end+service.after*60000 &&
+     slotsFor({settings,date,serviceId:row.service_id,now:clock.now}).some(s=>Date.parse(s.start)===row.start);
+    if(!eligible)return 'ineligible';
+    // Recheck the cutoff in the intent statement, including time spent computing
+    // slots or waiting for a job lock. Strictly precede both start and buffer.
+    const cutoff=Math.min(row.start-settings.noticeMinutes*60000,row.occupied_start,row.start);
+    const {rowCount}=await c.query(`UPDATE booking_jobs SET attempted=true
+     WHERE reservation_id=$1 AND lease_token=$2 AND lease_until>clock_timestamp() AND attempted=false
+     AND extract(epoch FROM clock_timestamp())*1000<$3`,[row.id,job.lease_token,cutoff]);
+    return rowCount?'ready':'ineligible';
+   });
+   return intent==='ready';
+  };
+  // Adapter calls this gate after credential refresh, immediately before send.
+  const inserted=await upstream.insert({id:row.id,start:row.occupied_start,end:row.occupied_end},beforeSend);
+  if(intent==='stale')return 'stale';
+  if(intent==='ineligible')return await finish(db,job,'rejected')?'rejected':'stale';
+  if(intent!=='ready')throw new Error('Missing insert authorization.');
   const status=inserted?.start===row.occupied_start && inserted?.end===row.occupied_end?'confirmed':'review';
   return await finish(db,job,status)?status:'stale';
  }catch{return await finish(db,job,null)?'pending':'stale';}
@@ -97,5 +127,5 @@ export async function resolveReservation(db,upstream,id,actor) {
  await db.query('INSERT INTO booking_audit(actor,reservation_id,action) VALUES($1,$2,$3)',[actor,id,'requested-verification']);
  const status=await deliver(db,upstream,id);
  await db.query('INSERT INTO booking_audit(actor,reservation_id,action) VALUES($1,$2,$3)',[actor,id,`verification-${status}`]);
- return {status,holdReleased:false};
+ return {status,holdReleased:(await find(db,id)).status==='rejected'};
 }

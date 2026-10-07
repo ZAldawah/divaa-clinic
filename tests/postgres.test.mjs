@@ -9,8 +9,11 @@ import { calendar } from '../src/lib/booking/calendar.mjs';
 import { clientKey } from '../src/lib/booking/abuse.mjs';
 process.env.BOOKING_ENCRYPTION_KEY=randomBytes(32).toString('base64');
 process.env.BOOKING_CALENDAR_MODE='mock';process.env.BOOKING_ALLOW_SYNTHETIC='true';
-const now=Date.parse('2026-10-07T12:00:00Z');
-const request=()=>({serviceId:'synthetic-consultation',start:'2026-10-08T14:15:00.000Z',name:'Avery Example',email:'avery@example.test',key:randomUUID()});
+const now=Date.now();
+const future=new Date(now+3*86400000);
+while([0,6].includes(future.getUTCDay()))future.setUTCDate(future.getUTCDate()+1);
+const futureDate=future.toISOString().slice(0,10);
+const request=()=>({serviceId:'synthetic-consultation',start:`${futureDate}T15:15:00.000Z`,name:'Avery Example',email:'avery@example.test',key:randomUUID()});
 function worker(db,msg){return new Promise((resolve,reject)=>{
  const child=fork(new URL('./postgres-worker.mjs',import.meta.url),[],{env:{...process.env,DATABASE_URL:db.testUrl},stdio:['ignore','ignore','pipe','ipc'],windowsHide:true});
  let answer,stderr='';child.stderr.on('data',v=>stderr+=v);child.on('error',reject);
@@ -23,10 +26,10 @@ test('real PostgreSQL separate processes: collision, replay, restart, adjacency,
  const a=request(),b=request();const r=await Promise.all([worker(db,{input:a,now}),worker(db,{input:b,now})]);
  assert.equal(r.filter(v=>v.ok).length,1);assert.equal(r.filter(v=>v.status===409).length,1);
  const winner=r[0].ok?a:b;const retry=await worker(db,{input:winner,now});assert.equal(retry.result.status,'confirmed');
- const same={...request(),start:'2026-10-08T16:15:00.000Z'};const replay=await Promise.all([worker(db,{input:same,now}),worker(db,{input:same,now})]);assert(replay.every(v=>v.ok));assert.equal(replay[0].result.reference,replay[1].result.reference);
+ const same={...request(),start:`${futureDate}T17:15:00.000Z`};const replay=await Promise.all([worker(db,{input:same,now}),worker(db,{input:same,now})]);assert(replay.every(v=>v.ok));assert.equal(replay[0].result.reference,replay[1].result.reference);
  assert.equal((await db.query('SELECT count(*) n FROM booking_mock_events')).rows[0].n,2);
  assert.equal((await worker(db,{input:{...winner,name:'Different'},now})).status,409);
- const adjacent=await worker(db,{input:{...request(),start:'2026-10-08T15:15:00.000Z'},now});assert.equal(adjacent.ok,true);
+ const adjacent=await worker(db,{input:{...request(),start:`${futureDate}T16:15:00.000Z`},now});assert.equal(adjacent.ok,true);
  await assert.rejects(db.query(`INSERT INTO booking_reservations(id,request_hash,service_id,start,"end",occupied_start,occupied_end,status,created_at)
  SELECT 'direct-overlap',request_hash,service_id,start,"end",occupied_start,occupied_end,'pending',created_at FROM booking_reservations LIMIT 1`),{code:'23P01'});
  }finally{await db.end();}
@@ -44,8 +47,13 @@ for(const crash of ['pending','inserted'])test(`process termination after ${cras
 });
 test('205 durable jobs drain beyond first 100; keyset reconciliation visits all holds',async()=>{
  const db=await fixture();try{
+ const {settings}=await readSettings(db);settings.timezone='UTC';settings.noticeMinutes=0;settings.incrementMinutes=5;
+ settings.weekly=Array.from({length:7},()=>[{start:'00:00',end:'23:59'}]);
+ settings.services=[{id:'synthetic',name:'Synthetic',enabled:true,duration:5,before:0,after:0}];
+ await db.query('UPDATE booking_settings SET body=$1,version=version+1',[JSON.stringify(settings)]);
+ const base=Date.parse(`${futureDate}T00:00:00Z`);
  await db.query(`INSERT INTO booking_reservations(id,request_hash,service_id,start,"end",occupied_start,occupied_end,status,created_at)
- SELECT lpad(i::text,64,'0'),'hash','synthetic',i*10000,i*10000+1000,i*10000,i*10000+1000,'pending',0 FROM generate_series(1,205)i`);
+ SELECT lpad(i::text,64,'0'),'hash','synthetic',$1::bigint+i*300000,$1::bigint+(i+1)*300000,$1::bigint+i*300000,$1::bigint+(i+1)*300000,'pending',0 FROM generate_series(1,205)i`,[base]);
  await db.query('INSERT INTO booking_jobs(reservation_id) SELECT id FROM booking_reservations');
  for(const count of [100,100,5])assert.equal((await worker(db,{action:'recover'})).result.visited,count);
  let cursor='',visited=0;do{const r=await reconcile(db,calendar(db),{cursor,max:100});visited+=r.visited;cursor=r.nextCursor;}while(cursor);
@@ -55,7 +63,7 @@ test('205 durable jobs drain beyond first 100; keyset reconciliation visits all 
 test('stale worker result cannot overwrite newer recovery; uncertainty preserves hold and audit',async()=>{
  const db=await fixture();try{
  let resume,entered;const reached=new Promise(r=>entered=r),gate=new Promise(r=>resume=r);
- const cal=calendar(db),insert=cal.insert.bind(cal);cal.insert=async e=>{await insert(e);entered();await gate;throw new Error('lost response');};
+ const cal=calendar(db),insert=cal.insert.bind(cal);cal.insert=async(e,authorize)=>{await insert(e,authorize);entered();await gate;throw new Error('lost response');};
  const booking=book(db,cal,request(),now);await reached;
  const {rows:[row]}=await db.query('SELECT * FROM booking_reservations');
  await db.query("UPDATE booking_jobs SET lease_until=clock_timestamp()-interval '1 second'");

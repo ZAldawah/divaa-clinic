@@ -19,7 +19,12 @@ test('Google adapter rejects partial/malformed responses, minimizes private even
     globalThis.fetch=async()=>Response.json({calendars:{'synthetic@example.test':{busy:[{start:'2026-10-08T05:00:00Z',end:'2026-10-09T05:00:00Z'}]}}});
     assert.equal((await cal.busy(0,86400000))[0].end-(await cal.busy(0,86400000))[0].start,86400000);
     globalThis.fetch=async(url,options)=>{const body=JSON.parse(options.body);assert.equal(body.visibility,'private');assert.equal(body.transparency,'opaque');assert.equal(body.summary,'Reserved appointment');assert.equal(body.attendees,undefined);assert.equal(body.description,undefined);assert(url.endsWith('sendUpdates=none'));return Response.json(body);};
-    assert.deepEqual(await cal.insert({id:'abc123',start:1000,end:2000}),{id:'abc123',start:1000,end:2000});
+    assert.deepEqual(await cal.insert({id:'abc123',start:1000,end:2000},async()=>true),{id:'abc123',start:1000,end:2000});
+    const order=[];OAuth2Client.prototype.getAccessToken=async()=>{order.push('refresh');return {token:'synthetic-test-token'};};
+    globalThis.fetch=async()=>{throw new Error('Ineligible insert must never be sent');};
+    assert.equal(await cal.insert({id:'blocked',start:1000,end:2000},async()=>{order.push('gate');return false;}),null);
+    assert.deepEqual(order,['refresh','gate']);
+    await assert.rejects(cal.insert({id:'unguarded',start:1000,end:2000}),{status:503});
     OAuth2Client.prototype.getAccessToken=async()=>{throw new Error('invalid_grant with sensitive detail');};await assert.rejects(cal.busy(0,86400000),e=>e.status===503 && !e.message.includes('sensitive'));
   } finally {OAuth2Client.prototype.getAccessToken=original;globalThis.fetch=originalFetch;await db.end();}
 });

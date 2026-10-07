@@ -83,6 +83,28 @@ a review hold. No blind resend, automatic expiry or release of uncertain holds.
 A crash before insert intent can safely continue the first delivery. A crash after
 intent but before sending can conservatively require operator review.
 
+First delivery now checks **current** policy after Calendar lookup/free-busy and
+credential refresh, immediately before insert intent. The saved start/end and
+buffered interval must still be an exact offered slot: current enabled service,
+duration/buffers, timezone, hours/closures, grid, notice and horizon all apply.
+Removed/disabled services or changed timing reject the queued request rather than
+silently changing it. The database clock must strictly precede the current notice
+cutoff, appointment start and buffered start; expired unattempted jobs reject.
+The settings row lock serializes policy changes with intent, and the conditional
+intent write rechecks the clock after slot calculation/lock waits. Policy edits
+committed after intent do not retroactively cancel an in-flight Calendar write.
+
+An ineligible **unattempted** job becomes `rejected`, clears contact, releases its
+local exclusion hold and is reported as rejected by recovery/admin verification.
+Retrying that booking reference returns the existing 409 unavailable response.
+This does not send cancellation mail or change any Calendar event. Attempted or
+unknown writes bypass rejection: absence/mismatch remains `review` with the hold
+and contact retained; exact existing event evidence may confirm, including after
+the appointment time. No resend or automatic uncertain-hold release occurs.
+The intent transaction is the first-delivery authorization point. Database commit,
+network dispatch and Google acceptance cannot be one atomic action; a process pause
+or provider delay after authorization remains an uncertain write to reconcile.
+
 `POST /api/internal/recover` requires `Authorization: Bearer <BOOKING_JOB_SECRET>`
 and a shared rate limit. It runs at most ten due jobs, stopping between jobs after
 20 seconds. Network calls can extend the elapsed time; routes declare a 120-second
@@ -142,9 +164,17 @@ This does not verify a merged GA4 candidate or grant live tracking approval.
 rate/OAuth-state rows. The period needs clinic approval and a configured scoped job.
 Reservation/job/audit metadata, auth records and backups need an approved retention
 policy. Key loss makes data unreadable; rotation requires reviewed re-encryption.
-Select provider/region/cost, restrict roles, test backup restoration and key recovery,
+Owner selected **Neon Free, $0 database budget**; the host reported an empty existing
+`divaabeauty-booking` project (`cool-recipe-36109536`), PostgreSQL 18 in AWS Ohio,
+on 2026-10-07. Use that project; do not duplicate provisioning. This is host evidence,
+not a tested website connection. No paid Neon or Vercel upgrade is authorized.
+The architecture task AGE-17 carries the free-tier dispatcher/backup/usage design.
+Runtime-role/pooled-connection secret handoff, actual Vercel region and independent
+review remain pending; never place credentials in source or task comments.
+Restrict roles, test backup restoration and key recovery,
 measure connection/function capacity, configure recovery/retention/alerts and verify
-HTTPS/OAuth before requesting release. No service purchase/provisioning is authorized.
+HTTPS/OAuth before requesting release. No additional service purchase or provisioning
+is authorized by this handoff.
 Rollback disables new bookings while retaining PostgreSQL and recovery; never revert
 to independent SQLite ledgers or discard holds.
 
@@ -163,7 +193,11 @@ cross-process collision/idempotency, restart persistence, crash recovery before 
 after insert, stale leases, 205-job draining/keyset pagination, shared quotas,
 OAuth-state races, session revocation/expiry, settings races, upstream/database
 outage, encrypted payloads, DST, HTTP authorization/CSRF and public minimization.
-Desktop/mobile synthetic screenshots are new evidence for this revision.
+Desktop/mobile synthetic screenshots remain evidence for the preceding c26b085 revision.
+The recovery-freshness correction adds real PostgreSQL cases for elapsed start/end,
+current policy changes, serialized closure writes, slow busy/token-preparation
+boundaries and uncertain holds. The 205-job test now uses valid future intervals.
+No UI changed in this correction; earlier screenshots are historical evidence.
 
 Browser checks include 390x844 and 1440x900, 320px reflow and keyboard slot selection.
 They are not a full WCAG/screen-reader/zoom audit. Local loading measurements are

@@ -9,8 +9,10 @@ import { availability,book,reconcile } from '../src/lib/booking/service.mjs';
 import { seal,unseal } from '../src/lib/booking/crypto.mjs';
 process.env.BOOKING_ENCRYPTION_KEY=randomBytes(32).toString('base64');
 const now=Date.parse('2026-10-07T12:00:00Z');
-async function fixture(){const db=await testStore();await seedSynthetic(db);const events=new Map();const cal={async busy(){return [...events.values()];},async get(id){return events.get(id)||null;},async insert(e){events.set(e.id,e);return e;}};return {db,cal,events};}
-const request=()=>({serviceId:'synthetic-consultation',start:'2026-10-08T14:15:00.000Z',name:'Avery Example',email:'avery@example.test',key:randomUUID()});
+async function fixture(){const db=await testStore();await seedSynthetic(db);const events=new Map();const cal={async busy(){return [...events.values()];},async get(id){return events.get(id)||null;},async insert(e,gate){if(!await gate())return null;events.set(e.id,e);return e;}};return {db,cal,events};}
+const future=new Date(Date.now()+3*86400000);
+while([0,6].includes(future.getUTCDay()))future.setUTCDate(future.getUTCDate()+1);
+const request=()=>({serviceId:'synthetic-consultation',start:future.toISOString().slice(0,10)+'T15:15:00.000Z',name:'Avery Example',email:'avery@example.test',key:randomUUID()});
 test('buffers, notice, horizon, lunch, overrides and all-day busy',()=>{
   const s=structuredClone(syntheticSettings), args={settings:s,date:'2026-10-08',serviceId:s.services[0].id,now};
   let slots=slotsFor(args);assert.equal(slots[0].start,'2026-10-08T14:15:00.000Z');assert.equal(slots.at(-1).end,'2026-10-08T21:45:00.000Z');
@@ -37,22 +39,22 @@ test('schema rejects overlapping hours, duplicate exceptions, invalid zone and h
 });
 test('concurrent clients cannot reserve overlapping spans; retries preserve one event',async()=>{
   const {db,cal,events}=await fixture(),a=request();
-  const result=await Promise.allSettled([book(db,cal,a,now),book(db,cal,request(),now)]);
+  const result=await Promise.allSettled([book(db,cal,a),book(db,cal,request())]);
   assert.equal(result.filter(r=>r.status==='fulfilled').length,1);assert.equal(events.size,1);
-  const retry=await book(db,cal,a,now);assert.equal(retry.status,'confirmed');assert.equal(events.size,1);
-  await assert.rejects(book(db,cal,{...a,name:'Changed'},now),{status:409});
+  const retry=await book(db,cal,a);assert.equal(retry.status,'confirmed');assert.equal(events.size,1);
+  await assert.rejects(book(db,cal,{...a,name:'Changed'}),{status:409});
   const stored=(await db.query('SELECT contact FROM booking_reservations')).rows[0].contact;assert(!stored.includes('Avery'));assert.equal(JSON.parse(unseal(stored)).name,'Avery Example');await db.end();
 });
 test('upstream failure creates no reservation; lost insert response retains hold and reconciles',async()=>{
   const {db,cal,events}=await fixture();
   await assert.rejects(availability(db,{busy:async()=>{throw new Error('outage');}},'2026-10-08','synthetic-consultation',now));
   assert.equal((await db.query('SELECT COUNT(*) n FROM booking_reservations')).rows[0].n,0);
-  cal.insert=async e=>{events.set(e.id,e);throw new Error('response lost');};
-  const r=await book(db,cal,request(),now);assert.equal(r.status,'pending');assert.equal((await reservations(db,0,Infinity)).length,1);
+  cal.insert=async(e,gate)=>{if(!await gate())return null;events.set(e.id,e);throw new Error('response lost');};
+  const r=await book(db,cal,request());assert.equal(r.status,'pending');assert.equal((await reservations(db,0,Infinity)).length,1);
   const check=await reconcile(db,cal);assert.equal(check.confirmed,1);assert.equal((await db.query('SELECT status FROM booking_reservations')).rows[0].status,'confirmed');await db.end();
 });
 test('external edits retain conflict holds; encryption detects tampering; rate limiting persists',async()=>{
-  const {db,cal,events}=await fixture();const r=await book(db,cal,request(),now);events.delete(r.reference);const check=await reconcile(db,cal);assert.equal(check.review,1);assert.equal((await reservations(db,0,Infinity)).length,1);
+  const {db,cal,events}=await fixture();const r=await book(db,cal,request());events.delete(r.reference);const check=await reconcile(db,cal);assert.equal(check.review,1);assert.equal((await reservations(db,0,Infinity)).length,1);
   const cipher=seal('private');const b=Buffer.from(cipher,'base64');b[30]^=1;assert.throws(()=>unseal(b.toString('base64')));
   await limit(db,'x',1);await assert.rejects(limit(db,'x',1),{status:429});assert.equal((await readSettings(db)).version,1);await db.end();
 });
