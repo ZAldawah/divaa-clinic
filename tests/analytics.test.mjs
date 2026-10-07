@@ -21,6 +21,7 @@ test('initial, client transitions and back navigation count once each', () => {
   const { analytics: a, events } = harness();
   a.setConsent('accepted'); a.navigate('/'); a.navigate('/'); a.navigate('/botox'); a.navigate('/filler'); a.navigate('/');
   assert.equal(events.length, 4);
+  assert.deepEqual(events.map(e => e.params.page_type), ['home', 'services', 'services', 'home']);
   assert.equal(events[1].params.page_location, events[2].params.page_location);
 });
 
@@ -49,7 +50,7 @@ test('payloads contain only static fields; service names and extra action argume
   a.navigate('/prp'); a.setConsent('accepted');
   a.action('sms_click', { name: 'Synthetic', href: 'sms:123?body=private' });
   for (const { params } of events) assert.deepEqual(params, {
-    page_location: 'https://www.divaabeauty.net/services', page_title: 'Services', page_referrer: '',
+    page_type: 'services', page_location: 'https://www.divaabeauty.net/services', page_title: 'Services', page_referrer: '',
   });
 });
 

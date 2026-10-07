@@ -7,8 +7,8 @@ const SERVICE_PATHS = new Set([
 const ACTIONS = new Set(['call_click', 'sms_click', 'booking_start']);
 
 export function safePage(pathname) {
-  if (pathname === '/') return { page_location: 'https://www.divaabeauty.net/', page_title: 'Home', page_referrer: '' };
-  if (SERVICE_PATHS.has(pathname)) return { page_location: 'https://www.divaabeauty.net/services', page_title: 'Services', page_referrer: '' };
+  if (pathname === '/') return { page_type: 'home', page_location: 'https://www.divaabeauty.net/', page_title: 'Home', page_referrer: '' };
+  if (SERVICE_PATHS.has(pathname)) return { page_type: 'services', page_location: 'https://www.divaabeauty.net/services', page_title: 'Services', page_referrer: '' };
   return null;
 }
 

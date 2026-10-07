@@ -100,3 +100,25 @@ the reviewed commit, merge through the repository release process, configure the
 owner-provided ID/settings and deploy; then independently verify live collection.
 No merge/deployment authorization is implied by preparation or ID provision.
 Keep the issue open until approved release and live evidence.
+
+## Search Analytics reconciliation (2026-10-07)
+
+Reviewed AGE-15 ga4-reporting revision 9e8c6b2b-dbcc-4dd5-9511-a1181ae9860f.
+Event names and launch/start meanings agree. Added static page_type values home
+and services; service names remain suppressed. The synthetic /services reporting
+URL is deliberately grouped and must not be interpreted as a real landing page
+or treatment-level reporting. Owner eligibility decisions remain pending.
+
+cta_placement is optional and currently omitted; define a fixed enum against the
+actual UI during integration. No arbitrary attributes may enter payloads. Browser
+listener/double-click deduplication remains unimplemented and unverified. Core
+navigation deduplication is tested; do not treat that as browser verification.
+Reserved enquiry_confirmed and booking_confirmed remain unavailable. AGE-11 must
+supply authoritative success and application-side dedup before their integration.
+
+Re-ran seven focused Node tests after adding page_type; all passed. No browser,
+Google transport, cookies, mobile/desktop or live collection was tested.
+Before reporting activation, hand off the approved release commit, UTC deployment
+time, production hostname, owner-verified Measurement ID/stream, sanitized network
+payload evidence and matching aggregate live observations to Search Analytics.
+Preview evidence alone cannot satisfy production acceptance.
