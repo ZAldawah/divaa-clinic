@@ -87,7 +87,7 @@ export default function BestSellers() {
             <h3 className="bs-card-name">{s.title}</h3>
             <p className="bs-card-desc">{s.desc}</p>
             <span className="bs-card-cta">
-              Book a Consultation
+              Learn more
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

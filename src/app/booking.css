@@ -1,0 +1,46 @@
+.booking-shell { --canvas:#eae7e3; --surface:#fff; --ink:#111110; --muted:#3d3c39; --space:24px; max-width:1120px; margin:100px auto 48px; padding:24px; color:var(--ink); font-family:Arial,sans-serif; line-height:1.5; }
+.booking-shell * {box-sizing:border-box;}
+html:has(.booking-shell),body:has(.booking-shell) {height:auto;min-height:100%;overflow-x:clip;scroll-behavior:auto;}
+body:has(.booking-shell) .navbar {position:static;height:80px;background:#fef6f0;}
+body:has(.booking-shell) .navbar-logo {height:64px;}
+body:has(.booking-shell) .navbar .contact-button {padding:12px 20px;font-size:16px;white-space:nowrap;}
+body:has(.booking-shell) .booking-shell {margin-top:24px;}
+.booking-shell h1:focus {outline:none;}
+.booking-shell h1 {font-size:32px;line-height:1.25;margin:16px 0 24px;}
+.booking-shell h2 {font-size:24px;margin:0 0 24px;}
+.booking-shell h3 {font-size:18px;}
+.booking-shell p {margin:16px 0;}
+.booking-shell .eyebrow {font-size:14px;letter-spacing:.1em;}
+.surface {background:#eae7e3;border:1px solid #c8c5c0;border-radius:20px;padding:32px;min-width:0;}
+.booking-grid {display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:32px;align-items:start;}
+.booking-shell .summary {position:sticky;top:24px;}
+.booking-shell label {display:block;font-weight:600;margin:16px 0;}
+.booking-shell input,.booking-shell select {display:block;width:100%;min-height:48px;border:1px solid var(--muted);border-radius:12px;background:white;padding:10px 12px;color:var(--ink);font:inherit;}
+.booking-shell input[type=radio],.booking-shell input[type=checkbox] {width:24px;min-height:24px;flex-shrink:0;accent-color:#111110;}
+.booking-shell button,.booking-shell .button {display:inline-block;min-height:48px;padding:12px 20px;background:#111110;border:1px solid #111110;color:white;border-radius:50px;font:inherit;font-weight:600;margin:12px 8px 0 0;cursor:pointer;}
+.booking-shell button.secondary {background:transparent;color:#111110;}
+.booking-shell button:disabled {opacity:.6;cursor:not-allowed;}
+.booking-shell :focus-visible {outline:2px solid #111110;outline-offset:3px;}
+.booking-shell a {text-decoration:underline;color:inherit;}
+body:has(.booking-shell) .footer a {color:inherit;text-decoration:underline;}
+.booking-shell fieldset {border:0;padding:0;margin:16px 0;min-width:0;}
+.booking-shell legend {font-weight:600;}
+.booking-shell .choice {display:flex;align-items:center;gap:12px;padding:12px;background:white;border:1px solid #3d3c39;border-radius:12px;font-weight:400;}
+.booking-shell .choice:has(input:checked) {outline:2px solid #111110;}
+.booking-shell small {display:block;}
+.slot-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;}
+.slot-grid .choice {margin:0;}
+.notice {border:2px solid #3d3c39;border-radius:12px;padding:16px;margin:16px 0;background:#fff;}
+.progress {display:flex;gap:16px;flex-wrap:wrap;list-style:none;padding:0;margin:24px 0;}
+.progress li {padding:8px 0;color:#3d3c39;}
+.progress [aria-current] {font-weight:600;color:#111110;border-bottom:3px solid #111110;}
+.reference {overflow-wrap:anywhere;}
+.login-card {max-width:448px;margin:0 auto;}
+.admin-section {margin:24px 0;}
+.hours-row {display:flex;align-items:end;gap:12px;flex-wrap:wrap;}
+.hours-row label {flex:1;min-width:110px;}
+.booking-shell .inline-check {display:flex;align-items:center;gap:12px;}
+.admin-services {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.booking-shell nav {display:flex;gap:20px;flex-wrap:wrap;}
+@media(max-width:767px){.booking-shell{padding:20px;margin-top:24px;}.booking-grid{grid-template-columns:1fr;gap:20px;}.surface{padding:20px;}.booking-shell .summary{position:static;grid-row:1;font-size:14px;}.booking-shell .summary h2{font-size:18px;margin-bottom:12px;}.booking-shell .summary p{margin:8px 0;}.booking-shell h1{font-size:28px;}.booking-shell button{width:100%;}.admin-services{grid-template-columns:1fr;}.progress{gap:10px;font-size:14px;}}
+@media(prefers-reduced-motion:reduce){.booking-shell *{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}

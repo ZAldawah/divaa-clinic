@@ -80,6 +80,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="collagen"
       eyebrow="FEATURED CLINICAL THERAPY"
       title={
         <>

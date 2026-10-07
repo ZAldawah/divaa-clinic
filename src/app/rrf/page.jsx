@@ -67,6 +67,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="rrf"
       eyebrow="ADVANCED TISSUE REMODELING"
       title={
         <>

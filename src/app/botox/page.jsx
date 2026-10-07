@@ -69,6 +69,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="botox"
       eyebrow="NEUROTOXIN WRINKLE RELAXERS"
       title={
         <>

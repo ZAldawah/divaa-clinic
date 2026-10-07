@@ -21,10 +21,10 @@ export default function Home() {
                 complimentary consultation today.
               </p>
               <a
-                href="sms:8329929422?&body=Hi%20I%27m%20interested%20in%20Botox%20services%20at%20Divaa"
+                href="/book"
                 className="contact-button"
               >
-                CONSULT NOW: (832) 992-9422
+                Book appointment
               </a>
             </div>
           </div>

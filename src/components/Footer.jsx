@@ -8,6 +8,7 @@ const Footer = () => {
           <p>+1 (832-992-9422)</p>
         </div>
         <div className="footer-info">
+          <a href="/admin/login">Staff sign in</a>
           <p>&copy; 2025 Divaa Beauty. All rights reserved.</p>
         </div>
       </footer>

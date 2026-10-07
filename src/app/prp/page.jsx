@@ -68,6 +68,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="prp"
       eyebrow="NATURAL CELLULAR REGENERATION"
       title={
         <>

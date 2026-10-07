@@ -19,6 +19,7 @@ export default function ServiceLayout({
   heroImage,
   heroBgPosition = "center",
   smsBody,
+  bookingServiceId,
   stats,
   aboutTitle,
   aboutBody,
@@ -48,7 +49,7 @@ export default function ServiceLayout({
           <h1 className="clg-hero-title">{title}</h1>
           <p className="clg-hero-sub">{subtitle}</p>
           <a
-            href={`sms:8329929422?&body=${encodeURIComponent(smsBody)}`}
+            href={bookingServiceId ? `/book?service=${encodeURIComponent(bookingServiceId)}` : '/book'}
             className="clg-cta"
           >
             Book a Consultation
@@ -132,7 +133,7 @@ export default function ServiceLayout({
           href={`sms:8329929422?&body=${encodeURIComponent(smsBody)}`}
           className="clg-cta clg-cta--dark"
         >
-          CONSULT NOW: (832) 992-9422
+          Text the clinic
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>

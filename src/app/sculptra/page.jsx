@@ -68,6 +68,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="sculptra"
       eyebrow="PLLA COLLAGEN BIOSTIMULATOR"
       title={
         <>

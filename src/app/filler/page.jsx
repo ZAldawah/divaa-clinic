@@ -73,6 +73,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="filler"
       eyebrow="HYALURONIC ACID ENHANCEMENT"
       title={
         <>

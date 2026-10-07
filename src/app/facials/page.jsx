@@ -68,6 +68,7 @@ const faqSchema = {
 export default function Page() {
   return (
     <ServiceLayout
+      bookingServiceId="facials"
       eyebrow="DEEP CLEANSING & EXFOLIATION"
       title={
         <>
