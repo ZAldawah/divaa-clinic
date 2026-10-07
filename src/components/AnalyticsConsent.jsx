@@ -81,27 +81,39 @@ export default function AnalyticsConsent() {
     settingsButton.current?.focus();
   }
 
+  function closeSettings() {
+    setOpen(false);
+    settingsButton.current?.focus();
+  }
+
   if (!safePage(pathname)) return null;
   return <aside className={styles.container} aria-label="Analytics privacy settings">
-    <button ref={settingsButton} className={styles.button} aria-expanded={open}
+    <button ref={settingsButton} className={`${styles.button} ${styles.settings}`} aria-expanded={open}
       aria-controls="analytics-settings" onClick={() => {
         setOpen(true);
         requestAnimationFrame(() => firstChoice.current?.focus());
       }}>Privacy settings</button>
-    <p role="status">{process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true'
+    <p className={styles.status} role="status">{process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true'
       ? (choice === 'accepted' ? 'Preview choice: accepted. Google Analytics collection is still disabled.' : 'Review preview: Google Analytics collection is disabled.')
       : (choice === 'accepted' ? 'Analytics is on. You can turn it off in Privacy settings.' : 'Analytics is off.')}</p>
-    {open && <section id="analytics-settings" className={styles.panel} aria-labelledby="analytics-heading">
-      <h2 id="analytics-heading">Optional analytics</h2>
+    {open && <section id="analytics-settings" className={styles.panel} aria-labelledby="analytics-heading"
+      onKeyDown={(event) => { if (event.key === 'Escape') { event.stopPropagation(); closeSettings(); } }}>
+      <div className={styles.heading}>
+        <div><span className={styles.brand}>Divaa Beauty</span><h2 id="analytics-heading">Your privacy, your choice</h2></div>
+        <button className={styles.close} aria-label="Close privacy settings" onClick={closeSettings}>×</button>
+      </div>
+      <p className={styles.intro}>With your permission, optional Google Analytics measures grouped public page views and contact-link clicks using session cookies and generated identifiers. Google receives this data. You can keep browsing with analytics off and change your choice in Privacy settings.</p>
+      <div className={styles.actions}>
+        <button ref={firstChoice} className={styles.button} onClick={() => choose('accepted')}>Accept analytics</button>
+        <button className={styles.button} onClick={() => choose('rejected')}>{choice === 'accepted' ? 'Withdraw consent' : 'Reject analytics'}</button>
+      </div>
+      {storageError && <p className={styles.error} role="status">Analytics is off. We could not confirm that your browser saved your choice. You may see this message or be asked to choose again when you return. Analytics will stay off unless you choose Accept analytics and your browser saves that choice.</p>}
+      <details className={styles.details}>
+        <summary>How analytics works</summary>
       <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. If your browser saves your rejection, we remember it for this tab’s browsing session. If you accept, analytics turns off when you reload the page or leave and return. To turn analytics on again, choose Accept analytics. You can keep browsing with analytics off.</p>
       <p>We do not send contact-form contents, appointment details, contact information or individual treatment labels. Withdrawing permission stops future analytics collection; it does not delete data already collected.</p>
       {process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true' && <p>Review preview: this is draft disclosure awaiting owner approval. Google collection is disabled; accepting only exercises local interface behavior.</p>}
-      <div className={styles.actions}>
-        <button ref={firstChoice} className={styles.button} onClick={() => choose('accepted')}>Accept analytics</button>
-        <button className={styles.button} onClick={() => choose('rejected')}>{choice === 'accepted' ? 'Withdraw analytics consent' : 'Reject analytics'}</button>
-      </div>
-      {storageError && <p role="status">Analytics is off. We could not confirm that your browser saved your choice. You may see this message or be asked to choose again when you return. Analytics will stay off unless you choose Accept analytics and your browser saves that choice.</p>}
-      {choice !== 'unknown' && <button className={styles.button} onClick={() => { setOpen(false); settingsButton.current?.focus(); }}>Close settings</button>}
+      </details>
     </section>}
   </aside>;
 }

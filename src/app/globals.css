@@ -6,6 +6,13 @@
   box-sizing: border-box;
 }
 
+:root {
+  --privacy-surface: #fef6f0;
+  --privacy-ink: #2c2c2c;
+  --privacy-border: #81756b;
+  --privacy-radius: 20px;
+}
+
 html,
 body {
   height: 100%;
@@ -287,6 +294,25 @@ body {
 .footer-info {
   font-size: 14px;
   color: #aaa;
+}
+
+.footer-info a,
+.footer-info a:visited {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  color: #fef6f0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.footer-info a:hover { text-decoration-thickness: 2px; }
+
+.footer-info a:focus-visible {
+  outline: 2px solid #fef6f0;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* Start of Subdomains Template Block */
