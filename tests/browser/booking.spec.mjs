@@ -1,7 +1,7 @@
 import { test,expect } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import Database from 'better-sqlite3';
+import { openStore } from '../../src/lib/booking/store.mjs';
 const origin='http://127.0.0.1:3111';
 const output=resolve(process.env.PAPERCLIP_RUN_SCRATCH_DIR || 'test-results','booking-evidence');
 mkdirSync(output,{recursive:true});
@@ -19,14 +19,14 @@ test('HTTP access control, CSRF, data minimization, validation, admin conflict a
   expect((await request.put('/api/admin/availability',{headers:{...headers,origin:'https://evil.example'},data:{version:1,settings:settings.settings}})).status()).toBe(403);
   expect((await request.put('/api/admin/availability',{headers,data:{version:1,settings:settings.settings}})).status()).toBe(200);
   expect((await request.put('/api/admin/availability',{headers,data:{version:1,settings:settings.settings}})).status()).toBe(409);
-  const db=new Database(process.env.BOOKING_DB_PATH);
-  const admin=db.prepare('SELECT user_id FROM booking_admins').get();
-  db.prepare('DELETE FROM booking_admins').run();
+  const db=openStore(process.env.DATABASE_URL);
+  const admin=(await db.query('SELECT user_id FROM booking_admins')).rows[0];
+  await db.query('DELETE FROM booking_admins');
   expect((await request.get('/api/admin/availability')).status()).toBe(403);
   expect((await request.post('/api/admin/reconcile',{headers,data:{}})).status()).toBe(403);
-  db.prepare('INSERT INTO booking_admins VALUES(?)').run(admin.user_id);
-  db.prepare('UPDATE session SET expiresAt=?').run(Date.now()-60000);
-  expect((await request.get('/api/admin/availability')).status()).toBe(401);db.close();
+  await db.query('INSERT INTO booking_admins VALUES($1)',[admin.user_id]);
+  await db.query('UPDATE session SET "expiresAt"=$1',[new Date(Date.now()-60000)]);
+  expect((await request.get('/api/admin/availability')).status()).toBe(401);await db.end();
   expect((await request.post('/api/auth/sign-out',{headers,data:{}})).status()).toBe(200);
   expect((await request.get('/api/admin/availability')).status()).toBe(401);
 });
@@ -67,3 +67,29 @@ test('synthetic error and unknown-outcome screens preserve contact and retry key
 });
 
 
+
+test('public document is unloaded entering booking/admin; no private telemetry or contact URLs',async({page})=>{
+ const telemetry=[];
+ page.on('request',r=>{if(/google-analytics|googletagmanager|synthetic-telemetry/.test(r.url()))telemetry.push(r.url());});
+ await page.route('**/synthetic-telemetry*',r=>r.fulfill({status:204,body:''}));
+ await page.goto('/');
+ // Synthetic public tag models a previously loaded script without sending data to Google.
+ await page.evaluate(()=>{window.publicTagProbe=true;window.publicProbeTimer=setInterval(()=>fetch('/synthetic-telemetry'),50);});
+ await expect.poll(()=>telemetry.length).toBeGreaterThan(0);
+ await page.locator('a[href="/book"]').first().click();await expect(page.getByRole('heading',{name:/Book/}).first()).toBeVisible();
+ expect(await page.evaluate(()=>window.publicTagProbe)).toBeUndefined();
+ const count=telemetry.length;await page.waitForTimeout(200);expect(telemetry.length).toBe(count);
+ await page.goto('/admin/login');expect(await page.evaluate(()=>window.publicTagProbe)).toBeUndefined();
+ await page.getByLabel('Email',{exact:true}).fill('avery@example.test');
+ expect(page.url()).not.toContain('avery');expect(telemetry.every(v=>!v.includes('avery'))).toBe(true);
+ expect(await page.locator('script[src*="googletagmanager"],script[src*="google-analytics"]').count()).toBe(0);
+});
+
+test('scheduler authentication and public auth quota enforce fail-closed boundaries',async({request})=>{
+ expect((await request.post('/api/internal/recover',{data:{}})).status()).toBe(401);
+ expect((await request.post('/api/internal/recover',{headers:{authorization:'Bearer invalid'},data:{}})).status()).toBe(401);
+ expect((await request.post('/api/internal/recover',{headers:{authorization:`Bearer ${process.env.BOOKING_JOB_SECRET}`},data:{}})).status()).toBe(200);
+ const responses=[];for(let i=0;i<17;i++)responses.push((await request.post('/api/auth/sign-in/email',{headers,data:{email:'unknown@example.test',password:'Synthetic-invalid-password'}})).status());
+ expect(responses).toContain(429);expect(responses.at(-1)).toBe(429);
+ expect((await request.get('/api/booking/config')).status()).toBe(200);
+});

@@ -16,16 +16,16 @@ export function isMock() {
 function upstream() { return Object.assign(new Error('We cannot check availability right now. Try again or contact the clinic.'),{status:503}); }
 export function calendar(db=getStore()) {
   if(isMock()) return {
-    async busy(min,max) { return db.prepare('SELECT body FROM booking_mock_events').all().map(r=>JSON.parse(r.body)).filter(e=>e.start<max && e.end>min).map(({start,end})=>({start,end})); },
-    async get(id) { const r=db.prepare('SELECT body FROM booking_mock_events WHERE id=?').get(id); return r?JSON.parse(r.body):null; },
-    async insert(event) { db.prepare('INSERT OR IGNORE INTO booking_mock_events VALUES(?,?)').run(event.id,JSON.stringify(event)); return this.get(event.id); },
+    async busy(min,max) { return (await db.query('SELECT body FROM booking_mock_events')).rows.map(r=>JSON.parse(r.body)).filter(e=>e.start<max && e.end>min).map(({start,end})=>({start,end})); },
+    async get(id) { const r=(await db.query('SELECT body FROM booking_mock_events WHERE id=$1',[id])).rows[0]; return r?JSON.parse(r.body):null; },
+    async insert(event) { await db.query('INSERT INTO booking_mock_events VALUES($1,$2) ON CONFLICT DO NOTHING',[event.id,JSON.stringify(event)]); return this.get(event.id); },
   };
   const id=process.env.GOOGLE_CALENDAR_ID;
   if(!id) throw upstream();
   const base=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(id)}/events`;
   async function request(url,method='GET',body) {
     try {
-      const stored=db.prepare('SELECT value FROM booking_tokens WHERE id=1').get();
+      const stored=(await db.query('SELECT value FROM booking_tokens WHERE id=1')).rows[0];
       if(!stored) throw upstream();
       const client=oauthClient(); client.setCredentials({refresh_token:unseal(stored.value)});
       const token=await client.getAccessToken();

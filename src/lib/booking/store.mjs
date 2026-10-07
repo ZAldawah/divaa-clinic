@@ -1,39 +1,40 @@
-import Database from 'better-sqlite3';
-import { mkdirSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import pg from 'pg';
+import { attachDatabasePool } from '@vercel/functions';
 import { settingsSchema, syntheticSettings } from './schema.mjs';
-
+pg.types.setTypeParser(20, value => { const n=Number(value); if(!Number.isSafeInteger(n)) throw new Error('Database integer out of range.'); return n; });
 let singleton;
-export function getStore() {
-  if (!singleton) singleton=openStore(process.env.BOOKING_DB_PATH || resolve('.data/booking.sqlite'));
-  return singleton;
+export function openStore(connectionString) {
+  if(!connectionString) throw new Error('DATABASE_URL is required.');
+  const url=new URL(connectionString);
+  const local=['localhost','127.0.0.1','[::1]'].includes(url.hostname);
+  if(!local && url.searchParams.get('sslmode')!=='verify-full') throw new Error('Database certificate verification is required.');
+  const pool=new pg.Pool({connectionString,max:5,idleTimeoutMillis:10000,connectionTimeoutMillis:3000,statement_timeout:5000,lock_timeout:2000});
+  pool.on('error',()=>{});
+  if(process.env.VERCEL) attachDatabasePool(pool);
+  return pool;
 }
-export function openStore(path) {
-  if(path!==':memory:') mkdirSync(dirname(path),{recursive:true});
-  const db=new Database(path); db.pragma('journal_mode = WAL'); db.pragma('busy_timeout = 5000'); db.pragma('foreign_keys = ON');
-  db.exec(`CREATE TABLE IF NOT EXISTS booking_settings (id INTEGER PRIMARY KEY CHECK(id=1), version INTEGER NOT NULL, body TEXT NOT NULL);
-    CREATE TABLE IF NOT EXISTS booking_reservations (id TEXT PRIMARY KEY, request_hash TEXT NOT NULL, service_id TEXT NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, occupied_start INTEGER NOT NULL, occupied_end INTEGER NOT NULL, status TEXT NOT NULL, contact TEXT, created_at INTEGER NOT NULL);
-    CREATE INDEX IF NOT EXISTS booking_overlap ON booking_reservations(occupied_start,occupied_end,status);
-    CREATE TABLE IF NOT EXISTS booking_admins (user_id TEXT PRIMARY KEY);
-    CREATE TABLE IF NOT EXISTS booking_tokens (id INTEGER PRIMARY KEY CHECK(id=1), value TEXT NOT NULL);
-    CREATE TABLE IF NOT EXISTS booking_oauth_state (hash TEXT PRIMARY KEY, session_id TEXT NOT NULL, verifier TEXT NOT NULL, expires INTEGER NOT NULL);
-    CREATE TABLE IF NOT EXISTS booking_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL);
-    CREATE TABLE IF NOT EXISTS booking_mock_events (id TEXT PRIMARY KEY, body TEXT NOT NULL);`);
-  return db;
+export function getStore(){return singleton ||= openStore(process.env.DATABASE_URL);}
+export async function transaction(db,fn) {
+  const c=await db.connect();
+  try {await c.query('BEGIN');const value=await fn(c);await c.query('COMMIT');return value;}
+  catch(e){await c.query('ROLLBACK');throw e;} finally{c.release();}
 }
-export function readSettings(db=getStore()) {
-  const r=db.prepare('SELECT * FROM booking_settings WHERE id=1').get();
+export async function readSettings(db=getStore(),lock=false) {
+  const {rows:[r]}=await db.query(`SELECT * FROM booking_settings WHERE id=1${lock?' FOR UPDATE':''}`);
   if(!r) throw Object.assign(new Error('Scheduling is not configured.'),{status:503});
   return {version:r.version,settings:settingsSchema.parse(JSON.parse(r.body))};
 }
-export function seedSynthetic(db=getStore()) { db.prepare('INSERT OR IGNORE INTO booking_settings VALUES(1,1,?)').run(JSON.stringify(syntheticSettings)); }
-export function reservations(db,min,max) {
-  return db.prepare("SELECT occupied_start AS start, occupied_end AS end FROM booking_reservations WHERE status != 'rejected' AND occupied_start < ? AND occupied_end > ?").all(max,min);
+export async function seedSynthetic(db=getStore()){await db.query('INSERT INTO booking_settings VALUES(1,1,$1) ON CONFLICT DO NOTHING',[JSON.stringify(syntheticSettings)]);}
+export async function reservations(db,min,max) {
+  return (await db.query("SELECT occupied_start AS start, occupied_end AS end FROM booking_reservations WHERE status != 'rejected' AND occupied_start < $1 AND occupied_end > $2",[Math.min(max,8640000000000000),Math.max(min,-8640000000000000)])).rows;
 }
-export function limit(db,key,max,window=60000) {
-  return db.transaction(()=>{
-    const now=Date.now(); db.prepare('DELETE FROM booking_limits WHERE expires < ?').run(now);
-    db.prepare('INSERT INTO booking_limits VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=count+1').run(key,now+window);
-    if(db.prepare('SELECT count FROM booking_limits WHERE key=?').get(key).count>max) throw Object.assign(new Error('Too many requests. Please try later.'),{status:429});
-  }).immediate();
+export async function limit(db,key,max,window=60000) {
+  const {rows:[r]}=await db.query(`INSERT INTO booking_limits AS l VALUES($1,1,clock_timestamp()+$2*interval '1 millisecond')
+    ON CONFLICT(key) DO UPDATE SET count=CASE WHEN l.expires<=clock_timestamp() THEN 1 ELSE l.count+1 END,
+    expires=CASE WHEN l.expires<=clock_timestamp() THEN EXCLUDED.expires ELSE l.expires END RETURNING count`,[key,window]);
+  if(r.count>max) throw Object.assign(new Error('Too many requests. Please try later.'),{status:429});
+}
+
+export async function consumeOAuthState(db,hash,sessionId) {
+ return (await db.query('DELETE FROM booking_oauth_state WHERE hash=$1 AND session_id=$2 AND expires>extract(epoch FROM clock_timestamp())*1000 RETURNING *',[hash,sessionId])).rows[0];
 }

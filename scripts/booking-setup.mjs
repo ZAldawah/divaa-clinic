@@ -1,28 +1,27 @@
 import { randomUUID } from 'node:crypto';
-import { getMigrations } from 'better-auth/db/migration';
 import { hashPassword } from 'better-auth/crypto';
-import { getAuth } from '../src/lib/booking/auth.mjs';
-import { getStore,seedSynthetic } from '../src/lib/booking/store.mjs';
+import { getStore,seedSynthetic,transaction } from '../src/lib/booking/store.mjs';
 import { readFileSync } from 'node:fs';
 import { settingsSchema } from '../src/lib/booking/schema.mjs';
-const db=getStore(),{runMigrations}=await getMigrations(getAuth().options);await runMigrations();
+import { migrate } from './booking-migrate.mjs';
+const db=getStore();await migrate(db);
 if(process.argv.includes('--config')) {
-  const path=process.argv[process.argv.indexOf('--config')+1];
-  const settings=settingsSchema.parse(JSON.parse(readFileSync(path,'utf8')));
-  db.prepare('INSERT INTO booking_settings VALUES(1,1,?)').run(JSON.stringify(settings));
+ const path=process.argv[process.argv.indexOf('--config')+1];
+ const settings=settingsSchema.parse(JSON.parse(readFileSync(path,'utf8')));
+ await db.query('INSERT INTO booking_settings VALUES(1,1,$1)',[JSON.stringify(settings)]);
 }
 if(process.argv.includes('--synthetic')) {
-  if(process.env.BOOKING_ALLOW_SYNTHETIC!=='true')throw new Error('Synthetic setup must be explicitly enabled.');
-  seedSynthetic(db);
+ if(process.env.BOOKING_ALLOW_SYNTHETIC!=='true')throw new Error('Synthetic setup must be explicitly enabled.');
+ await seedSynthetic(db);
 }
 if(process.argv.includes('--admin')) {
-  const email=process.env.BOOKING_ADMIN_EMAIL,password=process.env.BOOKING_ADMIN_PASSWORD;
-  if(!email || !password || password.length<14)throw new Error('Provide admin email and a strong password through secure environment injection.');
-  const id=randomUUID(),now=Date.now(),hash=await hashPassword(password);
-  db.transaction(()=>{
-    db.prepare('INSERT INTO user(id,name,email,emailVerified,createdAt,updatedAt) VALUES(?,?,?,?,?,?)').run(id,'Clinic administrator',email.toLowerCase(),1,now,now);
-    db.prepare('INSERT INTO account(id,accountId,providerId,userId,password,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?)').run(randomUUID(),id,'credential',id,hash,now,now);
-    db.prepare('INSERT INTO booking_admins VALUES(?)').run(id);
-  }).immediate();
+ const email=process.env.BOOKING_ADMIN_EMAIL,password=process.env.BOOKING_ADMIN_PASSWORD;
+ if(!email || !password || password.length<14)throw new Error('Provide admin email and a strong password through secure environment injection.');
+ const id=randomUUID(),now=new Date(),hash=await hashPassword(password);
+ await transaction(db,async c=>{
+  await c.query('INSERT INTO "user"(id,name,email,"emailVerified","createdAt","updatedAt") VALUES($1,$2,$3,$4,$5,$6)',[id,'Clinic administrator',email.toLowerCase(),true,now,now]);
+  await c.query('INSERT INTO account(id,"accountId","providerId","userId",password,"createdAt","updatedAt") VALUES($1,$2,$3,$4,$5,$6,$7)',[randomUUID(),id,'credential',id,hash,now,now]);
+  await c.query('INSERT INTO booking_admins VALUES($1)',[id]);
+ });
 }
-console.log('Booking schema/setup complete. No credentials printed.');db.close();
+console.log('Booking schema/setup complete. No credentials printed.');await db.end();

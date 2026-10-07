@@ -1,177 +1,183 @@
 # Booking development handoff — 7 October 2026
 
-Status: reviewable synthetic implementation on `dev/age-9-calendar`. No merge,
-deployment, live Calendar booking, real customer data or production credentials.
-Architecture, dated primary sources and threat model are saved on AGE-11.
+Status: PostgreSQL revision for CEO security re-review on `dev/age-9-calendar`.
+The original SQLite candidate ae07f60 remains immutable for the existing visual
+review. This revision is not hosted/production acceptance. No merge, deployment,
+real Calendar booking, credentials provisioning or live tracking occurred.
 
-## Runtime and setup
+## Setup
 
-Node 24 was used. Install with `npm ci`, then `npm run build`. This implementation
-requires a durable local SQLite volume and one application host. Multiple Node
-processes may share that local database; independent replica files, network file
-systems and ephemeral/serverless storage are **not supported**. SQLite WAL and
-immediate transactions serialize overlap checks, reservation insertion and limits.
-Restrict database directory and backup access to the runtime identity.
+Node 24; `npm ci`, `npm run build`. All mutable data now requires a shared
+PostgreSQL primary. No local-file fallback or automatic HTTP migrations exist.
+Use an isolated database per preview/environment. The module pool has at most five
+connections, 3-second connection timeout, 5-second statement timeout and 2-second
+lock timeout. Transactions use one checked-out client. Vercel pool lifecycle
+attachment is enabled on Vercel; provider sizing and hosted behavior need review.
 
-Provide configuration through the runtime's secure environment facility. Never
-paste credentials into git, Paperclip comments or client variables:
+Inject server configuration securely; never paste secrets into tasks or git:
 
 | Variable | Purpose |
 | --- | --- |
-| BETTER_AUTH_URL | Exact site origin; HTTPS except localhost/127.0.0.1 development |
-| BETTER_AUTH_SECRET | Independently generated high-entropy secret, at least 32 characters |
-| BOOKING_ENCRYPTION_KEY | Independently generated 32-byte key, base64 encoded; AES-256-GCM for contacts/tokens/state |
-| BOOKING_DB_PATH | Absolute persistent SQLite file path, outside public assets |
-| BOOKING_ADMIN_EMAIL / BOOKING_ADMIN_PASSWORD | Temporary secure injection for offline provisioning only; password >=14 characters |
-| BOOKING_CALENDAR_MODE | `mock` for synthetic checks; other values use Google and fail closed if unconfigured |
-| BOOKING_ALLOW_SYNTHETIC | Must equal `true` to enable mock mode/setup; never enable on a live booking site |
-| GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET | Website-specific OAuth web application credentials |
-| GOOGLE_CALENDAR_ID | Dedicated calendar owned by the consented clinic Google account |
+| DATABASE_URL | PostgreSQL primary; remote connections require `sslmode=verify-full` with a trusted certificate |
+| BETTER_AUTH_URL | Exact origin, HTTPS except local development |
+| BETTER_AUTH_SECRET | Independent high-entropy secret, at least 32 characters |
+| BOOKING_ENCRYPTION_KEY | Independent base64-encoded 32-byte AES-GCM key |
+| BOOKING_RATE_KEY | Independent high-entropy HMAC key, at least 32 characters |
+| BOOKING_TRUSTED_EDGE | `vercel` only on a verified Vercel ingress deployment (`VERCEL=1`); other public configurations fail closed |
+| BOOKING_JOB_SECRET | Independent high-entropy bearer secret, at least 32 characters, for an approved scheduler |
+| BOOKING_ADMIN_EMAIL / BOOKING_ADMIN_PASSWORD | Temporary secure injection for setup only; password at least 14 characters |
+| BOOKING_CALENDAR_MODE | `mock` only for synthetic checks; otherwise Google, fail closed if unconfigured |
+| BOOKING_ALLOW_SYNTHETIC | `true` explicitly enables synthetic fixtures and loopback-only synthetic client identity; never enable in production |
+| GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET | Website runtime OAuth web application credentials |
+| GOOGLE_CALENDAR_ID | Dedicated calendar owned by consenting clinic identity |
 
-Initialize schema and a staff account:
+Run `npm run booking:setup -- --admin --synthetic` only in a synthetic environment.
+It applies the versioned booking and Better Auth SQL migrations under a migration
+lock. `002-auth.sql` was generated from pinned Better Auth 1.7.7 and inspected for
+session expiry, credential fields, references and indexes. Use a migration role
+for setup, then a restricted runtime role with table read/write and sequence
+access, no schema creation. Future auth upgrades require a reviewed migration;
+setup does not dynamically alter the auth schema.
 
-```sh
-npm run booking:setup -- --admin --synthetic
-```
+For separately approved real use, replace `--synthetic` with
+`--config /secure/path/clinic-settings.json` matching `settingsSchema`. Existing
+configuration is never overwritten. Remove provisioning variables after setup.
+Public signup is disabled. Revoke staff by removing their `booking_admins` row
+and sessions. Password recovery/email delivery is not implemented.
 
-Use `--synthetic` only for a synthetic environment. For a separately approved live
-environment, substitute `--config /secure/path/clinic-settings.json`; that file must
-match `settingsSchema` in `src/lib/booking/schema.mjs`. This inserts configuration
-only if none exists; it never overwrites existing configuration. Remove admin
-provisioning variables after setup. Public signup is disabled. Additional users
-are provisioned offline with the same command without `--synthetic`/`--config`.
-Remove a user's `booking_admins` membership and sessions to revoke access. Password
-recovery/email delivery is not implemented; operations must securely reprovision.
+The synthetic hours/services are test fixtures, not clinic business facts. Owner
+approval is required for real timezone, hours, services, timing and policies.
+Do not import old synthetic SQLite data into production. If real data is found,
+stop and arrange a reviewed migration rather than deleting or silently resetting it.
 
-The synthetic fixture is **not a statement of clinic hours or offered services**.
-It uses America/Chicago, weekday 09:00–17:00, a synthetic 30-minute consultation,
-10/15-minute buffers, 24-hour notice and 60-day horizon. Approved service names,
-durations, bookability, hours, timezone, policies and retention are required before
-real use. Existing address/contact text is reused from the repository.
+## Google runtime setup
 
-## Google website runtime OAuth
+The pending Paperclip Calendar connection on AGE-9 is separate from website OAuth.
+Do not duplicate it. An authorized operator enables Calendar API, configures the
+OAuth web app/test audience and exact callback
+`<BETTER_AUTH_URL>/api/admin/calendar/callback`, and injects runtime credentials.
+Live consent/revocation and HTTPS cookies remain untested.
 
-Paperclip's pending parent connection is independent from website runtime OAuth.
-Do not create a duplicate Paperclip connection request. An operator must enable the
-Calendar API and configure a Google OAuth web application with exactly:
-`<BETTER_AUTH_URL>/api/admin/calendar/callback`. Configure its consent audience and
-authorized test users; Google test-mode refresh-token expiry may require renewed
-consent. Securely inject credentials; do not send credentials to an issue thread.
+Staff connection uses session-bound, one-use state with ten-minute expiry, atomic
+DELETE RETURNING consumption and PKCE. Refresh tokens and contacts are encrypted
+in PostgreSQL; access tokens remain in memory. Scopes are `calendar.events.owned`
+and `calendar.events.freebusy`. The former reaches other calendars owned by that
+identity; use a dedicated clinic identity. Private opaque events contain only a
+reference, generic summary and occupied times including buffers. No contact,
+medical data, attendees or invitations reach Calendar.
 
-An authorized, signed-in administrator uses Connect Google Calendar. The flow uses
-session-bound one-use state (10-minute expiry), PKCE and a fixed callback. It asks
-for `calendar.events.owned` and `calendar.events.freebusy`, not full calendar/account
-access. The granted refresh token is encrypted in SQLite; access tokens remain in
-memory. The owned-events scope can reach other calendars owned by that account:
-use a dedicated least-privilege clinic identity and review consent before launch.
-The configured calendar must be owned by that identity. No client token exchange.
+## Consistency and recovery
 
-Private opaque events contain only `Reserved appointment`, a random-derived
-reference and occupied start/end, **including buffers**. No name, email, attendee,
-medical text, email invite or notification is sent to Google. Free/busy errors,
-including per-calendar errors inside HTTP 200 responses, fail closed. Auth token
-exchange and Calendar fetches have bounded timeouts. Revoked tokens require staff
-reconnection; errors expose no provider response/token details.
+UTC epoch milliseconds form half-open `int8range` exclusion constraints. This is
+the implemented equivalent of the design's proposed timestamp range: exact numeric
+bounds, no timezone cast or rounding. Pending/confirmed/review rows exclude overlap.
+Settings updates and reservation transactions lock the same settings row. A unique
+idempotency key and hash distinguish replay from changed requests. Reservation and
+job commit together; external calls run outside the transaction.
 
-## Reservation and recovery semantics
+Jobs use database-clock 90-second leases, SKIP LOCKED claims, and lease tokens on
+conditional result writes. Only one job is claimed at a time. Insert intent is
+persisted before Google insert. A later worker first looks up the stable event ID;
+matching times confirm. A missing or changed event after an attempted insert keeps
+a review hold. No blind resend, automatic expiry or release of uncertain holds.
+A crash before insert intent can safely continue the first delivery. A crash after
+intent but before sending can conservatively require operator review.
 
-Availability is computed in the configured IANA zone. Date exceptions replace
-weekly hours. Candidates must fit buffers inside open hours, avoid internal holds
-and upstream busy intervals, and satisfy notice/horizon. Ambiguous fall-back times
-and appointments crossing an offset change are conservatively excluded. Free/busy
-provides absolute intervals for all-day events. Overnight hours must be split.
+`POST /api/internal/recover` requires `Authorization: Bearer <BOOKING_JOB_SECRET>`
+and a shared rate limit. It runs at most ten due jobs, stopping between jobs after
+20 seconds. Network calls can extend the elapsed time; routes declare a 120-second
+ceiling, which the selected hosting plan must support. A stopped function leaves
+a lease recoverable after 90 seconds. Five-minute failed/review backoff and hourly
+confirmed checks prevent first-batch starvation. No scheduler is configured here.
+An approved scheduler must invoke this endpoint regularly and alert on overdue
+jobs/review holds. Without it, immediate attempts and explicit admin checks are the
+only execution paths; this is a release blocker, not an active monitoring promise.
 
-Submit rechecks Calendar, inserts a pending reservation under an immediate SQLite
-transaction, rechecks Calendar again while the hold excludes competing application
-requests, then inserts a stable-ID Calendar event. Confirmation requires observed
-matching event start/end and a durable database update. Identical retry keys/bodies
-return the existing outcome; changed bodies are rejected. A lost upstream response
-never releases a hold. Pending outcomes show no false success. Keep the page open
-and retry the same request; after closing the page contact staff with the reference.
-The browser keeps contact/idempotency data in memory only, never in URLs/analytics.
+Admin Reconcile reservations uses bounded keyset pages and a Continue reconciliation
+button. The returned `nextCursor` must be followed to completion. A concurrent lease
+is reported busy and remains recoverable by the durable queue. New IDs behind a
+scan cursor are included in the next scan and remain independent queue jobs.
 
-Staff can Reconcile reservations. Matching events become confirmed; missing,
-cancelled or moved events are marked for review and retain their occupied span.
-This conservative implementation **does not automatically recreate or release a
-missing event**, because the insert may still have completed upstream. Staff must
-inspect the dedicated calendar and database using a controlled operator process.
-No client self-service cancellation/rescheduling is provided; contact the clinic.
-Reconciliation currently checks up to 100 active/recent reservations per invocation;
-batch pagination and a reviewed release/resolution UI are required for larger use.
-No background monitor or recurring reconciliation job has been scheduled.
+For protected operator verification, POST JSON `{ "reference": "<64-hex-id>" }`
+to `/api/admin/reconcile` with a valid admin session and exact Origin. The request
+and outcome are recorded in `booking_audit`; matching Calendar events confirm,
+otherwise holds remain. The endpoint intentionally does not release uncertain
+holds. Cancellation/release needs a separately reviewed operator protocol that
+accounts for delayed upstream writes; no direct SQL release is recommended.
+No self-service cancellation/rescheduling or notification delivery is provided.
 
-External Calendar editors cannot participate in the SQLite transaction. An outside
-edit can race the final busy check or move/delete an event later. Google Calendar
-does not offer atomic reserve-if-free. Restrict external writers and require an
-operator conflict-review process; this code does not claim absolute prevention.
-Admin setting changes never cancel or move existing appointments. Save reports
-the count of upcoming reservations requiring operational consideration, not a
-calculated conflict count. Concurrent settings saves return 409 rather than overwrite.
+External Calendar edits cannot share a PostgreSQL transaction. Restrict writers
+and arrange conflict review: Google offers no atomic reserve-if-free guarantee.
+Changing hours does not cancel existing appointments; staff must review conflicts.
 
-## Security and retention
+## Abuse, auth and privacy boundary
 
-Every admin API read/write checks the current Better Auth database session and the
-explicit admin table. Sessions expire after one hour with refresh disabled; cookies
-are HttpOnly, SameSite=Lax, secure on HTTPS and host-only. Public signup is disabled.
-Mutations enforce the exact configured Origin and JSON input with a 32 KiB body
-limit. Auth library CSRF/origin controls remain enabled. No raw request/provider
-exceptions are logged. Public responses expose catalog/slots or the submitted
-request's reference/status/times, never calendars, contacts or staff configuration.
+Public limits are shared atomic per-client PostgreSQL counters: 90 slot reads,
+15 booking submissions and 15 auth requests per minute; default reads 120/minute.
+Denied increments persist. Admin limits are per user. Raw client IP is not stored
+in these counters: HMAC identifiers group IPv6 at /64. Only the platform-owned
+`x-vercel-forwarded-for` is accepted when explicitly configured on Vercel; arbitrary
+X-Forwarded-For is ignored. Missing/invalid identity fails closed. Loopback synthetic
+mode is explicitly gated. Better Auth IP tracking/library limits are disabled in
+favor of the atomic wrapper, preventing a second spoofable header path. Shared NAT
+users still share quotas; distributed abuse requires edge/WAF controls and alerting.
+Hosted ingress overwrite behavior must be verified before public release.
 
-Public limits are durable and intentionally global (90 slot reads/minute, 15
-reservations/minute) rather than trusting spoofable forwarded headers. Admin limits
-are per user. Before launch, configure trusted edge limits/abuse protection and
-validate proxy behavior; global limits alone allow denial of availability by a
-malicious caller. Do not deploy this development slice as an unattended public system.
+Every protected request checks a one-hour Better Auth database session plus the
+admin allowlist. Sessions do not refresh or use cookie caches. Cookies are host-only,
+HttpOnly, SameSite=Lax and secure on HTTPS. Writes enforce exact Origin and bounded
+JSON (32 KiB). OAuth callback uses one-use session binding. Provider errors are redacted.
+Public API output contains only catalog/slots or the request's reference/status/times.
 
-`npm run booking:retention` clears encrypted contact blobs 30 days after the
-appointment. This proposed retention period needs clinic approval and a scoped,
-configured job before production. Reservation metadata remains for reconciliation;
-define its retention and encrypted-backup deletion policy separately. Auth/session
-metadata and backups also need an operator retention policy. Key loss makes encrypted
-data unreadable; rotation requires a reviewed decrypt/re-encrypt migration.
+Public routes are under `(public)` and booking/admin under `(private)`, each with
+its own HTML root. There is no shared root layout. Keep all analytics providers
+exclusively in the public root when integrating AGE-14. This revision contains no
+live tag. Browser testing uses a synthetic public timer/request probe, establishes
+its document is unloaded entering booking, and observes no private probe requests.
+This does not verify a merged GA4 candidate or grant live tracking approval.
 
-## Verification and review limits
+## Retention and operations gates
 
-Run `npm test`, `npm run lint`, `npm run build`, `npm audit`, then
-`npx playwright test`. Browser tests use installed Microsoft Edge, a test-owned
-loopback server that stops afterward, generated ephemeral credentials and a new
-synthetic SQLite database in the run scratch directory. No auth bypass is used.
-Change Playwright's channel if Edge is unavailable on another workstation.
+`npm run booking:retention` removes encrypted contact after 30 days and expires
+rate/OAuth-state rows. The period needs clinic approval and a configured scoped job.
+Reservation/job/audit metadata, auth records and backups need an approved retention
+policy. Key loss makes data unreadable; rotation requires reviewed re-encryption.
+Select provider/region/cost, restrict roles, test backup restoration and key recovery,
+measure connection/function capacity, configure recovery/retention/alerts and verify
+HTTPS/OAuth before requesting release. No service purchase/provisioning is authorized.
+Rollback disables new bookings while retaining PostgreSQL and recovery; never revert
+to independent SQLite ledgers or discard holds.
 
-Observed: seven core/adapter tests pass; four HTTP/browser tests pass; production
-build and basic ESLint checks pass; full npm audit reports zero vulnerabilities.
-Tests include DST, overrides, buffers, all-day busy, overlap/idempotency, uncertain
-insert reconciliation, encrypted contact/tamper checks, malformed Google responses,
-auth failures, private event payloads, unauthorized/non-admin requests, CSRF, disabled
-signup, session expiry, optimistic saves, public minimization and real mock booking
-and staff flows. Browser failure screens use explicit intercepted synthetic data.
-Client static bundle marker scan found no server credential/token markers.
+## Verification
 
-Screenshots cover 390×844 and 1440×900 booking selection/slots/review/confirmation,
-staff login/settings, and mobile outage/empty/pending states. Observed 320px reflow
-has no horizontal document overflow. Native slot radio was selected with keyboard;
-this is not a full keyboard/screen-reader/WCAG audit. Screenshot inspection led to
-fixing inherited page clipping and the header action wrapping.
+Set BOOKING_TEST_DATABASE_URL to a **disposable** PostgreSQL cluster where tests may
+create synthetic databases; then run `npm test`. Tests use unique databases and
+separate Node processes. No SQLite substitute. This run used local PostgreSQL 18.1.
+`npm run lint`, `npm run build`, `npm audit` and `npx playwright test` are complementary.
+Playwright creates its own synthetic database and loopback server with ephemeral
+credentials, using installed Microsoft Edge; the server stops when tests finish.
+Test cluster lifecycle/cleanup belongs to its harness/operator, not application code.
 
-Local unthrottled performance identified the original logo transfer at 2,242,439
-bytes; Next Image delivery reduced the observed transfer to 7,284 bytes. Cold image
-optimization took 125ms in the measured run; local navigation was 151.5ms mobile and
-63.2ms desktop. These are observations, not field Core Web Vitals or mobile-network
-benchmarks. Other JS chunks are approximately 68 KB/64 KB transferred.
+Evidence and final counts are recorded in the task's revision handoff. Tests cover
+cross-process collision/idempotency, restart persistence, crash recovery before and
+after insert, stale leases, 205-job draining/keyset pagination, shared quotas,
+OAuth-state races, session revocation/expiry, settings races, upstream/database
+outage, encrypted payloads, DST, HTTP authorization/CSRF and public minimization.
+Desktop/mobile synthetic screenshots are new evidence for this revision.
 
-Known unverified/deferred items: live OAuth consent/revocation and real Calendar
-semantics; secure HTTPS cookie behavior in a deployed environment; multiple-process
-stress/soak; full 200% zoom and assistive-technology review; comprehensive error-state
-visual matrix; service catalog addition through UI; draft availability preview and
-copy-hours convenience controls; automated notifications; operational reconciliation
-resolution/pagination; production edge limits, backups and retention scheduling.
+Browser checks include 390x844 and 1440x900, 320px reflow and keyboard slot selection.
+They are not a full WCAG/screen-reader/zoom audit. Local loading measurements are
+unthrottled observations, not field Core Web Vitals or hosted capacity evidence.
+Basic ESLint is used; framework-specific rules remain absent from the prior slice.
+Live OAuth, deployed TLS/ingress, merged GA4, production workload/soak, restore drills
+and full accessibility remain unverified. CEO is the confirmed native security
+reviewer; AGE-12 is the separate visual review path. Passing tests does not release.
 
-The Next ESLint preset depended on an unpatched vulnerable glob package. It was
-removed in favor of basic ESLint correctness checks; framework-specific lint rules
-are not currently run. Dependencies are pinned with a lockfile (Next 16.4.0, React
-19.3.0, Better Auth 1.7.7). Repeat advisory review before any authorized release.
+## Primary sources revisited 2026-10-07
 
-CEO must arrange independent security/release review. AGE-12 is the rendered UX
-review path. Neither review is claimed here. No production release authorization
-is implied by passing synthetic tests.
+- https://node-postgres.com/features/transactions — one client per transaction.
+- https://better-auth.com/docs/adapters/postgresql — pg Pool adapter and migrations.
+- https://www.postgresql.org/docs/current/sql-select.html — SKIP LOCKED queue claims.
+- https://www.postgresql.org/docs/current/rangetypes.html — exclusion ranges.
+- https://vercel.com/docs/headers/request-headers — platform client-address header.
+- Earlier dated Google/OAuth/OWASP research remains in the task architecture document.

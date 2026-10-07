@@ -1,6 +1,7 @@
 import 'server-only';
 import { ZodError } from 'zod';
 import { getStore, limit } from './store.mjs';
+import { clientLimit } from './abuse.mjs';
 import { requireAdmin } from './auth.mjs';
 import { fail } from './service.mjs';
 export function origin(request) {
@@ -20,8 +21,8 @@ export function endpoint(fn,{admin=false,write=false,bucket='read',max=120}={}) 
     try {
       if(write) origin(request);
       const session=admin?await requireAdmin(request.headers):null;
-      // Global durable limit deliberately ignores spoofable proxy headers. Deploy edge limits before public launch.
-      limit(getStore(),`${bucket}:${session?.user.id || 'global'}`,max);
+      if(session) await limit(getStore(),`${bucket}:${session.user.id}`,max);
+      else await clientLimit(getStore(),request,bucket,max);
       return await fn(request,session);
     } catch(e) {
       if(e instanceof ZodError) return json({error:'Check the supplied fields and try again.'},400);
