@@ -15,7 +15,7 @@ while([0,6].includes(future.getUTCDay()))future.setUTCDate(future.getUTCDate()+1
 const futureDate=future.toISOString().slice(0,10);
 const request=()=>({serviceId:'synthetic-consultation',start:`${futureDate}T15:15:00.000Z`,name:'Avery Example',email:'avery@example.test',key:randomUUID()});
 function worker(db,msg){return new Promise((resolve,reject)=>{
- const child=fork(new URL('./postgres-worker.mjs',import.meta.url),[],{env:{...process.env,DATABASE_URL:db.testUrl},stdio:['ignore','ignore','pipe','ipc'],windowsHide:true});
+ const child=fork(new URL('./postgres-worker.mjs',import.meta.url),[],{env:{...process.env,DATABASE_URL:db.testUrl,BOOKING_SYNTHETIC_DATABASE_URL:db.testUrl},stdio:['ignore','ignore','pipe','ipc'],windowsHide:true});
  let answer,stderr='';child.stderr.on('data',v=>stderr+=v);child.on('error',reject);
  child.on('message',v=>{if(v.ready)child.send(msg);else answer=v;});
  child.on('exit',code=>{if(answer)resolve(answer);else if([71,72].includes(code))resolve({crashed:code});else reject(new Error(`Worker failed ${code}: ${stderr}`));});

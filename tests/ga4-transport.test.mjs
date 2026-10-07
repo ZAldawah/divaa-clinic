@@ -66,7 +66,7 @@ test('session choice validation and storage failures fail closed', () => {
   const storage = { getItem: () => value, setItem: (k, v) => { value = v; } };
   assert.equal(readConsent(storage), 'unknown');
   assert.equal(saveConsent(storage, 'accepted'), true);
-  assert.equal(readConsent(storage), 'accepted');
+  assert.equal(readConsent(storage), 'unknown'); // Reload requires fresh opt-in.
   value = '{"accepted":true}'; assert.equal(readConsent(storage), 'unknown');
   const broken = { getItem() { throw Error(); }, setItem() { throw Error(); } };
   assert.equal(readConsent(broken), 'unknown');

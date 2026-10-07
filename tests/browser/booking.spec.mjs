@@ -36,8 +36,8 @@ for(const viewport of [{width:390,height:844},{width:1440,height:900}])test(`boo
   const metrics=await page.evaluate(()=>({navigation:performance.getEntriesByType('navigation').map(n=>({duration:n.duration,domContentLoaded:n.domContentLoadedEventEnd,transfer:n.transferSize})),resources:performance.getEntriesByType('resource').sort((a,b)=>b.duration-a.duration).slice(0,5).map(r=>({name:new URL(r.name).pathname,duration:r.duration,bytes:r.transferSize}))}));
   console.log(`Synthetic local load ${suffix}px: ${JSON.stringify(metrics)}`);
   await page.screenshot({path:resolve(output,`booking-service-${suffix}.png`),fullPage:true});
-  await page.getByRole('radio',{name:/Synthetic consultation/}).check();await page.getByRole('button',{name:'Choose date and time'}).click();
-  const date=new Date();date.setUTCDate(date.getUTCDate()+3);while([0,6].includes(date.getUTCDay()))date.setUTCDate(date.getUTCDate()+1);
+  await page.getByRole('radio',{name:/Consulting/}).check();await page.getByRole('button',{name:'Choose date and time'}).click();
+  const date=new Date();date.setUTCDate(date.getUTCDate()+3);while(date.getUTCDay()!==6)date.setUTCDate(date.getUTCDate()+1);
   await page.getByLabel('Date',{exact:true}).fill(date.toISOString().slice(0,10));await expect(page.getByRole('radio').first()).toBeVisible();
   await page.getByRole('radio').first().focus();await page.keyboard.press('Space');await page.keyboard.press('Tab');
   await page.screenshot({path:resolve(output,`booking-slots-${suffix}.png`),fullPage:true});
@@ -56,7 +56,7 @@ for(const viewport of [{width:390,height:844},{width:1440,height:900}])test(`boo
 });
 test('synthetic error and unknown-outcome screens preserve contact and retry key',async({page})=>{
   await page.setViewportSize({width:390,height:844});
-  await page.goto('/book');await page.getByRole('radio',{name:/Synthetic consultation/}).check();await page.getByRole('button',{name:'Choose date and time'}).click();
+  await page.goto('/book');await page.getByRole('radio',{name:/Consulting/}).check();await page.getByRole('button',{name:'Choose date and time'}).click();
   let state='outage';
   await page.route('**/api/booking/slots?*',route=>route.fulfill({status:state==='outage'?503:200,json:state==='outage'?{error:'We cannot check availability right now.'}:{slots:state==='empty'?[]:[{start:'2026-10-12T14:15:00.000Z',end:'2026-10-12T14:45:00.000Z'}]}}));
   await page.getByLabel('Date',{exact:true}).fill('2026-10-12');await expect(page.locator('main [role=alert]')).toContainText('cannot check');await page.screenshot({path:resolve(output,'booking-outage-390.png'),fullPage:true});

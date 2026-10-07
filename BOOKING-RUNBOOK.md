@@ -1,5 +1,10 @@
 # Booking development handoff — 7 October 2026
 
+Current integrated local candidate instructions are in `LOCAL-REVIEW.md`.
+They supersede the historical status and screenshot acceptance wording below.
+Owner acceptance is interactive Comet through the host browser extension;
+screenshots alone are not acceptance. AGE-18 is the independent reviewer.
+
 Status: PostgreSQL revision for CEO security re-review on `dev/age-9-calendar`.
 The original SQLite candidate ae07f60 remains immutable for the existing visual
 review. This revision is not hosted/production acceptance. No merge, deployment,
@@ -28,6 +33,7 @@ Inject server configuration securely; never paste secrets into tasks or git:
 | BOOKING_ADMIN_EMAIL / BOOKING_ADMIN_PASSWORD | Temporary secure injection for setup only; password at least 14 characters |
 | BOOKING_CALENDAR_MODE | `mock` only for synthetic checks; otherwise Google, fail closed if unconfigured |
 | BOOKING_ALLOW_SYNTHETIC | `true` explicitly enables synthetic fixtures and loopback-only synthetic client identity; never enable in production |
+| BOOKING_SYNTHETIC_DATABASE_URL | Mandatory in synthetic mode; explicit loopback IP/port and divaa_synthetic_* database; NEVER falls back to DATABASE_URL |
 | GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET | Website runtime OAuth web application credentials |
 | GOOGLE_CALENDAR_ID | Dedicated calendar owned by consenting clinic identity |
 
@@ -110,7 +116,12 @@ and a shared rate limit. It runs at most ten due jobs, stopping between jobs aft
 20 seconds. Network calls can extend the elapsed time; routes declare a 120-second
 ceiling, which the selected hosting plan must support. A stopped function leaves
 a lease recoverable after 90 seconds. Five-minute failed/review backoff and hourly
-confirmed checks prevent first-batch starvation. No scheduler is configured here.
+confirmed checks apply only until the occupied interval ends. Pending jobs have
+claim priority, then review holds, then future confirmations. Past confirmed and
+rejected jobs do not consume background recovery capacity; explicit admin
+verification remains available. Uncertain holds are never retired by age.
+`scripts/recovery-dispatch.mjs` is a bounded one-shot dispatcher (up to six batches,
+60 claims); it installs no timer. No scheduler is activated here.
 An approved scheduler must invoke this endpoint regularly and alert on overdue
 jobs/review holds. Without it, immediate attempts and explicit admin checks are the
 only execution paths; this is a release blocker, not an active monitoring promise.
@@ -166,11 +177,13 @@ Reservation/job/audit metadata, auth records and backups need an approved retent
 policy. Key loss makes data unreadable; rotation requires reviewed re-encryption.
 Owner selected **Neon Free, $0 database budget**; the host reported an empty existing
 `divaabeauty-booking` project (`cool-recipe-36109536`), PostgreSQL 18 in AWS Ohio,
-on 2026-10-07. Use that project; do not duplicate provisioning. This is host evidence,
-not a tested website connection. No paid Neon or Vercel upgrade is authorized.
-The architecture task AGE-17 carries the free-tier dispatcher/backup/usage design.
-Runtime-role/pooled-connection secret handoff, actual Vercel region and independent
-review remain pending; never place credentials in source or task comments.
+on 2026-10-07. Host subsequently completed migrations 001/002, restricted pooled
+runtime credentials and actual openStore TLS/read-write/rollback verification.
+Reuse that connection only for separately authorized real operations; never fixtures.
+No paid Neon or Vercel upgrade is authorized. AGE-17 design is complete; the
+developer owns remaining implementation. Actual hosting region/function limits,
+operations ownership and independent review remain pending. Never place credentials
+in source or task comments.
 Restrict roles, test backup restoration and key recovery,
 measure connection/function capacity, configure recovery/retention/alerts and verify
 HTTPS/OAuth before requesting release. No additional service purchase or provisioning

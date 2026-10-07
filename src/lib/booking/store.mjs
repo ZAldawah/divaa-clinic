@@ -1,6 +1,7 @@
 import pg from 'pg';
 import { attachDatabasePool } from '@vercel/functions';
 import { settingsSchema, syntheticSettings } from './schema.mjs';
+import { databaseUrl, assertLocalDatabase } from './synthetic.mjs';
 pg.types.setTypeParser(20, value => { const n=Number(value); if(!Number.isSafeInteger(n)) throw new Error('Database integer out of range.'); return n; });
 let singleton;
 export function openStore(connectionString) {
@@ -13,7 +14,7 @@ export function openStore(connectionString) {
   if(process.env.VERCEL) attachDatabasePool(pool);
   return pool;
 }
-export function getStore(){return singleton ||= openStore(process.env.DATABASE_URL);}
+export function getStore(){return singleton ||= openStore(databaseUrl());}
 export async function transaction(db,fn) {
   const c=await db.connect();
   try {await c.query('BEGIN');const value=await fn(c);await c.query('COMMIT');return value;}
@@ -24,7 +25,10 @@ export async function readSettings(db=getStore(),lock=false) {
   if(!r) throw Object.assign(new Error('Scheduling is not configured.'),{status:503});
   return {version:r.version,settings:settingsSchema.parse(JSON.parse(r.body))};
 }
-export async function seedSynthetic(db=getStore()){await db.query('INSERT INTO booking_settings VALUES(1,1,$1) ON CONFLICT DO NOTHING',[JSON.stringify(syntheticSettings)]);}
+export async function seedSynthetic(db=getStore(), settings=syntheticSettings){
+ assertLocalDatabase(db.options?.connectionString);
+ await db.query('INSERT INTO booking_settings VALUES(1,1,$1) ON CONFLICT DO NOTHING',[JSON.stringify(settingsSchema.parse(settings))]);
+}
 export async function reservations(db,min,max) {
   return (await db.query("SELECT occupied_start AS start, occupied_end AS end FROM booking_reservations WHERE status != 'rejected' AND occupied_start < $1 AND occupied_end > $2",[Math.min(max,8640000000000000),Math.max(min,-8640000000000000)])).rows;
 }

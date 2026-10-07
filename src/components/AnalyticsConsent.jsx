@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { createAnalytics, launchEvent, safePage } from '../lib/analytics.mjs';
-import { readConsent, saveConsent } from '../lib/analytics-consent.mjs';
+import { restoreConsent, chooseConsent } from '../lib/analytics-consent.mjs';
 import { createGa4Transport } from '../lib/ga4-transport.mjs';
 import styles from './AnalyticsConsent.module.css';
 
@@ -29,13 +29,10 @@ export default function AnalyticsConsent() {
       runtime.current = { transport, analytics };
       analytics.navigate(window.location.pathname);
       let stored = 'unknown';
-      try { stored = readConsent(window.sessionStorage); } catch { /* fail closed */ }
+      try { stored = restoreConsent(runtime.current, window.sessionStorage); } catch { /* fail closed */ }
       setChoice(stored);
       setOpen(stored === 'unknown');
-      if (stored === 'accepted') {
-        transport.start();
-        analytics.setConsent(stored);
-      }
+
     }, 0);
     function onClick(event) {
       if (event.defaultPrevented || event.detail > 1) return;
@@ -44,8 +41,24 @@ export default function AnalyticsConsent() {
       if (name) runtime.current?.analytics.action(name);
       // booking_start remains reserved until an actual booking entry exists.
     }
+    function suspend() {
+      runtime.current?.analytics.setConsent('rejected');
+      setChoice('rejected');
+    }
+    function resume(event) {
+      if (!event.persisted || !runtime.current) return;
+      suspend();
+      let stored = 'unknown';
+      try { stored = restoreConsent(runtime.current, window.sessionStorage); } catch { /* fail closed */ }
+      setChoice(stored);
+      setOpen(stored === 'unknown');
+    }
+    window.addEventListener('pagehide', suspend);
+    window.addEventListener('pageshow', resume);
     document.addEventListener('click', onClick);
     return () => {
+      window.removeEventListener('pagehide', suspend);
+      window.removeEventListener('pageshow', resume);
       document.removeEventListener('click', onClick);
       clearTimeout(startup);
       runtime.current?.transport.stop();
@@ -57,21 +70,13 @@ export default function AnalyticsConsent() {
 
   function choose(next) {
     if (!runtime.current) return;
-    const { transport, analytics } = runtime.current;
-    if (next !== 'accepted') analytics.setConsent('rejected');
-    let saved = false;
-    try { saved = saveConsent(window.sessionStorage, next); } catch { /* fail closed */ }
-    setStorageError(!saved);
-    if (!saved) {
-      analytics.setConsent('rejected');
-      setChoice('rejected');
-      return;
-    }
-    if (next === 'accepted') {
-      transport.start();
-      analytics.setConsent(next);
-    }
-    setChoice(next);
+    // Accessing sessionStorage itself can throw. The runtime is stopped first.
+    runtime.current.analytics.setConsent('rejected');
+    let result = { choice: 'rejected', saved: false };
+    try { result = chooseConsent(runtime.current, window.sessionStorage, next); } catch { /* fail closed */ }
+    setStorageError(!result.saved);
+    setChoice(result.choice);
+    if (!result.saved) { setOpen(true); return; }
     setOpen(false);
     settingsButton.current?.focus();
   }
@@ -83,17 +88,17 @@ export default function AnalyticsConsent() {
         setOpen(true);
         requestAnimationFrame(() => firstChoice.current?.focus());
       }}>Privacy settings</button>
-    <p role="status">{choice === 'accepted' ? 'Analytics is on for this tab.' : 'Analytics is off for this tab.'}</p>
+    <p role="status">{choice === 'accepted' ? 'Analytics is on for this page session.' : 'Analytics is off.'}</p>
     {open && <section id="analytics-settings" className={styles.panel} aria-labelledby="analytics-heading">
       <h2 id="analytics-heading">Optional analytics</h2>
-      <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. Your choice is saved for this browser tab.</p>
+      <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. A saved rejection lasts for this browser tab. Acceptance resets when this page reloads or is restored after leaving. You will need to accept again.</p>
       <p>We do not send contact-form contents, appointment details, contact information or individual treatment labels. Withdrawing permission stops future analytics collection; it does not delete data already collected.</p>
       {process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true' && <p>Review preview: this is draft disclosure awaiting owner approval. Google collection is disabled; accepting only exercises local interface behavior.</p>}
       <div className={styles.actions}>
         <button ref={firstChoice} className={styles.button} onClick={() => choose('accepted')}>Accept analytics</button>
         <button className={styles.button} onClick={() => choose('rejected')}>{choice === 'accepted' ? 'Withdraw analytics consent' : 'Reject analytics'}</button>
       </div>
-      {storageError && <p role="status">Analytics is off. Your browser could not save this choice.</p>}
+      {storageError && <p role="status">Analytics is off. Your browser could not save this choice. You may be asked again when you return, but analytics will stay off until you accept again.</p>}
       {choice !== 'unknown' && <button className={styles.button} onClick={() => { setOpen(false); settingsButton.current?.focus(); }}>Close settings</button>}
     </section>}
   </aside>;

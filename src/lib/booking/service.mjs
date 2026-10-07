@@ -42,9 +42,13 @@ export async function book(db,upstream,input,now=Date.now()) {
 async function claim(db,id) {
  const token=randomUUID();
  const {rows:[job]}=await db.query(`WITH candidate AS (
-  SELECT reservation_id FROM booking_jobs WHERE (lease_until IS NULL OR lease_until<clock_timestamp())
-  AND ($1::text IS NULL OR reservation_id=$1) AND ($1::text IS NOT NULL OR next_at<=clock_timestamp())
-  ORDER BY next_at,reservation_id FOR UPDATE SKIP LOCKED LIMIT 1)
+  SELECT j.reservation_id FROM booking_jobs j JOIN booking_reservations r ON r.id=j.reservation_id
+  WHERE (j.lease_until IS NULL OR j.lease_until<clock_timestamp())
+  AND ($1::text IS NULL OR j.reservation_id=$1) AND ($1::text IS NOT NULL OR
+    (j.next_at<=clock_timestamp() AND r.status!='rejected' AND
+     (r.status!='confirmed' OR r.occupied_end>extract(epoch FROM clock_timestamp())*1000)))
+  ORDER BY CASE r.status WHEN 'pending' THEN 0 WHEN 'review' THEN 1 ELSE 2 END,j.next_at,j.reservation_id
+  FOR UPDATE OF j SKIP LOCKED LIMIT 1)
   UPDATE booking_jobs j SET lease_token=$2,lease_until=clock_timestamp()+interval '90 seconds',attempts=attempts+1
   FROM candidate c WHERE j.reservation_id=c.reservation_id RETURNING j.*`,[id??null,token]);
  return job;
@@ -113,6 +117,16 @@ export async function recover(db,upstream,{max=10,budgetMs=20000}={}) {
  let visited=0;const counts={},deadline=Date.now()+budgetMs;
  while(visited<Math.min(max,100) && Date.now()<deadline){const job=await claim(db);if(!job)break;const status=await runJob(db,upstream,job);counts[status]=(counts[status]||0)+1;visited++;}
  return {visited,...counts};
+}
+// Counts only; never expose reservation identifiers or contacts to the scheduler.
+export async function recoveryHealth(db) {
+ const {rows:[health]}=await db.query(`SELECT
+  count(*) FILTER(WHERE r.status IN ('pending','review')) AS unresolved,
+  count(*) FILTER(WHERE j.lease_until<clock_timestamp()) AS expired_leases,
+  count(*) FILTER(WHERE j.next_at<=clock_timestamp() AND (j.lease_until IS NULL OR j.lease_until<clock_timestamp())
+    AND r.status!='rejected' AND (r.status!='confirmed' OR r.occupied_end>extract(epoch FROM clock_timestamp())*1000)) AS due
+  FROM booking_jobs j JOIN booking_reservations r ON r.id=j.reservation_id`);
+ return health;
 }
 // Keyset pagination includes every reservation, including old uncertain holds.
 export async function reconcile(db,upstream,{cursor='',max=10}={}) {

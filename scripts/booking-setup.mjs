@@ -4,6 +4,9 @@ import { getStore,seedSynthetic,transaction } from '../src/lib/booking/store.mjs
 import { readFileSync } from 'node:fs';
 import { settingsSchema } from '../src/lib/booking/schema.mjs';
 import { migrate } from './booking-migrate.mjs';
+import { syntheticDatabase } from '../src/lib/booking/synthetic.mjs';
+import { previewSettings } from '../src/lib/booking/preview-catalog.mjs';
+if(process.argv.includes('--synthetic')) syntheticDatabase(); // Before migration or any connection.
 const db=getStore();await migrate(db);
 if(process.argv.includes('--config')) {
  const path=process.argv[process.argv.indexOf('--config')+1];
@@ -12,7 +15,7 @@ if(process.argv.includes('--config')) {
 }
 if(process.argv.includes('--synthetic')) {
  if(process.env.BOOKING_ALLOW_SYNTHETIC!=='true')throw new Error('Synthetic setup must be explicitly enabled.');
- await seedSynthetic(db);
+ await seedSynthetic(db,previewSettings);
 }
 if(process.argv.includes('--admin')) {
  const email=process.env.BOOKING_ADMIN_EMAIL,password=process.env.BOOKING_ADMIN_PASSWORD;
