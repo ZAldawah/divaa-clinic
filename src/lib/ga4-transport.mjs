@@ -6,7 +6,10 @@ const DENIED = { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data
 
 // Draft adapter. Mount only inside a public-only document root after review.
 // No browser globals are accessed until explicitly constructed by that root.
-export function createGa4Transport(win, doc) {
+export function createGa4Transport(win, doc, { preview = false } = {}) {
+  // Consent-interface preview deliberately cannot load Google or write cookies.
+  // This is not evidence of the real transport's network or cookie behavior.
+  if (preview) return { start() {}, send() {}, stop() {} };
   let enabled = false;
   let loaded = false;
   const disableKey = `ga-disable-${MEASUREMENT_ID}`;

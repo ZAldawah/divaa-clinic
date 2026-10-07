@@ -10,6 +10,17 @@ function harness(pathname = '/') {
   const doc = { createElement: () => ({}), head: { appendChild: s => scripts.push(s) }, set cookie(v) { cookies.push(v); } };
   return { win, scripts, cookies, transport: createGa4Transport(win, doc), commands: () => win.dataLayer.map(v => [...v]) };
 }
+test('interface preview never touches browser transport even on accept, event and revoke', () => {
+  const forbidden = new Proxy({}, { get() { throw Error('Browser transport accessed'); }, set() { throw Error('Browser transport written'); } });
+  const transport = createGa4Transport(forbidden, forbidden, { preview: true });
+  assert.doesNotThrow(() => {
+    transport.start();
+    transport.send('page_view', safePage('/'));
+    transport.stop();
+    transport.start();
+    transport.send('sms_click', safePage('/'));
+  });
+});
 test('constructing and rejecting never loads Google; accepting uses verified ID without referrer', () => {
   const h = harness();
   h.transport.send('page_view', safePage('/'));

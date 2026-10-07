@@ -22,7 +22,9 @@ export default function AnalyticsConsent() {
     // Defer startup so React's development effect replay cannot enqueue a
     // pageview and immediately erase it while a tag script is still loading.
     const startup = setTimeout(() => {
-      const transport = createGa4Transport(window, document);
+      const transport = createGa4Transport(window, document, {
+        preview: process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true',
+      });
       const analytics = createAnalytics(transport);
       runtime.current = { transport, analytics };
       analytics.navigate(window.location.pathname);
@@ -81,9 +83,12 @@ export default function AnalyticsConsent() {
         setOpen(true);
         requestAnimationFrame(() => firstChoice.current?.focus());
       }}>Privacy settings</button>
+    <p role="status">{choice === 'accepted' ? 'Analytics is on for this tab.' : 'Analytics is off for this tab.'}</p>
     {open && <section id="analytics-settings" className={styles.panel} aria-labelledby="analytics-heading">
       <h2 id="analytics-heading">Optional analytics</h2>
-      <p>With your permission, Google Analytics uses cookies to measure grouped public page views and contact-link clicks. Your choice applies to this browser tab. You can reject or withdraw permission here at any time.</p>
+      <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. Your choice is saved for this browser tab.</p>
+      <p>We do not send contact-form contents, appointment details, contact information or individual treatment labels. Withdrawing permission stops future analytics collection; it does not delete data already collected.</p>
+      {process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true' && <p>Review preview: this is draft disclosure awaiting owner approval. Google collection is disabled; accepting only exercises local interface behavior.</p>}
       <div className={styles.actions}>
         <button ref={firstChoice} className={styles.button} onClick={() => choose('accepted')}>Accept analytics</button>
         <button className={styles.button} onClick={() => choose('rejected')}>{choice === 'accepted' ? 'Withdraw analytics consent' : 'Reject analytics'}</button>
