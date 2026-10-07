@@ -99,6 +99,15 @@ function ceiling. Verify actual free-tier runtime limits before scheduling.
 
 Host personally owns backup/recovery verification. Required drill:
 
+Host update at 2026-10-07: the earlier booking SHA 316ad6c independently passed
+32 tests and protected restore verification (14 Neon table fingerprints/migrations,
+AES-GCM archive roundtrip with recovered key, data-bearing synthetic restore,
+uncertain hold/job and audit sequence preservation). Host port 55439 is reserved
+and stopped. This is attributed host evidence for that earlier SHA only; it does
+not establish this integrated delta, production failover or recurring backup.
+The steps below remain the operational handoff/acceptance checklist, not a claim
+that the host must repeat already completed mechanism checks.
+
 1. Record agreed RPO/RTO, approved encrypted export destination/retention, restore
    operator and key custody. Current proposals (daily exports/six-hour provider
    history) are not verified guarantees or accepted objectives.

@@ -88,17 +88,19 @@ export default function AnalyticsConsent() {
         setOpen(true);
         requestAnimationFrame(() => firstChoice.current?.focus());
       }}>Privacy settings</button>
-    <p role="status">{choice === 'accepted' ? 'Analytics is on for this page session.' : 'Analytics is off.'}</p>
+    <p role="status">{process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true'
+      ? (choice === 'accepted' ? 'Preview choice: accepted. Google Analytics collection is still disabled.' : 'Review preview: Google Analytics collection is disabled.')
+      : (choice === 'accepted' ? 'Analytics is on. You can turn it off in Privacy settings.' : 'Analytics is off.')}</p>
     {open && <section id="analytics-settings" className={styles.panel} aria-labelledby="analytics-heading">
       <h2 id="analytics-heading">Optional analytics</h2>
-      <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. A saved rejection lasts for this browser tab. Acceptance resets when this page reloads or is restored after leaving. You will need to accept again.</p>
+      <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. If your browser saves your rejection, we remember it for this tab’s browsing session. If you accept, analytics turns off when you reload the page or leave and return. To turn analytics on again, choose Accept analytics. You can keep browsing with analytics off.</p>
       <p>We do not send contact-form contents, appointment details, contact information or individual treatment labels. Withdrawing permission stops future analytics collection; it does not delete data already collected.</p>
       {process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true' && <p>Review preview: this is draft disclosure awaiting owner approval. Google collection is disabled; accepting only exercises local interface behavior.</p>}
       <div className={styles.actions}>
         <button ref={firstChoice} className={styles.button} onClick={() => choose('accepted')}>Accept analytics</button>
         <button className={styles.button} onClick={() => choose('rejected')}>{choice === 'accepted' ? 'Withdraw analytics consent' : 'Reject analytics'}</button>
       </div>
-      {storageError && <p role="status">Analytics is off. Your browser could not save this choice. You may be asked again when you return, but analytics will stay off until you accept again.</p>}
+      {storageError && <p role="status">Analytics is off. We could not confirm that your browser saved your choice. You may see this message or be asked to choose again when you return. Analytics will stay off unless you choose Accept analytics and your browser saves that choice.</p>}
       {choice !== 'unknown' && <button className={styles.button} onClick={() => { setOpen(false); settingsButton.current?.focus(); }}>Close settings</button>}
     </section>}
   </aside>;
