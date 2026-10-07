@@ -1,0 +1,8 @@
+.container { margin: 1rem; color: #242424; }
+.panel { max-width: 44rem; padding: 1rem; margin-top: .75rem; background: #fff; border: 1px solid #555; border-radius: .5rem; }
+.panel h2 { font-weight: 700; font-size: 1.25rem; }
+.panel p { margin-block: .75rem; line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: .75rem; }
+.button { background: #fff; color: #242424; border: 1px solid #555; border-radius: .25rem; padding: .75rem 1rem; min-height: 44px; cursor: pointer; }
+.button:focus-visible { outline: 3px solid #2458a3; outline-offset: 3px; }
+@media (max-width: 480px) { .actions { flex-direction: column; } .actions .button { width: 100%; } }
