@@ -1,0 +1,531 @@
+{
+  "provenance": {
+    "sourceIssue": "AGE-24",
+    "sourceRevision": "62a5cd31-46d7-47ec-b859-c8cdc23de3bb",
+    "accessed": "2026-10-08",
+    "reviewStatus": "Independent source review corrections applied; qualified clinical and clinic-specific review pending",
+    "factualReview": {
+      "issue": "AGE-29",
+      "revision": "ed56ce99-6287-444c-834a-394ee4337ebc",
+      "corrections": [
+        "C1",
+        "C2",
+        "C3"
+      ]
+    }
+  },
+  "sources": {
+    "B1": {
+      "title": "AAD: botulinum toxin FAQs",
+      "url": "https://www.aad.org/public/cosmetic/wrinkles/botulinum-toxin-faqs",
+      "accessed": "2026-10-08"
+    },
+    "B2": {
+      "title": "AAD: botulinum toxin preparation",
+      "url": "https://www.aad.org/public/cosmetic/wrinkles/botulinum-toxin-preparation",
+      "accessed": "2026-10-08"
+    },
+    "B3": {
+      "title": "AbbVie: BOTOX Cosmetic prescribing information and Medication Guide",
+      "url": "https://www.rxabbvie.com/pdf/botox-cosmetic_pi.pdf",
+      "accessed": "2026-10-08"
+    },
+    "F1": {
+      "title": "FDA: dermal fillers",
+      "url": "https://www.fda.gov/medical-devices/aesthetic-cosmetic-devices/dermal-fillers-soft-tissue-fillers",
+      "accessed": "2026-10-08"
+    },
+    "F2": {
+      "title": "AAD: fillers preparation",
+      "url": "https://www.aad.org/public/cosmetic/wrinkles/fillers-preparation",
+      "accessed": "2026-10-08"
+    },
+    "F3": {
+      "title": "AAD: fillers FAQs",
+      "url": "https://www.aad.org/public/cosmetic/wrinkles/fillers-faqs",
+      "accessed": "2026-10-08"
+    },
+    "R1": {
+      "title": "Merz: Radiesse FAQs and safety",
+      "url": "https://radiesse.com/resources/faqs/",
+      "accessed": "2026-10-08"
+    },
+    "S1": {
+      "title": "Galderma: Sculptra and safety information",
+      "url": "https://www.sculptrausa.com/",
+      "accessed": "2026-10-08"
+    },
+    "P1": {
+      "title": "AAD: platelet-rich plasma and younger-looking skin",
+      "url": "https://www.aad.org/public/cosmetic/younger-looking/platelet-rich-plasma-secret-to-younger-skin",
+      "accessed": "2026-10-08"
+    },
+    "RF1": {
+      "title": "FDA: RF microneedling safety communication",
+      "url": "https://www.fda.gov/medical-devices/safety-communications/potential-risks-certain-uses-radiofrequency-rf-microneedling-fda-safety-communication",
+      "accessed": "2026-10-08"
+    },
+    "M1": {
+      "title": "FDA: microneedling devices",
+      "url": "https://www.fda.gov/medical-devices/aesthetic-cosmetic-devices/microneedling-devices",
+      "accessed": "2026-10-08"
+    },
+    "M2": {
+      "title": "AAD: microneedling",
+      "url": "https://www.aad.org/public/cosmetic/scars-stretch-marks/microneedling-fade-scars",
+      "accessed": "2026-10-08"
+    },
+    "C1": {
+      "title": "Cleveland Clinic: facials",
+      "url": "https://health.clevelandclinic.org/what-is-a-facial",
+      "accessed": "2026-10-08"
+    }
+  },
+  "services": {
+    "botox": [
+      {
+        "id": 1,
+        "question": "What is Botox?",
+        "answer": "Botox Cosmetic is a prescription botulinum toxin injection. It temporarily reduces activity in selected muscles to soften certain expression lines. Other toxin brands are distinct products.",
+        "sourceIds": [
+          "B1",
+          "B3"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "How do I know whether it suits me?",
+        "answer": "Ask a qualified clinician to assess your goals and health history. Mention muscle or nerve conditions, swallowing or breathing problems, allergies, and any infection near the proposed injection area.",
+        "sourceIds": [
+          "B3"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare for a consultation?",
+        "answer": "Bring your medicines and supplements list and details of previous injections or surgery. Discuss pregnancy or plans for pregnancy. Do not change prescribed medicines without your prescriber's advice.",
+        "sourceIds": [
+          "B2"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What should I expect from treatment?",
+        "answer": "Treatment involves small injections into selected muscles. Ask which product and areas are proposed and what changes are realistic for you.",
+        "sourceIds": [
+          "B1"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What about aftercare and risks?",
+        "answer": "Avoid rubbing treated areas and follow your clinician's instructions. Bruising, soreness or eyelid drooping can occur. Get medical help immediately for trouble breathing, swallowing or speaking after treatment.",
+        "sourceIds": [
+          "B1",
+          "B3"
+        ]
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss wrinkle-treatment options. Booking does not establish that an injectable is suitable for you.",
+        "sourceIds": []
+      }
+    ],
+    "filler": [
+      {
+        "id": 1,
+        "question": "What are dermal fillers?",
+        "answer": "Dermal fillers are injectable materials used for selected wrinkles, folds or volume concerns. Different materials have different uses and limitations.",
+        "sourceIds": [
+          "F1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "What should I discuss at a consultation?",
+        "answer": "Ask which material and treatment area are proposed, whether that use is authorized, and whether another option better fits your goals. Discuss allergies and prior fillers.",
+        "sourceIds": [
+          "F2"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Share your medicines, supplements, bleeding conditions, cold-sore history and earlier cosmetic procedures. Ask for instructions specific to the proposed filler; do not independently stop prescribed medicine.",
+        "sourceIds": [
+          "F2"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What happens during treatment?",
+        "answer": "A clinician places the selected filler by injection. Sensation, visible changes and recovery depend on the material and area; ask what to expect before proceeding.",
+        "sourceIds": [
+          "F3"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What aftercare and risks should I understand?",
+        "answer": "Request product-specific aftercare. Swelling and bruising can occur; accidental injection into a blood vessel can cause tissue damage, blindness or stroke. Get medical help immediately for unusual pain, changes in vision, skin near the injection turning white, gray or blue, or possible stroke symptoms during or shortly after treatment.",
+        "sourceIds": [
+          "F1"
+        ],
+        "link": {
+          "text": "possible stroke symptoms",
+          "sourceId": "F1"
+        }
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss filler options. A booking is not a decision about which filler you should receive.",
+        "sourceIds": []
+      }
+    ],
+    "radiesse": [
+      {
+        "id": 1,
+        "question": "What is Radiesse?",
+        "answer": "Radiesse is a prescription dermal filler. Its suitability depends on the exact product and proposed treatment area.",
+        "sourceIds": [
+          "R1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "Who needs a suitability assessment?",
+        "answer": "Everyone considering treatment. Tell the clinician about severe allergies, bleeding disorders and ingredient allergies; Radiesse (+) also contains lidocaine.",
+        "sourceIds": [
+          "R1"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare for the consultation?",
+        "answer": "Bring details of previous fillers, medical conditions and medicines. Ask which Radiesse formulation and treatment area are being considered.",
+        "sourceIds": [
+          "F2",
+          "R1"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What should I expect?",
+        "answer": "Radiesse is injected. Ask about the proposed treatment, realistic changes and recovery for that area before deciding. No single treatment plan fits every area or person.",
+        "sourceIds": [
+          "F3"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What about aftercare and risks?",
+        "answer": "Discuss limits on strenuous activity, sun and heat. Bruising, swelling, pain and lumps may occur. As with other fillers, vascular injury can be serious. Get medical help immediately for unusual pain, changes in vision, skin near the injection turning white, gray or blue, or possible stroke symptoms during or shortly after treatment.",
+        "sourceIds": [
+          "R1",
+          "F1"
+        ],
+        "link": {
+          "text": "possible stroke symptoms",
+          "sourceId": "F1"
+        }
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss Radiesse and alternatives. Suitability is assessed separately from booking.",
+        "sourceIds": []
+      }
+    ],
+    "sculptra": [
+      {
+        "id": 1,
+        "question": "What is Sculptra?",
+        "answer": "Sculptra is an injectable poly-L-lactic acid treatment that helps stimulate collagen production. Its effects develop gradually.",
+        "sourceIds": [
+          "S1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "Is it suitable for everyone?",
+        "answer": "No. Ingredient allergies and a history of keloid or hypertrophic scars are reasons not to use it. Discuss your health history and goals with a qualified clinician.",
+        "sourceIds": [
+          "S1"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Share medicines, supplements, previous injectables and scarring history. Mention pregnancy or breastfeeding; safety in these circumstances has not been established.",
+        "sourceIds": [
+          "F2",
+          "S1"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What should I expect?",
+        "answer": "Treatment uses injections, with changes developing over time. Ask about the proposed areas and individual plan rather than assuming an immediate final result.",
+        "sourceIds": [
+          "S1"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What aftercare and risks matter?",
+        "answer": "Obtain Sculptra-specific aftercare instructions. Swelling, tenderness and lumps can occur, including delayed lumps. Injection into a blood vessel can cause serious injury. Get medical help immediately for unusual pain, changes in vision, skin near the injection turning white, gray or blue, or possible stroke symptoms during or shortly after treatment.",
+        "sourceIds": [
+          "S1",
+          "F1"
+        ],
+        "link": {
+          "text": "possible stroke symptoms",
+          "sourceId": "F1"
+        }
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss Sculptra and whether it fits your goals.",
+        "sourceIds": []
+      }
+    ],
+    "prp": [
+      {
+        "id": 1,
+        "question": "What does PRP mean?",
+        "answer": "Platelet-rich plasma is prepared from a sample of your own blood by concentrating its platelets. PRP and PRF should not be treated as interchangeable names. Ask which preparation is proposed.",
+        "sourceIds": [
+          "P1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "What should I discuss at a consultation?",
+        "answer": "Discuss the concern you want addressed, your medical history and whether PRP is appropriate. Ask what evidence supports that particular use.",
+        "sourceIds": [
+          "P1"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Ask for instructions for the exact procedure. Discuss medicines and conditions affecting your blood or platelets; do not change prescribed treatment yourself.",
+        "sourceIds": [
+          "P1"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What should I expect?",
+        "answer": "PRP preparation involves a blood draw and processing. Ask how it would be used. The American Academy of Dermatology describes limited evidence for cosmetic skin rejuvenation with PRP. Ask a qualified clinician about current evidence for the proposed use.",
+        "sourceIds": [
+          "P1"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What about aftercare and risks?",
+        "answer": "Ask for instructions for the planned procedure. Pain, bruising and swelling can occur. Sterile blood handling is essential to reduce infection risk.",
+        "sourceIds": [
+          "P1"
+        ]
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to clarify the preparation and intended use before choosing treatment.",
+        "sourceIds": []
+      }
+    ],
+    "rrf": [
+      {
+        "id": 1,
+        "question": "What is radiofrequency treatment?",
+        "answer": "Radiofrequency uses electrical energy to create heat in tissue. RF microneedling delivers it through needles; the treatment name alone does not identify a device or method.",
+        "sourceIds": [
+          "RF1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "What should I ask at a consultation?",
+        "answer": "Ask for the device name, whether needles are involved, the intended treatment area, and the clinician's relevant training. Discuss benefits, risks and alternatives.",
+        "sourceIds": [
+          "RF1"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Request preparation instructions for the identified device and procedure before treatment. A generic RF label is not enough to choose a preparation routine.",
+        "sourceIds": []
+      },
+      {
+        "id": 4,
+        "question": "What should I expect?",
+        "answer": "Ask what the specific procedure involves and what recovery it may require. Expectations should be tied to the device and proposed use.",
+        "sourceIds": [
+          "RF1"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What aftercare and risks should I discuss?",
+        "answer": "Request device-specific aftercare. For RF microneedling, the FDA reports serious complications including burns, scarring, fat loss and nerve damage. Seek medical care for problems after treatment.",
+        "sourceIds": [
+          "RF1"
+        ]
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss the exact RF procedure and suitability.",
+        "sourceIds": []
+      }
+    ],
+    "facials": [
+      {
+        "id": 1,
+        "question": "What is a facial?",
+        "answer": "A facial generally combines skin care steps such as cleansing, exfoliation and moisturizing. The products and steps vary by treatment.",
+        "sourceIds": [
+          "C1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "How do I choose a facial?",
+        "answer": "Discuss your skin concerns, sensitivities and current routine before choosing. Ask which steps and products are proposed rather than assuming every facial is the same.",
+        "sourceIds": [
+          "C1"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Bring a list of skin care products and questions about ingredients or recent treatments. Ask whether you need to adjust your routine before the selected facial.",
+        "sourceIds": []
+      },
+      {
+        "id": 4,
+        "question": "What should I expect?",
+        "answer": "Ask what the facial includes and how your skin may look afterward. A general facial description does not establish that a named device or branded treatment is included.",
+        "sourceIds": [
+          "C1"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What about aftercare and risks?",
+        "answer": "Redness or breakouts can follow a facial. Ask for aftercare suited to the products used and how to get help with an unexpected reaction. Do not assume an immediate event-ready result.",
+        "sourceIds": [
+          "C1"
+        ]
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss facial options and your skin concerns.",
+        "sourceIds": []
+      }
+    ],
+    "microneedling": [
+      {
+        "id": 1,
+        "question": "What is microneedling?",
+        "answer": "Microneedling uses fine needles to make small punctures in the skin. It differs from RF microneedling, which also delivers energy.",
+        "sourceIds": [
+          "M2",
+          "RF1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "How is suitability assessed?",
+        "answer": "Discuss your skin concern, healing and scarring history, current skin conditions and medicines. A clinician should assess whether the procedure is appropriate for you.",
+        "sourceIds": [
+          "M2"
+        ]
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Mention acne medicines, recent sun exposure and active skin irritation or infection. Request an individual preparation plan; do not stop prescribed medicine yourself.",
+        "sourceIds": [
+          "M2"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What should I expect?",
+        "answer": "Ask which device and treatment area are proposed. FDA authorization is specific to devices and uses; it does not guarantee your result.",
+        "sourceIds": [
+          "M1"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What aftercare and risks matter?",
+        "answer": "Follow individualized skin care instructions. Redness, discomfort and bleeding may occur; infection and pigment changes are also possible. Ask when to restart makeup and active skin care products.",
+        "sourceIds": [
+          "M1",
+          "M2"
+        ]
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to discuss microneedling and alternatives for your concern.",
+        "sourceIds": []
+      }
+    ],
+    "collagen": [
+      {
+        "id": 1,
+        "question": "Is collagen treatment one procedure?",
+        "answer": "The term can describe different approaches. For example, Sculptra is a collagen-stimulating injectable; this does not make every collagen-focused option the same treatment.",
+        "sourceIds": [
+          "S1"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "What should I discuss at a consultation?",
+        "answer": "Start with the concern you want addressed. Ask for the exact procedure or product name, why it is being considered, and its alternatives.",
+        "sourceIds": []
+      },
+      {
+        "id": 3,
+        "question": "How should I prepare?",
+        "answer": "Bring your treatment history and medicines list. Obtain preparation instructions after the actual procedure has been identified.",
+        "sourceIds": [
+          "F2"
+        ]
+      },
+      {
+        "id": 4,
+        "question": "What results should I expect?",
+        "answer": "Expectations depend on the specific procedure. Ask about its evidence and limitations; there is no single result or recovery timeline for this broad label.",
+        "sourceIds": [
+          "S1",
+          "M2"
+        ]
+      },
+      {
+        "id": 5,
+        "question": "What aftercare and risks apply?",
+        "answer": "These depend on the chosen procedure. Request its specific safety information and aftercare rather than using a generic collagen-treatment routine.",
+        "sourceIds": []
+      },
+      {
+        "id": 6,
+        "question": "How do I start?",
+        "answer": "Select Book a consultation to identify an appropriate option before choosing a collagen-focused treatment.",
+        "sourceIds": []
+      }
+    ]
+  }
+}

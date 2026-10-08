@@ -1,0 +1,68 @@
+{
+  "provenance": "Production HTML checks after AGE-29 C1-C3; no browser interaction",
+  "routes": [
+    {
+      "route": "/botox",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 25485,
+      "htmlGzipBytes": 5427
+    },
+    {
+      "route": "/filler",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 26047,
+      "htmlGzipBytes": 5460
+    },
+    {
+      "route": "/radiesse",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 25987,
+      "htmlGzipBytes": 5458
+    },
+    {
+      "route": "/sculptra",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 25707,
+      "htmlGzipBytes": 5469
+    },
+    {
+      "route": "/prp",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 24605,
+      "htmlGzipBytes": 5268
+    },
+    {
+      "route": "/rrf",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 24753,
+      "htmlGzipBytes": 5241
+    },
+    {
+      "route": "/facials",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 24445,
+      "htmlGzipBytes": 5159
+    },
+    {
+      "route": "/microneedling",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 25628,
+      "htmlGzipBytes": 5333
+    },
+    {
+      "route": "/collagen",
+      "answers": 6,
+      "headingsIdsSourcesConsultationEditorialExclusions": "pass",
+      "htmlBytes": 25244,
+      "htmlGzipBytes": 5264
+    }
+  ]
+}

@@ -91,6 +91,19 @@ p {max-width:65ch;}
 .related-services {display:grid;grid-template-columns:1fr 1fr;gap:0 32px;}
 .related-services a {display:flex;justify-content:space-between;gap:16px;padding-block:18px;border-bottom:1px solid #c8beb5;text-decoration:none;}
 .related-services a:hover {text-decoration:underline;}
+.service-faq {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:48px;border-top:1px solid var(--color-border);}
+.faq-intro h2 {overflow-wrap:anywhere;}
+.faq-intro>p:last-child {margin-top:24px;}
+.faq-answer {padding-block:24px;border-bottom:1px solid #c8beb5;}
+.faq-answer:first-child {padding-top:0;}
+.faq-answer h3,.faq-references h3 {font:600 20px/1.4 var(--font-body);letter-spacing:normal;overflow-wrap:anywhere;}
+.faq-answer p {margin-top:12px;}
+.faq-answer .text-link {margin-top:12px;}
+.faq-references {margin-top:32px;}
+.faq-references ul {padding-left:20px;}
+.faq-references li+li {margin-top:12px;}
+.faq-references a {display:inline-block;min-height:24px;overflow-wrap:anywhere;}
+@media (max-width:900px) {.service-faq {grid-template-columns:minmax(0,1fr);gap:32px;}}
 @media (max-width:900px) {
   .home-hero {gap:32px;} .hero-art {min-height:360px;} .art-letter {font-size:180px;}
   .service-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
