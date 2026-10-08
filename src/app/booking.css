@@ -45,9 +45,6 @@
 .admin-services {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
 .booking-shell nav {display:flex;gap:8px 20px;flex-wrap:wrap;}
 .booking-shell nav a {min-height:48px;display:flex;align-items:center;}
-.test-disclosure {font-size:14px;border-block:1px solid #c8beb5;padding:12px 0;margin-bottom:24px;}
-.test-disclosure summary {min-height:32px;align-content:center;font-weight:600;}
-.test-disclosure p {max-width:80ch;}
 .review-details {margin:0;}
 .review-details>div {padding:16px 0;border-bottom:1px solid #d6ccc4;}
 .review-details dt {font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--color-muted);}
@@ -56,5 +53,5 @@
 .result-surface {max-width:720px;}
 .admin-shell .save-bar {border:2px solid var(--color-text);}
 @media(max-width:900px) {.booking-grid {grid-template-columns:1fr;}.booking-shell .summary {grid-row:1;}.booking-shell .summary p {margin:8px 0;}.booking-shell .summary h2 {margin-bottom:12px;}.summary .eyebrow {display:none;}}
-@media(max-width:600px) {.booking-shell {padding:32px 16px 40px;}.surface {padding:24px 20px;}.appointment-options,.admin-services {grid-template-columns:1fr;}.booking-shell button {width:100%;margin-right:0;}.progress {grid-template-columns:1fr 1fr;gap:8px;margin:24px 0;}.progress li {font-size:12px;}.hours-row {display:block;}.test-disclosure {font-size:14px;}}
+@media(max-width:600px) {.booking-shell {padding:32px 16px 40px;}.surface {padding:24px 20px;}.appointment-options,.admin-services {grid-template-columns:1fr;}.booking-shell button {width:100%;margin-right:0;}.progress {grid-template-columns:1fr 1fr;gap:8px;margin:24px 0;}.progress li {font-size:12px;}.hours-row {display:block;}}
 .booking-shell fieldset.admin-fields {margin:0;padding:0;border:0;}

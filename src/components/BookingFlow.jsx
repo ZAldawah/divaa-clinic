@@ -69,13 +69,13 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
       } else if (error.status === 409) {
         snapshot.current = null; setResult(null); setSlot(null); setStep(1); setRetry(value => value + 1);
         setConflict(true);
-      } else setError('We could not confirm the outcome. Keep this page open and check confirmation using the same request. Do not make another booking.');
+      } else setError('We could not confirm the outcome. Keep this page open and check request status using the same request. Do not make another booking.');
     } finally { submitting.current = false; setLoading(false); }
   }
   return <main id="main-content" tabIndex={-1} className="booking-shell">
     <p className="eyebrow">Divaa Beauty · Appointments</p>
-    <h1>{result?.status === 'confirmed' ? (config?.synthetic ? 'Test appointment confirmed' : 'Appointment confirmed') : result ? 'Confirmation pending' : 'Book an appointment'}</h1>
-    {config?.synthetic && <details className="test-disclosure"><summary>Test booking · no real appointment or email</summary><p>{simulation ? 'This QA simulation uses in-memory responses only. No database, calendar or email is contacted.' : 'This local preview uses a synthetic database and mock calendar.'} Saturday 10am–4pm, America/Chicago, is for testing only. Displayed durations are test slot lengths, not approved clinic durations. No payment is collected.</p></details>}
+    <h1>{result?.status === 'confirmed' ? 'Request received' : result ? 'Request pending' : 'Request an appointment'}</h1>
+    {simulation && <p className="notice">QA simulation: in-memory responses only. No database, Calendar or email is contacted.</p>}
     <noscript><p>Online scheduling requires JavaScript. <a href="tel:+18329929422">Call the clinic</a> for help.</p></noscript>
     {(error || Object.keys(fieldErrors).length > 0) && <div className="notice error-notice" role="alert" tabIndex={-1} ref={errorSummary}>
       {error && <p>{error}</p>}
@@ -83,10 +83,10 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
       {error && !snapshot.current && <button className="secondary" onClick={() => setRetry(value => value + 1)}>Retry</button>}
     </div>}
     {!config ? <section className="surface loading-surface"><h2>{error ? 'Scheduling unavailable' : 'Getting appointment options'}</h2><p role="status">{error ? 'Please retry or call 832-992-9422 for help.' : 'Loading appointment options…'}</p></section> : result ? <section className="surface result-surface">
-      <h2 ref={heading} tabIndex={-1}>{result.status === 'confirmed' ? 'Your booking details' : 'Your appointment is not confirmed yet'}</h2>
-      <p>{result.status === 'confirmed' ? (config.synthetic ? 'Test appointment confirmed. No real appointment or email was created.' : 'Your time is reserved.') : 'Keep this page open and check confirmation. Do not submit a new booking.'}</p>
+      <h2 ref={heading} tabIndex={-1}>{result.status === 'confirmed' ? 'Your request details' : 'Your request is still being checked'}</h2>
+      <p>{result.status === 'confirmed' ? 'Your request has been received. This does not confirm an appointment. Contact the clinic to confirm availability before visiting.' : 'Keep this page open and check request status. Do not submit a new booking.'}</p>
       <p className="reference">Reference: {result.reference}</p><p>{when(result.start, config.timezone)}</p>
-      {result.status !== 'confirmed' && <button disabled={loading} onClick={submit}>{loading ? 'Checking confirmation…' : 'Check confirmation'}</button>}
+      {result.status !== 'confirmed' && <button disabled={loading} onClick={submit}>{loading ? 'Checking request status…' : 'Check request status'}</button>}
       <p><a href="sms:8329929422">Text the clinic</a> with questions about your request.</p><Link href="/">Return home</Link>
     </section> : !config.services.length ? <section className="surface"><h2>No appointments available</h2><p>Online appointment options are unavailable. <a href="tel:+18329929422">Call the clinic</a> for help.</p></section> : <>
       <ol className="progress" aria-label="Booking progress">{steps.map((label, index) => <li key={label} aria-current={step === index ? 'step' : undefined}><span aria-hidden="true">{index + 1}</span>{label}</li>)}</ol>
@@ -95,7 +95,7 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
         <h2 ref={heading} tabIndex={-1}>{['Choose your appointment', 'Find a time', 'Your details', 'Review your appointment'][step]}</h2>
         {step === 0 && <form onSubmit={event => { event.preventDefault(); setStep(1); }}>
           {requestedUnavailable && <p className="notice" role="status">The requested option is unavailable. Please choose an appointment below.</p>}
-          <fieldset><legend>Available services</legend><div className="appointment-options">{config.services.map(item => <label className="choice" key={item.id}><input type="radio" name="service" value={item.id} checked={service === item.id} required onChange={() => { setService(item.id); setSlot(null); setRequestedUnavailable(false); }}/><span>{item.name}<small>{config.synthetic ? 'Test slot: ' : ''}{item.duration} minutes</small>{!config.synthetic && item.priceNote && <small>{item.priceNote}</small>}</span></label>)}</div></fieldset>
+          <fieldset><legend>Available services</legend><div className="appointment-options">{config.services.map(item => <label className="choice" key={item.id}><input type="radio" name="service" value={item.id} checked={service === item.id} required onChange={() => { setService(item.id); setSlot(null); setRequestedUnavailable(false); }}/><span>{item.name}{!config.synthetic && <small>{item.duration} minutes</small>}{!config.synthetic && item.priceNote && <small>{item.priceNote}</small>}</span></label>)}</div></fieldset>
           <button disabled={!service}>Choose date and time</button>
         </form>}
         {step === 1 && <form onSubmit={event => { event.preventDefault(); setStep(2); }}>
@@ -114,14 +114,14 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
           <button>Review appointment</button>
         </form>}
         {step === 3 && <section aria-label="Review details">
-          <dl className="review-details"><div><dt>Appointment</dt><dd>{chosen.name} · {config.synthetic ? 'test slot: ' : ''}{chosen.duration} minutes</dd></div><div><dt>When</dt><dd>{when(slot.start, config.timezone)}<br/>Until {when(slot.end, config.timezone)}</dd></div><div><dt>Your details</dt><dd>{name}<br/>{email}</dd></div><div><dt>Clinic</dt><dd>26077 Nelson Way, Katy, TX 77494</dd></div></dl>
-          <p>Your time is checked again when you confirm. Contact the clinic for appointment policies. No payment is collected here.</p>
+          <dl className="review-details"><div><dt>Appointment</dt><dd>{chosen.name}{!config.synthetic && <> {chosen.duration} minutes</>}</dd></div><div><dt>When</dt><dd>{when(slot.start, config.timezone)}{!config.synthetic && <><br/>Until {when(slot.end, config.timezone)}</>}</dd></div><div><dt>Your details</dt><dd>{name}<br/>{email}</dd></div><div><dt>Clinic</dt><dd>26077 Nelson Way, Katy, TX 77494</dd></div></dl>
+          <p>Availability is checked again when you send your request. Contact the clinic for appointment policies. No payment is collected here.</p>
           {!snapshot.current && <div className="edit-actions"><button className="secondary" onClick={() => setStep(1)}>Edit time</button><button className="secondary" onClick={() => setStep(2)}>Edit details</button></div>}
-          <button disabled={loading} onClick={submit}>{loading ? 'Checking confirmation…' : snapshot.current ? 'Check confirmation' : config.synthetic ? 'Confirm test appointment' : 'Confirm appointment'}</button>
-          {snapshot.current && <p>Keep this page open until the outcome is known. Checking confirmation uses the identical request. Reloading will lose this recovery action.</p>}
+          <button disabled={loading} onClick={submit}>{loading ? 'Checking request status…' : snapshot.current ? 'Check request status' : 'Send appointment request'}</button>
+          {snapshot.current && <p>Keep this page open until the outcome is known. Checking request status uses the identical request. Reloading will lose this recovery action.</p>}
         </section>}
         {step > 0 && !snapshot.current && <button className="secondary" onClick={() => { setFieldErrors({}); setStep(step - 1); }}>Back</button>}
-      </section><aside className="surface summary" aria-label="Appointment summary"><p className="eyebrow">Your selection</p><h2>{chosen?.name || 'Your appointment'}</h2>{chosen && <p>{config.synthetic ? 'Test slot: ' : ''}{chosen.duration} minutes</p>}<p>{slot ? when(slot.start, config.timezone) : 'Choose a date and time'}</p><p>Timezone: {config.timezone}</p>{step > 0 && !snapshot.current && <button className="secondary" onClick={() => { setFieldErrors({}); setStep(0); }}>Change service</button>}<p>Need help? <a href="tel:+18329929422">Call the clinic</a></p></aside></div>
+      </section><aside className="surface summary" aria-label="Appointment summary"><p className="eyebrow">Your selection</p><h2>{chosen?.name || 'Your appointment'}</h2>{chosen && !config.synthetic && <p>{chosen.duration} minutes</p>}<p>{slot ? when(slot.start, config.timezone) : 'Choose a date and time'}</p><p>Timezone: {config.timezone}</p>{step > 0 && !snapshot.current && <button className="secondary" onClick={() => { setFieldErrors({}); setStep(0); }}>Change service</button>}<p>Need help? <a href="tel:+18329929422">Call the clinic</a></p></aside></div>
     </>}
   </main>;
 }

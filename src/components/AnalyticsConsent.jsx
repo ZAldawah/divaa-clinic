@@ -94,7 +94,7 @@ export default function AnalyticsConsent() {
         requestAnimationFrame(() => firstChoice.current?.focus());
       }}>Privacy settings</button>
     <p className={styles.status} role="status">{process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true'
-      ? (choice === 'accepted' ? 'Preview choice: accepted. Google Analytics collection is still disabled.' : 'Review preview: Google Analytics collection is disabled.')
+      ? (choice === 'accepted' ? 'Preference saved. Analytics collection is off.' : 'Analytics collection is off.')
       : (choice === 'accepted' ? 'Analytics is on. You can turn it off in Privacy settings.' : 'Analytics is off.')}</p>
     {open && <section id="analytics-settings" className={styles.panel} aria-labelledby="analytics-heading"
       onKeyDown={(event) => { if (event.key === 'Escape') { event.stopPropagation(); closeSettings(); } }}>
@@ -112,7 +112,7 @@ export default function AnalyticsConsent() {
         <summary>How analytics works</summary>
       <p>With your permission, DivaaBeauty uses Google Analytics to measure grouped public page views and contact-link clicks. Analytics uses browser-session cookies and generated identifiers. Google receives analytics data. You can reject analytics or withdraw your permission through Privacy settings. If your browser saves your rejection, we remember it for this tab’s browsing session. If you accept, analytics turns off when you reload the page or leave and return. To turn analytics on again, choose Accept analytics. You can keep browsing with analytics off.</p>
       <p>We do not send contact-form contents, appointment details, contact information or individual treatment labels. Withdrawing permission stops future analytics collection; it does not delete data already collected.</p>
-      {process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true' && <p>Review preview: this is draft disclosure awaiting owner approval. Google collection is disabled; accepting only exercises local interface behavior.</p>}
+      {process.env.NEXT_PUBLIC_ANALYTICS_PREVIEW === 'true' && <p>Analytics collection is currently disabled. Saving a preference does not enable collection.</p>}
       </details>
     </section>}
   </aside>;
