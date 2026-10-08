@@ -31,7 +31,7 @@ export default function AnalyticsConsent() {
       let stored = 'unknown';
       try { stored = restoreConsent(runtime.current, window.sessionStorage); } catch { /* fail closed */ }
       setChoice(stored);
-      setOpen(stored === 'unknown');
+      setOpen(false); // Consent stays off; choices open only on request.
 
     }, 0);
     function onClick(event) {
@@ -51,7 +51,7 @@ export default function AnalyticsConsent() {
       let stored = 'unknown';
       try { stored = restoreConsent(runtime.current, window.sessionStorage); } catch { /* fail closed */ }
       setChoice(stored);
-      setOpen(stored === 'unknown');
+      setOpen(false); // Consent stays off; choices open only on request.
     }
     window.addEventListener('pagehide', suspend);
     window.addEventListener('pageshow', resume);
@@ -87,7 +87,7 @@ export default function AnalyticsConsent() {
   }
 
   if (!safePage(pathname)) return null;
-  return <aside className={styles.container} aria-label="Analytics privacy settings">
+  return <aside id="privacy-settings" className={styles.container} aria-label="Analytics privacy settings">
     <button ref={settingsButton} className={`${styles.button} ${styles.settings}`} aria-expanded={open}
       aria-controls="analytics-settings" onClick={() => {
         setOpen(true);

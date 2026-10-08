@@ -1,38 +1,13 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import AnalyticsConsent from "@/components/AnalyticsConsent";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
+import '../globals.css';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import AnalyticsConsent from '@/components/AnalyticsConsent';
 export const metadata = {
-  referrer: "no-referrer",
-  title: "Divaa Beauty",
-  description:
-    "Discover the art of rejuvenation with Botox, fillers, facials and more at Divaa Beauty Clinic in Houston.",
+  metadataBase: new URL('https://divaabeauty.net'),
+  referrer: 'no-referrer',
+  title: 'Divaa Beauty Clinic | Katy, Texas',
+  description: 'Explore services at Divaa Beauty Clinic in Katy, Texas. Book a consultation or contact the clinic.',
 };
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar />
-
-        {children}
-        <Footer />
-        {process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true" && <AnalyticsConsent />}
-      </body>
-    </html>
-  );
+export default function PublicLayout({ children }) {
+  return <html lang="en"><body><Navbar/>{children}<Footer privacy={process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true'}/>{process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true' && <AnalyticsConsent/>}</body></html>;
 }

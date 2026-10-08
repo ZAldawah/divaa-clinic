@@ -1,43 +1,19 @@
-.container {
-  position: fixed;
-  z-index: 1100;
-  inset-inline-end: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
-  width: min(26rem, calc(100% - 2rem));
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .4rem .75rem;
-  padding: .75rem;
-  color: var(--privacy-ink);
-  background: var(--privacy-surface);
-  border: 1px solid var(--privacy-border);
-  border-radius: var(--privacy-radius);
-  box-shadow: 0 8px 32px #2c2c2c26;
-  max-height: calc(100dvh - 2rem);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  font: 400 .875rem/1.5 system-ui, sans-serif;
-}
-.panel { width: 100%; min-width: 0; padding: .5rem; }
-.heading { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
-.brand { display: block; font-size: .6875rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
-.panel h2 { margin-top: .25rem; font: 600 1.25rem/1.25 system-ui, sans-serif; }
-.panel p { margin-block: .75rem; }
-.intro { line-height: 1.55; }
-.status { flex: 1 1 11rem; font-size: .75rem; line-height: 1.4; margin: 0; }
-.actions { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-block: 1rem .5rem; }
-.button, .close { font: inherit; cursor: pointer; min-height: 44px; border-radius: .5rem; }
-.button { background: var(--privacy-ink); color: var(--privacy-surface); border: 1px solid var(--privacy-ink); padding: .625rem .75rem; font-weight: 600; }
-.button:hover { background: #45403d; }
-.settings { background: transparent; color: var(--privacy-ink); font-size: .75rem; }
-.settings:hover, .close:hover { background: #eee1d6; }
-.close { flex: 0 0 44px; width: 44px; background: transparent; color: var(--privacy-ink); border: 1px solid var(--privacy-border); font-size: 1.5rem; line-height: 1; }
-.button:focus-visible, .close:focus-visible, .details summary:focus-visible { outline: 3px solid #2458a3; outline-offset: 3px; }
-.details { border-top: 1px solid #cfc0b4; margin-top: .75rem; }
-.details summary { cursor: pointer; padding-block: .75rem; min-height: 44px; font-weight: 600; }
-.details p { font-size: .8125rem; }
-.error { border-inline-start: 3px solid #8a3426; padding-inline-start: .75rem; }
-@media (max-width: 480px) { .actions { grid-template-columns: 1fr; } }
-@media (max-height: 480px) { .container { bottom: .5rem; max-height: calc(100dvh - 1rem); } }
-@media (forced-colors: active) { .container, .button, .close { border: 1px solid ButtonText; } }
+.container {display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding:24px max(16px,calc((100% - 1120px)/2));color:var(--privacy-ink);background:var(--privacy-surface);border-top:1px solid var(--privacy-border);font:400 16px/1.5 var(--font-body);scroll-margin-block:24px;}
+.panel {width:100%;min-width:0;max-width:760px;padding:24px;border:1px solid var(--privacy-border);border-radius:20px;background:#fff;}
+.heading {display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.brand {display:block;font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;}
+.panel h2 {font:400 28px/1.2 var(--font-display);}
+.panel p {margin-block:16px;}
+.status {font-size:14px;line-height:1.5;margin:0;}
+.actions {display:flex;flex-wrap:wrap;gap:12px;margin-block:24px;}
+.button,.close {font:600 14px/1.5 var(--font-body);cursor:pointer;min-height:48px;border-radius:24px;}
+.button {background:var(--privacy-ink);color:var(--privacy-surface);border:1px solid var(--privacy-ink);padding:12px 20px;}
+.button:hover {background:#45403d;}
+.settings {background:transparent;color:var(--privacy-ink);}
+.settings:hover,.close:hover {background:#eee1d6;}
+.close {flex:0 0 48px;width:48px;background:transparent;color:var(--privacy-ink);border:1px solid var(--privacy-border);font-size:24px;}
+.details {border-top:1px solid #cfc0b4;margin-top:20px;}
+.details summary {cursor:pointer;padding-block:16px;min-height:48px;font-weight:600;}
+.error {border-inline-start:3px solid #8b2424;padding-inline-start:16px;}
+@media(max-width:600px) {.panel {padding:20px 16px;}.actions {flex-direction:column;}.actions button {width:100%;}}
+@media(forced-colors:active) {.container,.button,.close {border:1px solid ButtonText;}}
