@@ -1,3 +1,4 @@
+import ServiceImage from '@/components/ServiceImage';
 import EditorialPortrait from '@/components/EditorialPortrait';
 import { services } from '@/lib/services.mjs';
 export const metadata = { alternates: { canonical: '/' } };
@@ -9,7 +10,7 @@ export default function Home() {
     </section>
     <section className="services-section section-space editorial-section" id="services" aria-labelledby="services-heading"><div className="content-width">
       <div className="section-heading"><div><p className="eyebrow">Our services</p><h2 id="services-heading">Explore the possibilities.</h2></div><p>Find a service, or start with a consultation to discuss your questions.</p></div>
-      <div className="service-directory"><EditorialPortrait variant="natural" placement="directory" /><div className="service-grid">{services.map(service => <a className="service-card" href={'/' + service.id} key={service.id}><h3>{service.name}</h3><span className="card-action" aria-hidden="true">↗</span></a>)}</div></div>
+      <div className="service-directory"><div className="service-grid">{services.map(service => <a className="service-card service-card-image" href={'/' + service.id} key={service.id}><ServiceImage serviceId={service.id} card /><div className="service-card-label"><h3>{service.name}</h3><span className="card-action" aria-hidden="true">↗</span></div></a>)}</div></div>
     </div></section>
     <section className="content-width consultation-section section-space editorial-section"><p className="eyebrow">A place to begin</p><h2>Have questions?<br/><em>Start a conversation.</em></h2><p>Choose Consulting in our appointment options, or contact the clinic.</p><a className="button" href="/book?service=consulting">Book a consultation <span aria-hidden="true">↗</span></a></section>
     <section className="contact-section" id="contact"><div className="content-width contact-grid"><div><p className="eyebrow">Find Divaa</p><h2>Here in Katy.</h2></div><address>Divaa Beauty Clinic<br/>26077 Nelson Way<br/>Katy, TX 77494</address><div><a className="contact-phone" href="tel:+18329929422">832-992-9422</a><a className="text-link" href="sms:8329929422">Text the clinic <span aria-hidden="true">↗</span></a></div></div></section>

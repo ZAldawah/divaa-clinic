@@ -1,0 +1,1358 @@
+{
+  "createdAt": "2026-10-08T20:05:15.606Z",
+  "candidate": "0d78d64ed52a12781fe966723ec44945df978138",
+  "sourceVerdictRevision": "bdf973a1-1ff0-49d6-b2ab-f5c361c95b58",
+  "sharp": {
+    "aom": "3.15.1",
+    "archive": "3.8.9",
+    "cairo": "1.18.6",
+    "cgif": "0.5.4",
+    "exif": "0.6.26",
+    "expat": "2.8.5",
+    "ffi": "3.8.0",
+    "fontconfig": "2.18.3",
+    "freetype": "2.14.3",
+    "fribidi": "1.0.17",
+    "glib": "2.90.0",
+    "harfbuzz": "14.5.0",
+    "heif": "1.23.5",
+    "highway": "1.4.0",
+    "imagequant": "2.4.1",
+    "lcms": "2.19.1",
+    "mozjpeg": "0826579",
+    "pango": "1.58.2",
+    "pixman": "0.46.4",
+    "png": "1.6.58",
+    "proxy-libintl": "0.5",
+    "rsvg": "2.63.2",
+    "tiff": "4.7.2",
+    "uhdr": "2.0.2",
+    "vips": "8.18.7",
+    "webp": "1.6.0",
+    "xml2": "2.15.4",
+    "zlib-ng": "2.3.3",
+    "sharp": "0.35.5"
+  },
+  "excluded": [
+    "prp-v1.png",
+    "microneedling-v1.png"
+  ],
+  "files": [
+    {
+      "file": "botox-384.avif",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "b22bb6f201564459212fcee8b9c03b580a614fcf3c85abfe55366ad39fb8aaea",
+      "bytes": 9380,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-384.webp",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "55ee399b05cf4d23a13073d5d688764cd17c5388ef339a87ebba58bbe15743c8",
+      "bytes": 10268,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-768.avif",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "e8a490ee40284751a425e47008d114e28042be287f90bfb793e3ffa251725f39",
+      "bytes": 29903,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-768.webp",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "3a8f22f9fd0d9121af37cb6bd728d9b082d34946ff1a9d2a1362b647fc59d95d",
+      "bytes": 33744,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-1152.avif",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "a8ad96b2791e3d6aac897168481d653da678bcf25ca3d86b7d25de6460a1fadc",
+      "bytes": 59639,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-1152.webp",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "220855ca22c634dd8872a241311db88d51113bad5082bad917aef13cadb6f891",
+      "bytes": 66740,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-1536.avif",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "70f92fb82b8943fe1df7208e955a0c710ec2a4b4cf154d8c4f1fd65d67f8b2a3",
+      "bytes": 93038,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "botox-1536.webp",
+      "service": "botox",
+      "route": "/botox",
+      "sha256": "99fc79c679d059b42c7a57adc6931d8a28b236fbed4983aef8eeedc26540b228",
+      "bytes": 106970,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "923ad760734c7db258d4ea68ff4be78648612a8c32d81547e3d038d4e1eaf432",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-384.avif",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "4630fd3384af336df6f5c5f710634733ca9f263b87c8ea40010c24c586dec57e",
+      "bytes": 8602,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-384.webp",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "ccfefc41c1a8c763d13cb63d07797c2aa96dc487ef6c51a1e82e7823ec06a1ea",
+      "bytes": 9060,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-768.avif",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "f7d40fb298634c651883840a0ee9cfabbaf3539d51ed64a25f0448015a558a38",
+      "bytes": 29215,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-768.webp",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "370038cce0b8e30f1c8416ddc3b5be4b2db6e1e5d310be7465b0b7d72f27c4de",
+      "bytes": 30808,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-1152.avif",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "86216098cdf6cb33de1670c20f0e2077a82aa81e0458d659c58a349c90f0a466",
+      "bytes": 59640,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-1152.webp",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "af0eaab642b6381aba7a7e17d5074856de3d8600d10e4f2ffaa0ed662c9df409",
+      "bytes": 65198,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-1536.avif",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "167386850f1237564b1051933d2fb5796c85597af5b95d10f84298b716faf6ee",
+      "bytes": 95022,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "filler-1536.webp",
+      "service": "filler",
+      "route": "/filler",
+      "sha256": "f5d7b63a29eb5c436cae6545a516ae137ec9912dcc178a2d3346627772ac07f8",
+      "bytes": 109504,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "2623b39e01a41b9c0e7a1fda99d4b5a55c71d2eaaf28dd715c5b27084b3dfdd4",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-384.avif",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "bce6263c9fc8519180c6fface5581dcb747b8a0f77025967843be6bc6aa90ef5",
+      "bytes": 10506,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-384.webp",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "29d68544ca3ac94b0cfb70755cbbe5c55ca19081e4be16087fb1681388df5ad9",
+      "bytes": 11188,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-768.avif",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "98b445ab460f2beccc0970be7d6fca20b73a987c7db4f2faa64e4039ce4aa7dc",
+      "bytes": 44963,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-768.webp",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "1fcbb6022220c7d29bb0fb425d9095e56b0d404cdcff9b78723e63cd6094d0c2",
+      "bytes": 60814,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-1152.avif",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "cfc00c25ecc00e5fefc2f3ae7b964ea41d08ac01399a793172aa932eb02069b5",
+      "bytes": 92384,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-1152.webp",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "44f66b1a708e5738037593930301a61f21ce1bde8affa2a4d2c7dccaaa5110d6",
+      "bytes": 126796,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-1536.avif",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "e584dc38ba11a7b47823bfb2a93759f11d4291ad374feac68dcf7a50bcf0557c",
+      "bytes": 142440,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "radiesse-1536.webp",
+      "service": "radiesse",
+      "route": "/radiesse",
+      "sha256": "e2376860ba38d98dfb2a482b127c2b031487293a7451251e1a363efa7f7a145c",
+      "bytes": 194278,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "222641c03139b768264d00482645c8b8ff14bd3c4841b2acf5de778cd433d248",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-384.avif",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "d930040830a46470535a6654b43d8c14537a305fd0da259f9fec6dd6c9874fd1",
+      "bytes": 10386,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-384.webp",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "8271c4309c9e6ea29a1479439ae25746632a20fdceda231127e06c13c3104e4f",
+      "bytes": 12002,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-768.avif",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "3bf9e1d975ecaac0b3e71387ec817e9f4d3668d50fd47aa2c3bf21c90a4b4919",
+      "bytes": 32278,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-768.webp",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "5a7e267df260ce99eb7cce9df5cd347f537a991accfab28230f59dd94448941f",
+      "bytes": 37852,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-1152.avif",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "1f5c67340734b595aa74bef3125f3e651792877f88a003ce2ad3cefd7bc697c9",
+      "bytes": 63537,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-1152.webp",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "63c93e5a8a4ca334b9cef525af6951c19d424ba5c8bf1f997a6f4c2bc5566b28",
+      "bytes": 76006,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-1536.avif",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "086a7f6cae7aea815cab4710cb9500b87d8f2c1608b77bfa199b9aa192d52bcf",
+      "bytes": 100248,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "sculptra-1536.webp",
+      "service": "sculptra",
+      "route": "/sculptra",
+      "sha256": "f42fb98a7862418edfeffe83ad1ab395c410be085c4c3e450c2a470e4002b276",
+      "bytes": 124272,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "a141af12e0fc0e6b83d76af56f16735a5b4fa800ae38c859e95a2d6c698c0a3a",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-384.avif",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "edfc26b3ca2990bec6d7c50f41ba11556a932fbabb9237ede2b2dc72d89397e2",
+      "bytes": 8404,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-384.webp",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "9d937c833be18f93ad0acb78a37035fa02ba1d04903b6bbebc0e291a5944878e",
+      "bytes": 8586,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-768.avif",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "e07b0e40350172003f14b1818f58a25060a3fd15c5fea5c29a508cda5d4814b0",
+      "bytes": 27318,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-768.webp",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "f4d0b5db4d6b2613f5627fbdf24d2477db866544110bd954fb21615165260136",
+      "bytes": 28422,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-1152.avif",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "896bbdd3e1a41549ff517ac2e7b12ee0146cd7d4c7f885286eab7fe81d0a74f8",
+      "bytes": 54425,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-1152.webp",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "35a896b3f926fd6ff2c42172a0660b2dc05950716039a70c94108a5eb0d94d4b",
+      "bytes": 56716,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-1536.avif",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "1c510a225f3c4ef7a51fb8ef36b24886e171e5967703d9b715df1519ec77df2a",
+      "bytes": 84641,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "rrf-1536.webp",
+      "service": "rrf",
+      "route": "/rrf",
+      "sha256": "aa23b6287e4870493fb79ff2b8cf2c98316b5b87b23b91ecc0636eb1cb5fdf49",
+      "bytes": 90814,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "2e787b44cec52505f3d235203a09680a095dbf3ddf39a8746df907adffb43305",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-384.avif",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "08f48380718898a82509131642be98c675e30839908d7d7bc35bf88cb926d011",
+      "bytes": 9231,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-384.webp",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "70aa2ca6cf6bd21dd462ee510c7862e217cbb350622d62eb32a8d9eac5d9c81e",
+      "bytes": 10132,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-768.avif",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "cde6300fbea7fa334180b737e5ca92691b923f3ccf7d7b2ad364a47ab400eab8",
+      "bytes": 28146,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-768.webp",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "d20e832242160052b21a8024be15d06304cab040c9832ea8e3ef97fc24f265be",
+      "bytes": 30392,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-1152.avif",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "31142d905235c187e4e3eaf2d25811cacdd09354deee80715d67f7be2ed748fd",
+      "bytes": 50694,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-1152.webp",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "28a00d217037e3ae1335530a0e2d4ceac203a58a436f5a2269c20353ecfd35b0",
+      "bytes": 55246,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-1536.avif",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "e6c508328976dd7b3ca18bbbc204bae391809b885bd6473163221624bd401325",
+      "bytes": 74544,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "facials-1536.webp",
+      "service": "facials",
+      "route": "/facials",
+      "sha256": "785fdb44485a0e3ed8285eb5a1ef1dc4caca7540761d4cd760c4dfba96f3cbba",
+      "bytes": 82472,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "3e6e6571bf8b4997c48d0de8af216cc9defa84e3fb60aa4873c4b70f804c04e1",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-384.avif",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "b34609e2e93dd3ddd0938ae7255672079f7ea2f0c542bf9d89d5cefdd83352d6",
+      "bytes": 9058,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-384.webp",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "4c62503a91494b4768231e42a9aa1eb278cde15c04a13d12fff4fcde55b6430c",
+      "bytes": 9294,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-768.avif",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "58aabb1ccb1f81a4515c917967eb58d685505a10414c6a3915a39f5f242ad6a7",
+      "bytes": 29811,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-768.webp",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "5096fc87e8cb5afc5ef546c83a68015c78bf1d28c33dca9025bdbf39165d6913",
+      "bytes": 32144,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-1152.avif",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "d281bd4d0f5a3da4f32fea8650605966987aa5cd8790fce103f0ee36124e8c06",
+      "bytes": 58896,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-1152.webp",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "e84af6bfe491a5ebfe91f903ea7374389ee94ea20c25ecc3d566130345825573",
+      "bytes": 65108,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-1536.avif",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "a11da21f853d3806df104f999ebb3c0f7a7295d884f9b83f638fdd5cc0c0790b",
+      "bytes": 91673,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "status": "awaiting independent encoding and placement review"
+    },
+    {
+      "file": "collagen-1536.webp",
+      "service": "collagen",
+      "route": "/collagen",
+      "sha256": "e7edd98137dafcd7621679e5211d02ea515791b9b8ccc7624e3f86c1ca4397d7",
+      "bytes": 100248,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "06d9f0553cfb8bc595bc746ac30287882a752e87812bf4bfab801b9aa71fc092",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "objectPosition": "50% 50%",
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      },
+      "status": "awaiting independent encoding and placement review"
+    }
+  ]
+}
