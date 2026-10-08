@@ -11,7 +11,7 @@ export async function api(url, options) {
 export const write = (method, value) => ({ method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(value) });
 export function when(value, zone) { return new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long', timeZone: zone }).format(new Date(value)); }
 const steps = ['Service', 'Date and time', 'Your details', 'Review'];
-export default function BookingFlow() {
+export default function BookingFlow({ transport = api, simulation = false } = {}) {
   const [config, setConfig] = useState(null), [service, setService] = useState(''), [date, setDate] = useState('');
   const [slots, setSlots] = useState([]), [slot, setSlot] = useState(null), [step, setStep] = useState(0);
   const [name, setName] = useState(''), [email, setEmail] = useState(''), [error, setError] = useState('');
@@ -22,7 +22,7 @@ export default function BookingFlow() {
   useEffect(() => {
     if (config) return;
     let current = true;
-    api('/api/booking/config').then(value => {
+    transport('/api/booking/config').then(value => {
       if (!current) return;
       setConfig(value); setError('');
       const requested = new URLSearchParams(window.location.search).get('service');
@@ -30,17 +30,17 @@ export default function BookingFlow() {
       else if (requested) setRequestedUnavailable(true);
     }).catch(() => { if (current) setError('We could not load appointment options. Try again or contact the clinic.'); });
     return () => { current = false; };
-  }, [retry, config]);
+  }, [retry, config, transport]);
   useEffect(() => {
     if (!date || !service) return;
     const controller = new AbortController();
     setLoading(true); setSlotsLoaded(false); setSlots([]); setSlot(null); setError('');
-    api('/api/booking/slots?date=' + encodeURIComponent(date) + '&service=' + encodeURIComponent(service), { signal: controller.signal })
+    transport('/api/booking/slots?date=' + encodeURIComponent(date) + '&service=' + encodeURIComponent(service), { signal: controller.signal })
       .then(value => { if (!controller.signal.aborted) { setSlots(value.slots); setSlotsLoaded(true); } })
       .catch(error => { if (!controller.signal.aborted && error.name !== 'AbortError') setError('We could not load appointment times. Try again or choose another date.'); })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [date, service, retry]);
+  }, [date, service, retry, transport]);
   useEffect(() => { heading.current?.focus(); }, [step, result]);
   useEffect(() => { if (error || Object.keys(fieldErrors).length) errorSummary.current?.focus(); }, [error, fieldErrors]);
   const chosen = config?.services.find(item => item.id === service);
@@ -60,7 +60,7 @@ export default function BookingFlow() {
     submitting.current = true; setLoading(true); setError('');
     // Uncertain outcomes must replay the identical body/key, never a new booking.
     if (!snapshot.current) snapshot.current = { serviceId: service, start: slot.start, name, email, key: crypto.randomUUID() };
-    try { setResult(await api('/api/booking/reserve', write('POST', snapshot.current))); }
+    try { setResult(await transport('/api/booking/reserve', write('POST', snapshot.current))); }
     catch (error) {
       if (error.status === 400 && error.code === 'BOOKING_CONTACT_INVALID' &&
           Array.isArray(error.fields) && error.fields.length && error.fields.every(field => ['name', 'email'].includes(field))) {
@@ -75,7 +75,7 @@ export default function BookingFlow() {
   return <main id="main-content" tabIndex={-1} className="booking-shell">
     <p className="eyebrow">Divaa Beauty · Appointments</p>
     <h1>{result?.status === 'confirmed' ? (config?.synthetic ? 'Test appointment confirmed' : 'Appointment confirmed') : result ? 'Confirmation pending' : 'Book an appointment'}</h1>
-    {config?.synthetic && <details className="test-disclosure"><summary>Test booking · no real appointment or email</summary><p>This local preview uses a synthetic database and mock calendar. Saturday 10am–4pm, America/Chicago, is for testing only. Displayed durations are test slot lengths, not approved clinic durations. No payment is collected.</p></details>}
+    {config?.synthetic && <details className="test-disclosure"><summary>Test booking · no real appointment or email</summary><p>{simulation ? 'This QA simulation uses in-memory responses only. No database, calendar or email is contacted.' : 'This local preview uses a synthetic database and mock calendar.'} Saturday 10am–4pm, America/Chicago, is for testing only. Displayed durations are test slot lengths, not approved clinic durations. No payment is collected.</p></details>}
     <noscript><p>Online scheduling requires JavaScript. <a href="tel:+18329929422">Call the clinic</a> for help.</p></noscript>
     {(error || Object.keys(fieldErrors).length > 0) && <div className="notice error-notice" role="alert" tabIndex={-1} ref={errorSummary}>
       {error && <p>{error}</p>}
