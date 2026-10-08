@@ -2,6 +2,7 @@
   --color-canvas:#fef6f0; --color-surface:#fff; --color-soft:#eae7e3;
   --color-text:#111110; --color-muted:#3d3c39; --color-border:#81756b; --color-error:#8b2424;
   --font-body:Arial,Helvetica,sans-serif; --font-display:Georgia,'Times New Roman',serif;
+  --text-service-display-narrow:40px;
   --privacy-surface:var(--color-canvas); --privacy-ink:var(--color-text); --privacy-border:var(--color-border); --privacy-radius:20px;
 }
 *,*::before,*::after {box-sizing:border-box;}
@@ -103,6 +104,7 @@ p {max-width:65ch;}
   .menu-panel {right:16px;width:calc(100vw - 32px);padding:20px;} .menu-services {grid-template-columns:1fr;}
   .home-hero {grid-template-columns:1fr;padding-block:32px;gap:32px;} .hero-copy {padding:8px 0;}
   h1 {font-size:48px;} .hero-intro {font-size:18px;margin-block:24px;}
+  .service-hero h1 {font-size:var(--text-service-display-narrow);}
   .hero-art {min-height:240px;border-radius:44% 44% 4px 4px;} .art-letter {font-size:160px;} .art-caption {bottom:16px;}
   .section-space {padding-block:40px;} .service-grid {grid-template-columns:1fr;gap:12px;}
   .service-card {min-height:190px;padding:24px;} .service-number {margin-bottom:16px;}
