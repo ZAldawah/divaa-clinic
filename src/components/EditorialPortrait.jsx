@@ -14,6 +14,5 @@ export default function EditorialPortrait({ variant = 'warm', placement = 'hero'
       <source type="image/avif" srcSet={srcSet('avif')} sizes={sizesByPlacement[placement]} />
       <img src={`${base}-1536.webp`} srcSet={srcSet('webp')} sizes={sizesByPlacement[placement]} width={1536} height={1024} alt="" loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
     </picture>
-    <figcaption>Illustrative generated models; not patients or treatment results.</figcaption>
   </figure>;
 }
