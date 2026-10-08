@@ -1,0 +1,414 @@
+{
+  "sharp": {
+    "aom": "3.15.1",
+    "archive": "3.8.9",
+    "cairo": "1.18.6",
+    "cgif": "0.5.4",
+    "exif": "0.6.26",
+    "expat": "2.8.5",
+    "ffi": "3.8.0",
+    "fontconfig": "2.18.3",
+    "freetype": "2.14.3",
+    "fribidi": "1.0.17",
+    "glib": "2.90.0",
+    "harfbuzz": "14.5.0",
+    "heif": "1.23.5",
+    "highway": "1.4.0",
+    "imagequant": "2.4.1",
+    "lcms": "2.19.1",
+    "mozjpeg": "0826579",
+    "pango": "1.58.2",
+    "pixman": "0.46.4",
+    "png": "1.6.58",
+    "proxy-libintl": "0.5",
+    "rsvg": "2.63.2",
+    "tiff": "4.7.2",
+    "uhdr": "2.0.2",
+    "vips": "8.18.7",
+    "webp": "1.6.0",
+    "xml2": "2.15.4",
+    "zlib-ng": "2.3.3",
+    "sharp": "0.35.5"
+  },
+  "files": [
+    {
+      "file": "portrait-warm-384.avif",
+      "sha256": "fd2870ade7d9ce990405537ec02663d2a033446d1a0a8f942f1f9512e3fce336",
+      "bytes": 8232,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-384.avif"
+    },
+    {
+      "file": "portrait-warm-384.webp",
+      "sha256": "6b40e28628c65477d8d9b27867f06e0f75ca0bad96bec98e2dff33aa2167e4ad",
+      "bytes": 10776,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-384.webp"
+    },
+    {
+      "file": "portrait-warm-768.avif",
+      "sha256": "b1826077f7768a7fae8bfa60713da4f52c07a56abc11f0cdd2da901c36bab741",
+      "bytes": 24552,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-768.avif"
+    },
+    {
+      "file": "portrait-warm-768.webp",
+      "sha256": "47588856709452745d61be19bca9ed07f4d21bfd258c067ebff791007a648d70",
+      "bytes": 31540,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-768.webp"
+    },
+    {
+      "file": "portrait-warm-1152.avif",
+      "sha256": "191174a561695c9cb9bb751a167a6d5f2e08516ce992afb35ff8bc02e49235d2",
+      "bytes": 47717,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-1152.avif"
+    },
+    {
+      "file": "portrait-warm-1152.webp",
+      "sha256": "2407ad580f83664fdd0e492b0bf478eb23031947dc31e0822f3a286066ab1544",
+      "bytes": 60360,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-1152.webp"
+    },
+    {
+      "file": "portrait-warm-1536.avif",
+      "sha256": "ed5d48c7b14261892b08ee05407d8cdf52e69883be0a910edfd0e065b3351ba5",
+      "bytes": 75676,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-1536.avif"
+    },
+    {
+      "file": "portrait-warm-1536.webp",
+      "sha256": "24b397625eb22551d4028a62164ebf9c95a85c16a3d64eae7b65cc4695f4e812",
+      "bytes": 97196,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "17e12c3535c4cbcbe2d7dceab58def50a996a16fde1f9db54dd3c56b88cd1cef",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home hero and all nine service heroes",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-warm-1536.webp"
+    },
+    {
+      "file": "portrait-natural-384.avif",
+      "sha256": "d7c5bcaeee57d5e61839204c7a1c8846ad0b9f37b4a316948f576fe63ed552ac",
+      "bytes": 6311,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-384.avif"
+    },
+    {
+      "file": "portrait-natural-384.webp",
+      "sha256": "9d6726ad46f0d8375cc00f05ce46cccac3b326ad6edd1d6d20fbdf68cca92dc3",
+      "bytes": 7378,
+      "width": 384,
+      "height": 256,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-384.webp"
+    },
+    {
+      "file": "portrait-natural-768.avif",
+      "sha256": "7f8a5d44834d84b005d7253c9bb613fc8b27ec09c28c2c56fb19da61a12da553",
+      "bytes": 18661,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-768.avif"
+    },
+    {
+      "file": "portrait-natural-768.webp",
+      "sha256": "4d6aa110f33782abe44ae803d4895a80f559796531386cda1f6d22e2776ce8a0",
+      "bytes": 24546,
+      "width": 768,
+      "height": 512,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-768.webp"
+    },
+    {
+      "file": "portrait-natural-1152.avif",
+      "sha256": "ceac796e1a2bc54c7a95e4d747bf6dd080542d63e500902f2306a5608e65917f",
+      "bytes": 35909,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-1152.avif"
+    },
+    {
+      "file": "portrait-natural-1152.webp",
+      "sha256": "127e8a154168ecf53598e7d2c86568e5be0ea6ffeb231f3c76d9267ce0f3c53a",
+      "bytes": 48412,
+      "width": 1152,
+      "height": 768,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-1152.webp"
+    },
+    {
+      "file": "portrait-natural-1536.avif",
+      "sha256": "2ebb17864ce3ab34a01cedefd40c7cb1c79c1f3a7f48527cd47d9eb29c143beb",
+      "bytes": 57085,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-1536.avif"
+    },
+    {
+      "file": "portrait-natural-1536.webp",
+      "sha256": "904b3f31f66badc39b6b0dbabb5452e142d381e5079df62818141526e3252c1c",
+      "bytes": 79128,
+      "width": 1536,
+      "height": 1024,
+      "parentSha256": "fa1d12d1c7234f0573a4dd39585182a45393e00e3e76998faf3539023cc3b551",
+      "sourceRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 1024
+      },
+      "fit": "contain",
+      "position": "center",
+      "settings": {
+        "quality": 85,
+        "effort": 6
+      },
+      "usage": "Home service directory",
+      "status": "Source and encoding PASS; integrated placement review pending",
+      "publicPath": "/images/editorial/portrait-natural-1536.webp"
+    }
+  ],
+  "integrationBase": "7b9a9ec6d38a92dd1f83d8cce3e3736dfce8ffbb",
+  "reviewDocument": "/AGE/issues/AGE-31#document-derivative-verdicts",
+  "reviewRevision": "d0e844df-4d9b-42cd-a4f9-bf17b83cee3c"
+}
