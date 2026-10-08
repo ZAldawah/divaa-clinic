@@ -17,7 +17,16 @@ function result(row) {return {reference:row.id,status:row.status,start:new Date(
 async function find(db,id){return (await db.query('SELECT * FROM booking_reservations WHERE id=$1',[id])).rows[0];}
 function replay(row,hash){if(row.request_hash!==hash)fail(409,'This request reference was already used.');if(row.status==='rejected')fail(409,'That time is no longer available. Please choose another.');return result(row);}
 export async function book(db,upstream,input,now=Date.now()) {
- const data=bookingSchema.parse(input),id=digest(data.key),hash=digest(JSON.stringify({...data,email:data.email.toLowerCase()}));
+ const parsed=bookingSchema.safeParse(input);
+ if(!parsed.success) {
+  // Only this pre-write contact rejection authorizes editing a submitted request.
+  // Never tag downstream Zod/provider errors as proof of non-creation.
+  if(parsed.error.issues.every(issue=>['name','email'].includes(issue.path[0]))) {
+   Object.assign(parsed.error,{code:'BOOKING_CONTACT_INVALID',fields:[...new Set(parsed.error.issues.map(issue=>issue.path[0]))]});
+  }
+  throw parsed.error;
+ }
+ const data=parsed.data,id=digest(data.key),hash=digest(JSON.stringify({...data,email:data.email.toLowerCase()}));
  const existing=await find(db,id);if(existing)return replay(existing,hash);
  const {settings,version}=await readSettings(db),start=Date.parse(data.start);
  const date=Temporal.Instant.fromEpochMilliseconds(start).toZonedDateTimeISO(settings.timezone).toPlainDate().toString();

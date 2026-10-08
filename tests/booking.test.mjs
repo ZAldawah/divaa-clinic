@@ -45,6 +45,20 @@ test('concurrent clients cannot reserve overlapping spans; retries preserve one 
   await assert.rejects(book(db,cal,{...a,name:'Changed'}),{status:409});
   const stored=(await db.query('SELECT contact FROM booking_reservations')).rows[0].contact;assert(!stored.includes('Avery'));assert.equal(JSON.parse(unseal(stored)).name,'Avery Example');await db.end();
 });
+test('invalid contact writes nothing; corrected double submit creates one reservation and event',async()=>{
+  const {db,cal,events}=await fixture();
+  try {
+    await assert.rejects(book(db,cal,{...request(),email:'avery..example@example.test'}),error=>error.code==='BOOKING_CONTACT_INVALID' && error.fields.includes('email'));
+    assert.equal((await db.query('SELECT COUNT(*) n FROM booking_reservations')).rows[0].n,0);
+    assert.equal((await db.query('SELECT COUNT(*) n FROM booking_jobs')).rows[0].n,0);
+    assert.equal(events.size,0);
+    const corrected=request();
+    await Promise.all([book(db,cal,corrected),book(db,cal,corrected)]);
+    assert.equal((await book(db,cal,corrected)).status,'confirmed');
+    assert.equal((await db.query('SELECT COUNT(*) n FROM booking_reservations')).rows[0].n,1);
+    assert.equal(events.size,1);
+  } finally { await db.end(); }
+});
 test('upstream failure creates no reservation; lost insert response retains hold and reconciles',async()=>{
   const {db,cal,events}=await fixture();
   await assert.rejects(availability(db,{busy:async()=>{throw new Error('outage');}},'2026-10-08','synthetic-consultation',now));

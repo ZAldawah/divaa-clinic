@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Temporal } from '@js-temporal/polyfill';
+import { contactShape } from './contact-schema.mjs';
 
 export const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(v => {
   try { Temporal.PlainDate.from(v); return true; } catch { return false; }
@@ -17,7 +18,7 @@ export const settingsSchema = z.object({
   noticeMinutes:z.number().int().min(0).max(43200), horizonDays:z.number().int().min(1).max(180), incrementMinutes:z.number().int().min(5).max(60),
 }).strict();
 export const bookingSchema = z.object({
-  serviceId:z.string().max(40), start:z.iso.datetime(), name:z.string().trim().min(1).max(100), email:z.email().max(254), key:z.uuid(),
+  serviceId:z.string().max(40), start:z.iso.datetime(), ...contactShape, key:z.uuid(),
 }).strict();
 export const syntheticSettings = {
   timezone:'America/Chicago', weekly:Array.from({length:7},(_,i)=>i<5?[{start:'09:00',end:'17:00'}]:[]), overrides:[],

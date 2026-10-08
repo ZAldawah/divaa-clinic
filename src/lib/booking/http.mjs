@@ -25,7 +25,8 @@ export function endpoint(fn,{admin=false,write=false,bucket='read',max=120}={}) 
       else await clientLimit(getStore(),request,bucket,max);
       return await fn(request,session);
     } catch(e) {
-      if(e instanceof ZodError) return json({error:'Check the supplied fields and try again.'},400);
+      if(e instanceof ZodError) return json({error:'Check the supplied fields and try again.',
+        ...(e.code==='BOOKING_CONTACT_INVALID'?{code:e.code,fields:e.fields}:{})},400);
       const status=[400,401,403,409,413,415,429,503].includes(e.status)?e.status:503;
       return json({error:status===503?'This service is temporarily unavailable. Please try again or contact the clinic.':e.message},status);
     }

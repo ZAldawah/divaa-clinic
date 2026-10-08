@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { contactSchema } from '@/lib/booking/contact-schema.mjs';
 export async function api(url, options) {
   const response = await fetch(url, { cache: 'no-store', ...options });
   const data = await response.json();
-  if (!response.ok) throw Object.assign(new Error(data.error || data.message || 'Please try again.'), { status: response.status });
+  if (!response.ok) throw Object.assign(new Error(data.error || data.message || 'Please try again.'), { status: response.status, code: data.code, fields: data.fields });
   return data;
 }
 export const write = (method, value) => ({ method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(value) });
@@ -46,8 +47,11 @@ export default function BookingFlow() {
   function detailsSubmit(event) {
     event.preventDefault();
     const errors = {};
-    if (!name.trim()) errors.name = 'Enter your name.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errors.email = 'Enter a valid email address.';
+    const parsed = contactSchema.safeParse({ name: name.trim(), email: email.trim() });
+    if (!parsed.success) for (const issue of parsed.error.issues) {
+      if (issue.path[0] === 'name') errors.name = 'Enter your name (up to 100 characters).';
+      if (issue.path[0] === 'email') errors.email = 'Enter a valid email address.';
+    }
     setFieldErrors(errors);
     if (!Object.keys(errors).length) { setName(name.trim()); setEmail(email.trim()); setStep(3); }
   }
@@ -58,7 +62,11 @@ export default function BookingFlow() {
     if (!snapshot.current) snapshot.current = { serviceId: service, start: slot.start, name, email, key: crypto.randomUUID() };
     try { setResult(await api('/api/booking/reserve', write('POST', snapshot.current))); }
     catch (error) {
-      if (error.status === 409) {
+      if (error.status === 400 && error.code === 'BOOKING_CONTACT_INVALID' &&
+          Array.isArray(error.fields) && error.fields.length && error.fields.every(field => ['name', 'email'].includes(field))) {
+        snapshot.current = null; setResult(null); setStep(2);
+        setFieldErrors(Object.fromEntries(error.fields.map(field => [field, field === 'email' ? 'Enter a valid email address. No appointment was created.' : 'Enter your name (up to 100 characters). No appointment was created.'])));
+      } else if (error.status === 409) {
         snapshot.current = null; setResult(null); setSlot(null); setStep(1); setRetry(value => value + 1);
         setConflict(true);
       } else setError('We could not confirm the outcome. Keep this page open and check confirmation using the same request. Do not make another booking.');
