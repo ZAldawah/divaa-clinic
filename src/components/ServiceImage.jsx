@@ -6,6 +6,8 @@ const descriptions = {
   rrf: 'Gloved finger indicating the jawline',
   facials: 'Facial mask being brushed onto a cheek',
   collagen: 'Close view of natural cheek skin texture',
+  prp: 'Two capped empty collection tubes beside gauze',
+  microneedling: 'Capped pen-shaped skincare instrument resting on gauze',
 };
 export const hasServiceImage = id => Object.hasOwn(descriptions, id);
 const widths = [384, 768, 1152, 1536];
