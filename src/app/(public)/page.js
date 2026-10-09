@@ -5,7 +5,7 @@ export const metadata = { alternates: { canonical: '/' } };
 export default function Home() {
   return <main id="main-content" tabIndex={-1}>
     <section className="home-hero content-width editorial-hero">
-      <div className="hero-copy"><p className="eyebrow">Katy, Texas · Divaa Beauty</p><h1>Divaa Beauty<br/><em>Clinic</em></h1><p className="hero-intro">Explore our services and book a consultation.</p><div className="action-row"><a className="button" href="/book?service=consulting">Book a consultation <span aria-hidden="true">↗</span></a><a className="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a></div></div>
+      <div className="hero-copy"><p className="eyebrow">Houston, Texas · Divaa Beauty</p><h1>Divaa Beauty<br/><em>Clinic</em></h1><p className="hero-intro">Explore our services and book a consultation.</p><div className="action-row"><a className="button" href="/book?service=consulting">Book a consultation <span aria-hidden="true">↗</span></a><a className="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a></div></div>
       <EditorialPortrait priority />
     </section>
     <section className="services-section section-space editorial-section" id="services" aria-labelledby="services-heading"><div className="content-width">
@@ -13,6 +13,6 @@ export default function Home() {
       <div className="service-directory"><div className="service-grid">{services.map(service => <a className="service-card service-card-image" href={'/' + service.id} key={service.id}><ServiceImage serviceId={service.id} card /><div className="service-card-label"><h3>{service.name}</h3><span className="card-action" aria-hidden="true">↗</span></div></a>)}</div></div>
     </div></section>
     <section className="content-width consultation-section section-space editorial-section"><p className="eyebrow">A place to begin</p><h2>Have questions?<br/><em>Start a conversation.</em></h2><p>Choose Consulting in our appointment options, or contact the clinic.</p><a className="button" href="/book?service=consulting">Book a consultation <span aria-hidden="true">↗</span></a></section>
-    <section className="contact-section" id="contact"><div className="content-width contact-grid"><div><p className="eyebrow">Find Divaa</p><h2>Here in Katy.</h2></div><address>Divaa Beauty Clinic<br/>26077 Nelson Way<br/>Katy, TX 77494</address><div><a className="contact-phone" href="tel:+18329929422">832-992-9422</a><a className="text-link" href="sms:8329929422">Text the clinic <span aria-hidden="true">↗</span></a></div></div></section>
+    <section className="contact-section" id="contact"><div className="content-width contact-grid"><div><p className="eyebrow">Find Divaa</p><h2>Here in Houston.</h2></div><address>Divaa Beauty Clinic<br/>11777 Katy Fwy<br/>Houston, TX 77079</address><div><a className="contact-phone" href="tel:+18329929422">832-992-9422</a><a className="text-link" href="sms:8329929422">Text the clinic <span aria-hidden="true">↗</span></a></div></div></section>
   </main>;
 }

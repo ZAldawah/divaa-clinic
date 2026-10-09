@@ -114,7 +114,7 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
           <button>Review appointment</button>
         </form>}
         {step === 3 && <section aria-label="Review details">
-          <dl className="review-details"><div><dt>Appointment</dt><dd>{chosen.name}{!config.synthetic && <> {chosen.duration} minutes</>}</dd></div><div><dt>When</dt><dd>{when(slot.start, config.timezone)}{!config.synthetic && <><br/>Until {when(slot.end, config.timezone)}</>}</dd></div><div><dt>Your details</dt><dd>{name}<br/>{email}</dd></div><div><dt>Clinic</dt><dd>26077 Nelson Way, Katy, TX 77494</dd></div></dl>
+          <dl className="review-details"><div><dt>Appointment</dt><dd>{chosen.name}{!config.synthetic && <> {chosen.duration} minutes</>}</dd></div><div><dt>When</dt><dd>{when(slot.start, config.timezone)}{!config.synthetic && <><br/>Until {when(slot.end, config.timezone)}</>}</dd></div><div><dt>Your details</dt><dd>{name}<br/>{email}</dd></div><div><dt>Clinic</dt><dd>11777 Katy Fwy, Houston, TX 77079</dd></div></dl>
           <p>Availability is checked again when you send your request. Contact the clinic for appointment policies. No payment is collected here.</p>
           {!snapshot.current && <div className="edit-actions"><button className="secondary" onClick={() => setStep(1)}>Edit time</button><button className="secondary" onClick={() => setStep(2)}>Edit details</button></div>}
           <button disabled={loading} onClick={submit}>{loading ? 'Checking request status…' : snapshot.current ? 'Check request status' : 'Send appointment request'}</button>
