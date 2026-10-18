@@ -41,6 +41,7 @@ test('book status replay recovers matching pending event once; wrong hash cannot
   const outbox = new Map();
   let inserts = 0;
   let matchingEventReads = 0;
+  let claims = 0;
   let confirmationWrites = 0;
 
   const db = {
@@ -48,6 +49,7 @@ test('book status replay recovers matching pending event once; wrong hash cannot
     async query(sql, params = []) {
       statements.push(sql);
       if (sql.includes('WITH candidate AS')) {
+        claims++;
         return { rows: row.status === 'pending' ? [{ reservation_id: reference, lease_token: 'lease-1', attempted: true }] : [] };
       }
       if (sql.includes('SELECT * FROM booking_reservations')) return { rows: [row] };
@@ -81,11 +83,24 @@ test('book status replay recovers matching pending event once; wrong hash cannot
       async get() { matchingEventReads++; return { start, end }; },
       async insert() { inserts++; throw new Error('matching event must not be inserted again'); },
     };
+
+    await assert.rejects(book(db, upstream, { ...input, name: 'Different payload' }), { status: 409 });
+    assert.equal(row.status, 'pending');
+    assert.equal(claims, 0, 'hash mismatch must be rejected before claiming recovery');
+    assert.equal(matchingEventReads, 0, 'hash mismatch must not read the upstream event');
+    assert.equal(inserts, 0);
+    assert.equal(confirmationWrites, 0);
+    assert.equal(outbox.size, 0);
+    assert.equal(statements.some(sql => /INSERT INTO booking_(reservations|jobs)/.test(sql)), false,
+      'recovery must not create another reservation or job');
+
     const result = await book(db, upstream, input);
     assert.equal(result.status, 'confirmed');
+    assert.equal(result.reference, reference);
     assert.equal(matchingEventReads, 1);
     assert.equal(inserts, 0);
     assert.equal(confirmationWrites, 1);
+    assert.equal(claims, 1);
     assert.equal(outbox.size, 1);
 
     const [notice] = outbox.values();
@@ -101,11 +116,17 @@ test('book status replay recovers matching pending event once; wrong hash cannot
     assert.match(message.text, /America\/Chicago/);
     assert(statements.some(sql => sql.includes('UPDATE booking_reservations SET status=$2')));
 
-    await assert.rejects(book(db, upstream, { ...input, name: 'Different payload' }), { status: 409 });
-    assert.equal(matchingEventReads, 1, 'hash mismatch must be rejected before upstream recovery');
+    const replayed = await book(db, upstream, input);
+    assert.deepEqual(replayed, result, 'same valid input replay must return the stable confirmation');
+    assert.equal(row.status, 'confirmed');
+    assert.equal(claims, 1, 'confirmed replay must not claim recovery again');
+    assert.equal(matchingEventReads, 1, 'confirmed replay must not re-read the matching event');
     assert.equal(inserts, 0);
     assert.equal(confirmationWrites, 1);
-    assert.equal(outbox.size, 1, 'replay must not enqueue a second notice');
+    assert.equal(outbox.size, 1, 'same-input replay must retain exactly one notice');
+    assert.equal([...outbox.values()].filter(notice => notice.reference === reference).length, 1);
+    assert.equal(statements.some(sql => /INSERT INTO booking_(reservations|jobs)/.test(sql)), false,
+      'recovery and replay must not insert a reservation or job');
   } finally {
     for (const [name, value] of Object.entries({
       BOOKING_ENCRYPTION_KEY: previous.key,
