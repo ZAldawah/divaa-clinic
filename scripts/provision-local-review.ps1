@@ -7,7 +7,7 @@ function Save-Stage([string] $Stage) { $value=[ordered]@{database=$dbName;stage=
 if($env:OS -ne 'Windows_NT' -or [string]::IsNullOrWhiteSpace($env:LOCALAPPDATA)) { throw 'Run in the intended Windows user context.' }
 $source='C:\Users\zhald\Documents\Paperclip-Runtime\start-divaa-redesign.mjs'; if(-not (Test-Path -LiteralPath $source -PathType Leaf)) { throw 'Approved host launcher source is unavailable.' }
 # Read source text only. Do not execute it or open its referenced login file.
-$sourceText=[IO.File]::ReadAllText($source); $match=[regex]::Match($sourceText,"const sql\s*=\s*postgres\('([^']+)'\)")
+$sourceText=[IO.File]::ReadAllText($source); $match=[regex]::Match($sourceText,"const sql\s*=\s*postgres\('([^']+)'\s*,")
 if(-not $match.Success) { throw 'Admin connection declaration was not found in approved source.' }
 $adminUrl=[Uri]$match.Groups[1].Value
 if($adminUrl.Host -ne '127.0.0.1' -or $adminUrl.Port -ne 54329 -or $adminUrl.AbsolutePath -ne '/postgres' -or $adminUrl.UserInfo.Length -eq 0) { throw 'Approved admin connection did not match the loopback postgres contract.' }
@@ -42,12 +42,14 @@ const url=new URL(admin); if(url.hostname!=='127.0.0.1'||url.port!=='54329'||url
 const sql=postgres(admin,{max:1}); try { const exists=await sql`select 1 from pg_database where datname=${db}`; if(exists.length) throw Error('Fresh database name already exists'); await sql.unsafe(`CREATE ROLE "${role}" LOGIN PASSWORD '${pw}' NOSUPERUSER NOCREATEDB NOCREATEROLE`); await sql.unsafe(`CREATE DATABASE "${db}" OWNER "${role}"`); } finally { await sql.end(); }
 '@
   $env:DIVAA_ADMIN_URL=$adminUrl.AbsoluteUri; $env:DIVAA_DB=$dbName; $env:DIVAA_ROLE=$role; $env:DIVAA_DB_PASSWORD=$dbPassword
-  $provision | node --input-type=module -; if($LASTEXITCODE -ne 0) { throw 'Fresh database provisioning failed; created artifacts are retained.' }; Save-Stage 'database-created'
+  $provision | node --input-type=module - *> $null; if($LASTEXITCODE -ne 0) { throw 'Fresh database provisioning failed; created artifacts are retained.' }; Save-Stage 'database-created'
   $env:BOOKING_SYNTHETIC_DATABASE_URL=$dbUrl; $env:DATABASE_URL=$dbUrl; $env:BOOKING_ALLOW_SYNTHETIC='true'; $env:BOOKING_CALENDAR_MODE='mock'; $env:BOOKING_ENCRYPTION_KEY=[Convert]::ToBase64String($key); $env:BOOKING_ADMIN_PASSWORD=$staffPassword; $env:BOOKING_ADMIN_EMAIL='staff@example.test'; $env:BOOKING_EMAIL_ENABLED='false'
-  & node.exe 'scripts/booking-setup.mjs' --synthetic --seed --admin; if($LASTEXITCODE -ne 0) { throw 'Fresh synthetic schema/setup failed; created artifacts are retained.' }; Save-Stage 'schema-seeded-admin-created'
+  & node.exe 'scripts/booking-setup.mjs' --synthetic --seed --admin *> $null; if($LASTEXITCODE -ne 0) { throw 'Fresh synthetic schema/setup failed; created artifacts are retained.' }; Save-Stage 'schema-seeded-admin-created'
   # Check key decryptability and effective protected ACL without printing values.
   $opened=[Security.Cryptography.ProtectedData]::Unprotect($sealed,$null,[Security.Cryptography.DataProtectionScope]::CurrentUser); $decryptable=($opened.Length -gt 0); [Array]::Clear($opened,0,$opened.Length)
-  Write-Output (([ordered]@{database=$dbName;role=$role;configPath=$configPath;aclProtected=(Get-Acl -LiteralPath $configPath).AreAccessRulesProtected;keyDecryptable=$decryptable;schemaSeeded=$true;gmailEnabled=$false;startCommand='powershell.exe -NoProfile -File .\scripts\local-review.ps1'}|ConvertTo-Json -Compress))
+  $acl=Get-Acl -LiteralPath $configPath; $allowed=@($acl.Access | Where-Object { $_.AccessControlType -eq [Security.AccessControl.AccessControlType]::Allow -and -not $_.IsInherited } | ForEach-Object { $_.IdentityReference.Translate([Security.Principal.SecurityIdentifier]).Value } | Sort-Object -Unique); $expected=@($identity,'SYSTEM' | ForEach-Object { ([Security.Principal.NTAccount]$_).Translate([Security.Principal.SecurityIdentifier]).Value } | Sort-Object -Unique)
+  if(-not $acl.AreAccessRulesProtected -or ($allowed -join ',') -ne ($expected -join ',')) { throw 'Protected configuration ACL allowlist failed verification.' }
+  Write-Output (([ordered]@{database=$dbName;role=$role;configPath=$configPath;aclAllowlistVerified=$true;keyDecryptable=$decryptable;schemaSeeded=$true;gmailEnabled=$false;startCommand='powershell.exe -NoProfile -File .\scripts\local-review.ps1'}|ConvertTo-Json -Compress))
   Save-Stage 'ready'
 } catch { throw 'Fresh-only provisioning failed. Preserve database, role, and protected artifacts for reconciliation; no cleanup was attempted.' }
 finally { foreach($n in @('DIVAA_ADMIN_URL','DIVAA_DB','DIVAA_ROLE','DIVAA_DB_PASSWORD','BOOKING_SYNTHETIC_DATABASE_URL','DATABASE_URL','BOOKING_ENCRYPTION_KEY','BOOKING_ADMIN_PASSWORD')) { Remove-Item "Env:$n" -ErrorAction SilentlyContinue }; foreach($b in @($pwBytes,$key,$staffBytes,$plain,$sealed)) { if($b) { [Array]::Clear($b,0,$b.Length) } }; Remove-Variable adminUrl,configJson,dbUrl,dbPassword,staffPassword -ErrorAction SilentlyContinue }

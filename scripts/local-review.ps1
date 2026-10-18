@@ -12,12 +12,16 @@ Assert-NoReparseComponents $root
 if(-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw 'Provision the local synthetic review instance first.' }
 $acl=Get-Acl -LiteralPath $path
 if(-not $acl.AreAccessRulesProtected) { throw 'Review configuration ACL is not protected.' }
+$identity=[Security.Principal.WindowsIdentity]::GetCurrent().Name
+$allowed=@($acl.Access | Where-Object { $_.AccessControlType -eq [Security.AccessControl.AccessControlType]::Allow -and -not $_.IsInherited } | ForEach-Object { $_.IdentityReference.Translate([Security.Principal.SecurityIdentifier]).Value } | Sort-Object -Unique)
+$expected=@($identity,'SYSTEM' | ForEach-Object { ([Security.Principal.NTAccount]$_).Translate([Security.Principal.SecurityIdentifier]).Value } | Sort-Object -Unique)
+if(($allowed -join ',') -ne ($expected -join ',')) { throw 'Review configuration ACL allowlist failed validation.' }
 $sealed=[IO.File]::ReadAllBytes($path); $plain=$null; $config=$null; $key=$null
 try {
   $plain=[Security.Cryptography.ProtectedData]::Unprotect($sealed,$null,[Security.Cryptography.DataProtectionScope]::CurrentUser)
   $config=[Text.Encoding]::UTF8.GetString($plain) | ConvertFrom-Json
   $uri=[Uri]$config.databaseUrl
-  if($uri.Host -notin @('127.0.0.1','::1') -or $uri.Port -ne 54329 -or $uri.AbsolutePath -notmatch '^/divaa_synthetic_[a-z0-9_]+$' -or $config.adminPassword.Length -lt 14) { throw 'Saved local instance configuration failed validation.' }
+  if($uri.Host -notin @('127.0.0.1','::1') -or $uri.Port -ne 54329 -or $uri.AbsolutePath -notmatch '^/divaa_synthetic_[a-z0-9_]+$' -or $uri.AbsolutePath.TrimStart('/') -ne $config.database -or $uri.AbsolutePath.TrimStart('/') -eq 'divaa_synthetic_1792308261799' -or $config.adminPassword.Length -lt 14) { throw 'Saved local instance configuration failed validation.' }
   $key=[Convert]::FromBase64String($config.encryptionKey)
   if($key.Length -ne 32) { throw 'Saved local encryption key is invalid.' }
   $env:BOOKING_SYNTHETIC_DATABASE_URL=$config.databaseUrl; $env:BOOKING_ADMIN_PASSWORD=$config.adminPassword
