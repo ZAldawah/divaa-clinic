@@ -61,6 +61,32 @@ test('invalid contact writes nothing; corrected double submit creates one reserv
     assert.equal(events.size,1);
   } finally { await db.end(); }
 });
+test('notification failure rolls back confirmation, and recovery enqueues once after confirmation',async()=>{
+  const {db,cal,events}=await fixture();
+  try {
+    const input=request();
+    await db.query(`CREATE FUNCTION reject_test_notice() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'synthetic outbox failure'; END $$`);
+    await db.query('CREATE TRIGGER reject_test_notice BEFORE INSERT ON booking_notification_outbox FOR EACH ROW EXECUTE FUNCTION reject_test_notice()');
+    const pending=await book(db,cal,input);
+    assert.equal(pending.status,'pending');
+    assert.equal(events.size,1,'upstream event remains available for reconciliation');
+    assert.equal((await db.query('SELECT status FROM booking_reservations')).rows[0].status,'pending','confirmation and outbox write share one rollback boundary');
+    assert.equal((await db.query('SELECT COUNT(*) AS n FROM booking_notification_outbox')).rows[0].n,0);
+    await db.query('DROP TRIGGER reject_test_notice ON booking_notification_outbox');
+    await db.query('DROP FUNCTION reject_test_notice()');
+    await db.query("UPDATE booking_jobs SET next_at=clock_timestamp()-interval '1 second'");
+    const recovery=await reconcile(db,cal);
+    assert.equal(recovery.confirmed,1);
+    const replay=await book(db,cal,input);
+    assert.equal(replay.status,'confirmed');
+    assert.equal(events.size,1,'replay observes the existing event instead of inserting a second');
+    const notices=(await db.query('SELECT reference,status,idempotency_key FROM booking_notification_outbox')).rows;
+    assert.equal(notices.length,1);
+    assert.equal(notices[0].reference,replay.reference);
+    assert.equal(notices[0].status,'disabled');
+    assert.equal(notices[0].idempotency_key,`booking-confirmation:${replay.reference}`);
+  } finally { await db.end(); }
+});
 test('upstream failure creates no reservation; lost insert response retains hold and reconciles',async()=>{
   const {db,cal,events}=await fixture();
   await assert.rejects(availability(db,{busy:async()=>{throw new Error('outage');}},'2026-10-08','synthetic-consultation',now));
