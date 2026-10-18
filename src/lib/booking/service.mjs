@@ -29,7 +29,14 @@ export async function book(db,upstream,input,now=Date.now()) {
   throw parsed.error;
  }
  const data=parsed.data,id=digest(data.key),hash=digest(JSON.stringify({...data,email:data.email.toLowerCase()}));
- const existing=await find(db,id);if(existing)return replay(existing,hash);
+ const existing=await find(db,id);
+ if(existing){
+  // Validate the idempotency payload before attempting recovery. A matching
+  // pending/review request may safely re-observe its stable upstream event.
+  replay(existing,hash);
+  if(existing.status==='pending' || existing.status==='review') await deliver(db,upstream,id);
+  return replay(await find(db,id),hash);
+ }
  const {settings,version}=await readSettings(db),start=Date.parse(data.start);
  const date=Temporal.Instant.fromEpochMilliseconds(start).toZonedDateTimeISO(settings.timezone).toPlainDate().toString();
  const available=await availability(db,upstream,date,data.serviceId,now);
