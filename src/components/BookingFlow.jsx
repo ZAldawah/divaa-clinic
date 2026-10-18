@@ -154,7 +154,7 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
             {calendarError && <button className="secondary" type="button" onClick={() => setRetry(value => value + 1)}>Retry date check</button>}
           </section>
           {conflict && <p className="notice" role="alert">That time is no longer available. Choose another appointment time.</p>}<p>Clinic timezone: <strong>{config.timezone}</strong></p>
-          <p role="status">{loading ? 'Checking available times…' : date && slotsLoaded && !slots.length && !error ? 'No appointments are available on this date. Choose another date.' : ''}</p>
+          <p role="status">{loading ? 'Checking available times…' : error ? error : !date ? 'Select an available date to see times.' : slotsLoaded && !slots.length ? 'No appointments are available on this date. Choose another date.' : ''}</p>
           <fieldset><legend>Available times</legend><div className="slot-grid">{slots.map(item => <label className="choice" key={item.start}><input type="radio" name="slot" required checked={slot?.start === item.start} onChange={() => { setSlot(item); setConflict(false); }}/><span>{new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZoneName: 'short', timeZone: config.timezone }).format(new Date(item.start))}</span></label>)}</div></fieldset>
           <button disabled={!slot || loading}>Continue</button>
         </form>}

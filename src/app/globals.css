@@ -129,18 +129,21 @@ p {max-width:65ch;}
 .calendar-grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.25rem}
 .calendar-weekday {padding:.5rem .1rem;text-align:center;font-size:.8rem;font-weight:700;color:var(--color-muted,#615c58)}
 .calendar-day {display:flex;min-width:0;min-height:3.25rem;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;padding:.2rem;border:1px solid transparent;border-radius:.65rem;background:transparent;color:var(--color-ink,#292522);font:inherit;cursor:pointer}
-.calendar-day small {font-size:.58rem;line-height:1.1;color:#615c58}
-.calendar-day.is-available {border-color:#9db5a2;background:#edf4ee;font-weight:700}
-.calendar-day.is-available small {color:#245537}
+.calendar-day small {font-size:.62rem;line-height:1.1;color:#514b46}
+.calendar-day.is-available {border:2px solid #245537;background:#e2efe6;color:#173b27;font-weight:700}
+.calendar-day.is-available small {color:#173b27}
+.calendar-day:not(.is-available):not(.outside-month) {border-color:#d8d1cb;background:#f5f2ef;color:#514b46}
 .calendar-day.outside-month {opacity:.65}
 .calendar-day.is-selected {outline:3px solid var(--color-clay,#a7654e);outline-offset:1px}
 .calendar-day:focus-visible,.calendar-heading button:focus-visible {outline:3px solid #263f32;outline-offset:2px}
 .calendar-day:not(.is-available) {cursor:default}
 @media (max-width:420px) {
-  .availability-calendar {margin-inline:-.35rem;padding:.65rem .5rem}
-  .calendar-grid {gap:.12rem}
-  .calendar-day {min-height:2.9rem;border-radius:.5rem}
-  .calendar-day small {font-size:.53rem}
+  .availability-calendar {margin-inline:0;padding:.65rem .35rem}
+  .calendar-grid {gap:.2rem}
+  .calendar-day {min-height:2.8rem;padding:.1rem;border-radius:.45rem;font-size:.9rem}
+  .calendar-day small {display:none}
+  .calendar-day.is-available::after {content:"•";font-size:.75rem;line-height:.7;color:#173b27}
+  .calendar-key {font-size:.85rem}
 }
 
 /* Direction A: exact reviewed full-frame images; no clipping or runtime re-encoding. */
