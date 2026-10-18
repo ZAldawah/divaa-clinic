@@ -139,8 +139,8 @@ p {max-width:65ch;}
 .calendar-day:not(.is-available) {cursor:default}
 @media (max-width:420px) {
   .availability-calendar {margin-inline:0;padding:.65rem .35rem}
-  .calendar-grid {gap:.2rem}
-  .calendar-day {min-height:2.8rem;padding:.1rem;border-radius:.45rem;font-size:.9rem}
+  .calendar-grid {gap:.1rem}
+  .calendar-day {min-height:2.8rem;padding:0;border-radius:.4rem;font-size:.875rem}
   .calendar-day small {display:none}
   .calendar-day.is-available::after {content:"•";font-size:.75rem;line-height:.7;color:#173b27}
   .calendar-key {font-size:.85rem}
