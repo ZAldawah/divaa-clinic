@@ -52,14 +52,18 @@ $fileAcl=[Security.AccessControl.FileSecurity]::new();$fileAcl.SetAccessRuleProt
 Save-Stage 'protected-config-created'
 }
 try {
-  $module=Join-Path (Get-Location) 'node_modules\postgres'; if(-not (Test-Path -LiteralPath $module)) { throw 'Workspace postgres package is unavailable.' }
+  $runtimePackage='C:\Users\zhald\Documents\Paperclip-Runtime\package.json'; if(-not (Test-Path -LiteralPath $runtimePackage -PathType Leaf)) { throw 'Approved Runtime package manifest is unavailable.' }
   if($Resume) { $provision=@'
-import postgres from 'postgres';
+import { createRequire } from 'node:module';
+const require=createRequire('C:/Users/zhald/Documents/Paperclip-Runtime/package.json');
+const postgres=require('postgres');
 const admin=process.env.DIVAA_ADMIN_URL,db=process.env.DIVAA_DB,role=process.env.DIVAA_ROLE,pw=process.env.DIVAA_DB_PASSWORD;
 const url=new URL(admin); if(url.hostname!=='127.0.0.1'||url.port!=='54329'||url.pathname!=='/postgres'||db==='divaa_synthetic_1792308261799') throw Error('Admin/database guard failed');
 const sql=postgres(admin,{max:1}); try { const databases=await sql`select 1 from pg_database where datname=${db}`; const roles=await sql`select 1 from pg_roles where rolname=${role}`; if(databases.length||roles.length) throw Object.assign(Error(),{code:'RECORDED_OBJECT_PRESENT'}); await sql.unsafe(`CREATE ROLE "${role}" LOGIN PASSWORD '${pw}' NOSUPERUSER NOCREATEDB NOCREATEROLE`); await sql.unsafe(`CREATE DATABASE "${db}" OWNER "${role}"`); process.stdout.write(JSON.stringify({ok:true})+'\n'); } catch(e) { process.stdout.write(JSON.stringify({ok:false,type:e?.name||'Error',code:typeof e?.code==='string'?e.code:'UNCLASSIFIED'})+'\n'); process.exitCode=1; } finally { await sql.end(); }
 '@ } else { $provision=@'
-import postgres from 'postgres';
+import { createRequire } from 'node:module';
+const require=createRequire('C:/Users/zhald/Documents/Paperclip-Runtime/package.json');
+const postgres=require('postgres');
 const admin=process.env.DIVAA_ADMIN_URL,db=process.env.DIVAA_DB,role=process.env.DIVAA_ROLE,pw=process.env.DIVAA_DB_PASSWORD;
 const url=new URL(admin); if(url.hostname!=='127.0.0.1'||url.port!=='54329'||url.pathname!=='/postgres'||db==='divaa_synthetic_1792308261799') throw Error('Admin/database guard failed');
 const sql=postgres(admin,{max:1}); try { const exists=await sql`select 1 from pg_database where datname=${db}`; if(exists.length) throw Error('Fresh database name already exists'); await sql.unsafe(`CREATE ROLE "${role}" LOGIN PASSWORD '${pw}' NOSUPERUSER NOCREATEDB NOCREATEROLE`); await sql.unsafe(`CREATE DATABASE "${db}" OWNER "${role}"`); } finally { await sql.end(); }
