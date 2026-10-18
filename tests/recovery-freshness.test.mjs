@@ -3,9 +3,12 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { testStore } from './postgres-fixture.mjs';
 import { seedSynthetic,readSettings } from '../src/lib/booking/store.mjs';
+import { seal,unseal } from '../src/lib/booking/crypto.mjs';
 import { deliver,resolveReservation } from '../src/lib/booking/service.mjs';
 import { calendar } from '../src/lib/booking/calendar.mjs';
+import { randomBytes } from 'node:crypto';
 process.env.BOOKING_CALENDAR_MODE='mock';process.env.BOOKING_ALLOW_SYNTHETIC='true';
+process.env.BOOKING_ENCRYPTION_KEY=randomBytes(32).toString('base64');
 async function save(db,settings){await db.query('UPDATE booking_settings SET body=$1,version=version+1',[JSON.stringify(settings)]);}
 async function fixture(){
  const db=await testStore();await seedSynthetic(db);
@@ -18,7 +21,7 @@ async function fixture(){
 async function queued(db,start,{attempted=false}={}){
  const id=randomUUID();
  await db.query(`INSERT INTO booking_reservations(id,request_hash,service_id,start,"end",occupied_start,occupied_end,status,contact,created_at)
- VALUES($1,'hash','synthetic',$2,$3,$2,$3,'pending','synthetic-contact',0)`,[id,start,start+1800000]);
+ VALUES($1,'hash','synthetic',$2,$3,$2,$3,'pending',$4,0)`,[id,start,start+1800000,seal(JSON.stringify({name:'Synthetic Test',email:'synthetic@example.test'}))]);
  await db.query('INSERT INTO booking_jobs(reservation_id,attempted) VALUES($1,$2)',[id,attempted]);return id;
 }
 const future=()=>Date.parse(new Date(Date.now()+3*86400000).toISOString().slice(0,10)+'T12:00:00Z');
@@ -92,7 +95,7 @@ test('expired or changed attempted writes stay held; exact upstream evidence can
  settings.weekly=Array.from({length:7},()=>[]);await save(db,settings);
  let sends=0;cal.insert=async()=>{sends++;throw new Error('Must not resend');};
  assert.equal(await deliver(db,cal,id),'review');assert.equal(sends,0);
- assert.equal((await db.query('SELECT contact FROM booking_reservations WHERE id=$1',[id])).rows[0].contact,'synthetic-contact');
+ assert.deepEqual(JSON.parse(unseal((await db.query('SELECT contact FROM booking_reservations WHERE id=$1',[id])).rows[0].contact)),{name:'Synthetic Test',email:'synthetic@example.test'});
  await assert.rejects(queued(db,start),{code:'23P01'});
  await db.query('INSERT INTO booking_mock_events VALUES($1,$2)',[id,JSON.stringify({id,start,end:start+1800000})]);
  assert.equal(await deliver(db,cal,id),'confirmed');assert.equal(sends,0);
