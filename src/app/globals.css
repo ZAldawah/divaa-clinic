@@ -182,6 +182,11 @@ p {max-width:65ch;}
   background:#ead8d3;
 }
 
+/* Keep the recovered date-cell shape above the booking button defaults in every state. */
+.booking-shell .availability-calendar button.calendar-day {
+  border-radius:.65rem;
+}
+
 @media (prefers-reduced-motion:reduce) {.calendar-day {transition:none}}
 
 /* Direction A: exact reviewed full-frame images; no clipping or runtime re-encoding. */
