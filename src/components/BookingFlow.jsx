@@ -110,7 +110,7 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
   }
   return <main id="main-content" tabIndex={-1} className="booking-shell">
     <p className="eyebrow">Divaa Beauty · Appointments</p>
-    <h1>{result?.status === 'confirmed' ? 'Request received' : result ? 'Request pending' : 'Request an appointment'}</h1>
+    <h1>{result?.status === 'confirmed' && !config?.synthetic ? 'Booking confirmed' : result?.status === 'confirmed' ? 'TEST request received' : result ? 'Request pending' : 'Request an appointment'}</h1>
     {simulation && <p className="notice">QA simulation: in-memory responses only. No database, Calendar or email is contacted.</p>}
     <noscript><p>Online scheduling requires JavaScript. <a href="tel:+18329929422">Call the clinic</a> for help.</p></noscript>
     {(error || Object.keys(fieldErrors).length > 0) && <div className="notice error-notice" role="alert" tabIndex={-1} ref={errorSummary}>
@@ -119,9 +119,10 @@ export default function BookingFlow({ transport = api, simulation = false } = {}
       {error && !snapshot.current && <button className="secondary" onClick={() => setRetry(value => value + 1)}>Retry</button>}
     </div>}
     {!config ? <section className="surface loading-surface"><h2>{error ? 'Scheduling unavailable' : 'Getting appointment options'}</h2><p role="status">{error ? 'Please retry or call 832-992-9422 for help.' : 'Loading appointment options…'}</p></section> : result ? <section className="surface result-surface">
-      <h2 ref={heading} tabIndex={-1}>{result.status === 'confirmed' ? 'Your request details' : 'Your request is still being checked'}</h2>
-      <p>{result.status === 'confirmed' ? 'Your request has been received. This does not confirm an appointment. Contact the clinic to confirm availability before visiting.' : 'Keep this page open and check request status. Do not submit a new booking.'}</p>
-      <p className="reference">Reference: {result.reference}</p><p>{when(result.start, config.timezone)}</p>
+      <h2 ref={heading} tabIndex={-1}>{result.status === 'confirmed' && !config.synthetic ? 'Booking confirmed' : result.status === 'confirmed' ? 'Test reservation confirmed' : 'Your request is still being checked'}</h2>
+      <p>{result.status === 'confirmed' && !config.synthetic ? 'Your reservation is confirmed on the clinic calendar.' : result.status === 'confirmed' ? 'TEST ONLY — this synthetic reservation is not a real appointment.' : 'Calendar processing is still pending. Keep this page open and check request status; do not submit another booking.'}</p>
+      {result.status === 'confirmed' && <p><strong>{chosen?.name || 'Appointment'}</strong><br />{when(result.start, config.timezone)}<br />Timezone: {config.timezone}</p>}
+      <p className="reference">Reference: {result.reference}</p>{result.status !== 'confirmed' && <p>{when(result.start, config.timezone)}</p>}
       {result.status !== 'confirmed' && <button disabled={loading} onClick={submit}>{loading ? 'Checking request status…' : 'Check request status'}</button>}
       <p><a href="sms:8329929422">Text the clinic</a> with questions about your request.</p><Link href="/">Return home</Link>
     </section> : !config.services.length ? <section className="surface"><h2>No appointments available</h2><p>Online appointment options are unavailable. <a href="tel:+18329929422">Call the clinic</a> for help.</p></section> : <>

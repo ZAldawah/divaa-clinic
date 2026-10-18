@@ -5,14 +5,15 @@ import { getStore, transaction } from './store.mjs';
 
 // Provider-free booking notification contract. Delivery remains disabled until
 // a separately approved provider, sender identity and credential path exist.
-export function confirmationMessage({ reference, start, email }) {
-  if (!reference || !Number.isFinite(Date.parse(start)) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '')) {
-    throw new TypeError('A confirmed reservation reference, start time and valid email are required.');
+export function confirmationMessage({ reference, start, email, serviceName = 'Appointment', timezone = 'UTC' }) {
+  if (!reference || !Number.isFinite(Date.parse(start)) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '') || !serviceName || !timezone) {
+    throw new TypeError('A confirmed reservation reference, service, start time, timezone and valid email are required.');
   }
+  const localTime = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short', timeZone: timezone }).format(new Date(start));
   return Object.freeze({
     to: email,
-    subject: 'Your DivaaBeauty appointment request',
-    text: `We received your appointment request (${reference}) for ${new Date(start).toISOString()}. The clinic will follow up if needed.`,
+    subject: 'Your DivaaBeauty booking is confirmed',
+    text: `Booking confirmed: ${serviceName}, ${localTime} (${timezone}). Reference: ${reference}. Email delivery is separate from your confirmed calendar reservation.`,
     idempotencyKey: `booking-confirmation:${reference}`,
   });
 }

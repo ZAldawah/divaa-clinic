@@ -71,10 +71,12 @@ async function finish(db,job,status) {
    WHERE reservation_id=$1 AND lease_token=$2 AND lease_until>clock_timestamp()`,[job.reservation_id,job.lease_token,status]);
   if(!rowCount)return false;
   if(status) {
-   const {rows:[reservation]}=await c.query(`UPDATE booking_reservations SET status=$2,version=version+1,contact=CASE WHEN $2='rejected' THEN NULL ELSE contact END WHERE id=$1 AND status!='rejected' RETURNING id,start,status,contact`,[job.reservation_id,status]);
-   if(status==='confirmed' && reservation?.status==='confirmed' && reservation.contact) {
-    const contact=JSON.parse(unseal(reservation.contact));
-    await enqueueBookingNotification(c,{reference:reservation.id,start:new Date(reservation.start).toISOString(),email:contact.email});
+    const {rows:[reservation]}=await c.query(`UPDATE booking_reservations SET status=$2,version=version+1,contact=CASE WHEN $2='rejected' THEN NULL ELSE contact END WHERE id=$1 AND status!='rejected' RETURNING id,start,status,contact,service_id`,[job.reservation_id,status]);
+    if(status==='confirmed' && reservation?.status==='confirmed' && reservation.contact) {
+     const contact=JSON.parse(unseal(reservation.contact));
+    const {settings}=await readSettings(c);
+    const serviceName=settings.services.find(service=>service.id===reservation.service_id)?.name || 'Appointment';
+    await enqueueBookingNotification(c,{reference:reservation.id,start:new Date(reservation.start).toISOString(),email:contact.email,serviceName,timezone:settings.timezone});
    }
   }
   return true;

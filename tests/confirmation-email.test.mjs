@@ -4,10 +4,12 @@ import { confirmationMessage, deliverNotification, enqueueBookingNotification, g
 import { randomBytes } from 'node:crypto';
 process.env.BOOKING_ENCRYPTION_KEY=randomBytes(32).toString('base64');
 
-test('confirmation content is minimal and idempotent per confirmed reference', () => {
-  const message = confirmationMessage({ reference: 'synthetic-ref', start: '2026-10-24T15:00:00.000Z', email: 'person@example.test' });
+test('confirmation content identifies confirmed service time and is idempotent per reference', () => {
+  const message = confirmationMessage({ reference: 'synthetic-ref', start: '2026-10-24T15:00:00.000Z', email: 'person@example.test', serviceName: 'Consulting', timezone: 'America/Chicago' });
   assert.equal(message.to, 'person@example.test');
-  assert.match(message.text, /received your appointment request/);
+  assert.equal(message.subject, 'Your DivaaBeauty booking is confirmed');
+  assert.match(message.text, /Booking confirmed: Consulting, Saturday, October 24, 2026 at 10:00 AM \(America\/Chicago\)/);
+  assert.match(message.text, /Email delivery is separate/);
   assert.equal(message.idempotencyKey, 'booking-confirmation:synthetic-ref');
   assert.equal(Object.isFrozen(message), true);
 });
