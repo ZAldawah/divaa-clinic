@@ -25,6 +25,46 @@ function Assert-NoReparseComponents([string] $Path) {
     }
 }
 
+if (-not ('DivaaBeauty.GmailConfig.NativeDirectory' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Runtime.InteropServices;
+
+namespace DivaaBeauty.GmailConfig {
+    public static class NativeDirectory {
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct SECURITY_ATTRIBUTES {
+            public int nLength;
+            public IntPtr lpSecurityDescriptor;
+            public bool bInheritHandle;
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool CreateDirectoryW(string path, ref SECURITY_ATTRIBUTES attributes);
+
+        public static void CreateExclusive(string path, DirectorySecurity security) {
+            byte[] descriptor = security.GetSecurityDescriptorBinaryForm();
+            GCHandle pinned = GCHandle.Alloc(descriptor, GCHandleType.Pinned);
+            try {
+                SECURITY_ATTRIBUTES attributes = new SECURITY_ATTRIBUTES();
+                attributes.nLength = Marshal.SizeOf(typeof(SECURITY_ATTRIBUTES));
+                attributes.lpSecurityDescriptor = pinned.AddrOfPinnedObject();
+                attributes.bInheritHandle = false;
+                if (!CreateDirectoryW(path, ref attributes))
+                    throw new Win32Exception(Marshal.GetLastWin32Error());
+            } finally {
+                pinned.Free();
+                Array.Clear(descriptor, 0, descriptor.Length);
+            }
+        }
+    }
+}
+'@
+}
+
 if ([string]::IsNullOrWhiteSpace($env:LOCALAPPDATA)) {
     throw 'LOCALAPPDATA is unavailable for this user.'
 }
@@ -67,8 +107,6 @@ $clientIdPtr = [IntPtr]::Zero
 $clientSecretPtr = [IntPtr]::Zero
 $plain = $null
 $protected = $null
-$createdDirectory = $false
-$createdFile = $false
 try {
     $clientIdPtr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($clientId)
     $clientSecretPtr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($clientSecret)
@@ -90,16 +128,18 @@ try {
     $protected = [Security.Cryptography.ProtectedData]::Protect(
         $plain, $null, [Security.Cryptography.DataProtectionScope]::CurrentUser)
 
-    # Create only missing directories, one level at a time. Never mutate an
-    # existing directory or broaden its ACL; reject races and reparse points.
+    # Require the application parent to exist. Create only the secrets leaf
+    # using native CreateDirectory, which fails if any entry already occupies
+    # that name. Restrict its DACL in the creation call so there is no interval
+    # with inherited permissions. Revalidate ancestry immediately beforehand.
     if (-not (Test-Path -LiteralPath $expectedParent -PathType Container)) {
-        [void][IO.Directory]::CreateDirectory($expectedParent)
-        $createdDirectory = $true
-        Assert-NoReparsePoint $expectedParent
+        throw 'The DivaaBeauty parent directory must already exist; no directories were created.'
     }
-    [void][IO.Directory]::CreateDirectory($secretRoot)
-    $createdDirectory = $true
-    Assert-NoReparsePoint $secretRoot
+    Assert-NoReparseComponents $localAppData
+    Assert-NoReparsePoint $expectedParent
+    if (Test-Path -LiteralPath $secretRoot) {
+        throw 'The secrets directory already exists. No overwrite or ACL change is permitted.'
+    }
 
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
     $acl = [Security.AccessControl.DirectorySecurity]::new()
@@ -112,11 +152,11 @@ try {
             [Security.AccessControl.FileSystemRights]::FullControl, $inherit, $propagate, $allow)
         $acl.AddAccessRule($rule)
     }
-    Set-Acl -LiteralPath $secretRoot -AclObject $acl
+    [DivaaBeauty.GmailConfig.NativeDirectory]::CreateExclusive($secretRoot, $acl)
+    Assert-NoReparseComponents $secretRoot
 
     # CreateNew is atomic: a concurrent/existing file is never overwritten.
     $stream = [IO.File]::Open($secretFile, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
-    $createdFile = $true
     try {
         $stream.Write($protected, 0, $protected.Length)
         $stream.Flush($true)
@@ -134,15 +174,8 @@ try {
     Write-Output "Protected Gmail configuration prepared for CurrentUser DPAPI at $secretFile. No OAuth grant or website configuration was performed."
 }
 catch {
-    # Roll back only artifacts created by this invocation. Never remove an
-    # existing user file or directory, even when setup fails.
-    if ($createdFile -and (Test-Path -LiteralPath $secretFile -PathType Leaf)) {
-        [IO.File]::Delete($secretFile)
-    }
-    if ($createdDirectory -and (Test-Path -LiteralPath $secretRoot -PathType Container) -and
-        -not (Get-ChildItem -LiteralPath $secretRoot -Force | Select-Object -First 1)) {
-        [IO.Directory]::Delete($secretRoot, $false)
-    }
+    # Never delete by path: a partial encrypted artifact is retained for
+    # manual review, avoiding deletion of a substituted file or directory.
     throw 'Gmail configuration preparation failed. No secret values were written to output.'
 }
 finally {
