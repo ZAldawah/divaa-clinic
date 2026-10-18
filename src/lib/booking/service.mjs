@@ -76,7 +76,7 @@ async function finish(db,job,status) {
      const contact=JSON.parse(unseal(reservation.contact));
     const {settings}=await readSettings(c);
     const serviceName=settings.services.find(service=>service.id===reservation.service_id)?.name || 'Appointment';
-    await enqueueBookingNotification(c,{reference:reservation.id,start:new Date(reservation.start).toISOString(),email:contact.email,serviceName,timezone:settings.timezone});
+    await enqueueBookingNotification(c,{reference:reservation.id,start:new Date(reservation.start).toISOString(),email:contact.email,serviceName,timezone:settings.timezone,synthetic:isMock()});
    }
   }
   return true;

@@ -67,8 +67,23 @@ test('ambiguous transport failure is marked uncertain and cannot be claimed agai
 test('confirmed booking creates one encrypted, disabled notification outbox record', async () => {
   const calls=[];
   const db={async query(sql,params){calls.push({sql,params});if(sql.startsWith('SELECT'))return {rows:[{reference:'ref-1',status:'disabled',idempotency_key:'booking-confirmation:ref-1'}]};return {rows:[]};}};
-  const result=await enqueueBookingNotification(db,{reference:'ref-1',start:'2026-10-24T15:00:00.000Z',email:'person@example.test'});
+  const result=await enqueueBookingNotification(db,{reference:'ref-1',start:'2026-10-24T15:00:00.000Z',email:'person@example.test',serviceName:'Consulting',timezone:'America/Chicago'});
   assert.equal(result.status,'disabled');assert.equal(calls[0].params[1].includes('person@example.test'),false);
   assert.match(calls[0].sql,/ON CONFLICT \(reference\) DO NOTHING/);
   assert.equal(calls[0].params[2],'booking-confirmation:ref-1');
+  const { unseal } = await import('../src/lib/booking/crypto.mjs');
+  const payload=JSON.parse(unseal(calls[0].params[1]));
+  assert.match(payload.text,/Consulting/);assert.match(payload.text,/America\/Chicago/);
+  assert.equal(payload.subject,'Your DivaaBeauty booking is confirmed');
+});
+
+test('synthetic confirmed booking is clearly labeled TEST in the encrypted outbox payload', async () => {
+  const calls=[];
+  const db={async query(sql,params){calls.push({sql,params});if(sql.startsWith('SELECT'))return {rows:[{reference:'ref-test',status:'disabled',idempotency_key:'booking-confirmation:ref-test'}]};return {rows:[]};}};
+  await enqueueBookingNotification(db,{reference:'ref-test',start:'2026-10-24T15:00:00.000Z',email:'person@example.test',serviceName:'Consulting',timezone:'America/Chicago',synthetic:true});
+  const { unseal } = await import('../src/lib/booking/crypto.mjs');
+  const payload=JSON.parse(unseal(calls[0].params[1]));
+  assert.match(payload.subject,/^TEST:/);assert.match(payload.text,/TEST ONLY/);
+  assert.match(payload.text,/not a real appointment/i);assert.match(payload.text,/Consulting/);
+  assert.match(payload.text,/America\/Chicago/);
 });

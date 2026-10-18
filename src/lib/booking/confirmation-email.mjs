@@ -5,15 +5,17 @@ import { getStore, transaction } from './store.mjs';
 
 // Provider-free booking notification contract. Delivery remains disabled until
 // a separately approved provider, sender identity and credential path exist.
-export function confirmationMessage({ reference, start, email, serviceName = 'Appointment', timezone = 'UTC' }) {
+export function confirmationMessage({ reference, start, email, serviceName = 'Appointment', timezone = 'UTC', synthetic = false }) {
   if (!reference || !Number.isFinite(Date.parse(start)) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '') || !serviceName || !timezone) {
     throw new TypeError('A confirmed reservation reference, service, start time, timezone and valid email are required.');
   }
   const localTime = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short', timeZone: timezone }).format(new Date(start));
   return Object.freeze({
     to: email,
-    subject: 'Your DivaaBeauty booking is confirmed',
-    text: `Booking confirmed: ${serviceName}, ${localTime} (${timezone}). Reference: ${reference}. Email delivery is separate from your confirmed calendar reservation.`,
+    subject: synthetic ? 'TEST: DivaaBeauty booking confirmation' : 'Your DivaaBeauty booking is confirmed',
+    text: synthetic
+      ? `TEST ONLY — this is not a real appointment. Simulated booking: ${serviceName}, ${localTime} (${timezone}). Reference: ${reference}. No clinic reservation was made.`
+      : `Booking confirmed: ${serviceName}, ${localTime} (${timezone}). Reference: ${reference}. Email delivery is separate from your confirmed calendar reservation.`,
     idempotencyKey: `booking-confirmation:${reference}`,
   });
 }
@@ -144,8 +146,8 @@ export async function runNotificationWorker(db, { max = 10, enabled = process.en
   return { processed, sent, uncertain, failed };
 }
 
-export async function enqueueBookingNotification(db, { reference, start, email }) {
-  const message = confirmationMessage({ reference, start, email });
+export async function enqueueBookingNotification(db, { reference, start, email, serviceName, timezone, synthetic = false }) {
+  const message = confirmationMessage({ reference, start, email, serviceName, timezone, synthetic });
   await db.query(`INSERT INTO booking_notification_outbox(reference,encrypted_payload,idempotency_key,status)
     VALUES($1,$2,$3,'disabled') ON CONFLICT (reference) DO NOTHING`,
   [reference, seal(JSON.stringify(message)), message.idempotencyKey]);
