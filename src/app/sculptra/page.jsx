@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: "Sculptra Aesthetic | Divaa Beauty Clinic",
     description: "Rebuild your skin's inner structure with Sculptra, the leading collagen biostimulator.",
-    url: "https://divaabeautyclinic.com/sculptra",
+    url: "https://www.divaabeauty.com/sculptra",
     type: "website",
   },
 };

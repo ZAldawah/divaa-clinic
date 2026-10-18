@@ -16,7 +16,7 @@ export const metadata = {
   openGraph: {
     title: "Radiesse Biostimulator | Divaa Beauty Clinic",
     description: "Rebuild your skin's collagen network with Radiesse, the dual-action volumizer and biostimulator.",
-    url: "https://divaabeautyclinic.com/radiesse",
+    url: "https://www.divaabeauty.com/radiesse",
     type: "website",
   },
 };

@@ -27,7 +27,7 @@ export const metadata = {
   openGraph: {
     title: "Dermal Fillers | Divaa Beauty Clinic",
     description: "Enhance your natural beauty with premium hyaluronic acid dermal fillers for lips, cheeks, and under-eyes.",
-    url: "https://divaabeautyclinic.com/filler",
+    url: "https://www.divaabeauty.com/filler",
     type: "website",
   },
 };

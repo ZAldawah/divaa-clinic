@@ -26,7 +26,7 @@ export const metadata = {
   openGraph: {
     title: "Facials & Hydrofacials | Divaa Beauty Clinic",
     description: "Rejuvenate your complexion with deeply hydrating and exfoliating facials tailored to your unique skin.",
-    url: "https://divaabeautyclinic.com/facials",
+    url: "https://www.divaabeauty.com/facials",
     type: "website",
   },
 };

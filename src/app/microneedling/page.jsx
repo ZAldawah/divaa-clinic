@@ -14,7 +14,7 @@ export const metadata = {
   openGraph: {
     title: "Microneedling Therapy | Divaa Beauty Clinic",
     description: "Stimulate collagen naturally to improve skin texture, reduce scars, and minimize pores.",
-    url: "https://divaabeautyclinic.com/microneedling",
+    url: "https://www.divaabeauty.com/microneedling",
     type: "website",
   },
 };

@@ -14,7 +14,7 @@ export const metadata = {
   openGraph: {
     title: "RF Microneedling | Divaa Beauty Clinic",
     description: "Advanced skin tightening and deep collagen remodeling using fractional radiofrequency technology.",
-    url: "https://divaabeautyclinic.com/rrf",
+    url: "https://www.divaabeauty.com/rrf",
     type: "website",
   },
 };

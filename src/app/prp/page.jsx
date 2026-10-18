@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: "PRP & PRF Therapy | Divaa Beauty Clinic",
     description: "Natural skin rejuvenation and hair restoration using the growth factors found in your own plasma.",
-    url: "https://divaabeautyclinic.com/prp",
+    url: "https://www.divaabeauty.com/prp",
     type: "website",
   },
 };

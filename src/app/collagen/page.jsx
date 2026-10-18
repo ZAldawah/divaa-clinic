@@ -19,7 +19,7 @@ export const metadata = {
     title: "Collagen Induction & Dermal Biostimulators | Divaa Beauty Clinic",
     description:
       "Rejuvenate your skin by stimulating its natural collagen production using advanced biostimulator therapies.",
-    url: "https://divaabeautyclinic.com/collagen",
+    url: "https://www.divaabeauty.com/collagen",
     type: "website",
   },
 };

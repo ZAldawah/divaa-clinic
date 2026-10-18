@@ -16,7 +16,7 @@ export const metadata = {
   openGraph: {
     title: "Botox & Dysport | Divaa Beauty Clinic",
     description: "Expert neurotoxin injections to soften lines while preserving your natural expression.",
-    url: "https://divaabeautyclinic.com/botox",
+    url: "https://www.divaabeauty.com/botox",
     type: "website",
   },
 };
