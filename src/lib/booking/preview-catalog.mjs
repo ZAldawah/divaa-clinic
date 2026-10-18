@@ -23,5 +23,5 @@ export const previewSettings = {
   weekly: Array.from({length: 7}, (_, i) => i === 5 ? [{start:'10:00', end:'16:00'}] : []),
   overrides: [],
   services: previewCatalog.map(({id,name,duration}) => ({id,name,duration,before:0,after:0,enabled:true})),
-  noticeMinutes: 0, horizonDays: 60, incrementMinutes: 15,
+  noticeMinutes: 0, horizonDays: 60, incrementMinutes: 30,
 };

@@ -22,5 +22,5 @@ export const bookingSchema = z.object({
 }).strict();
 export const syntheticSettings = {
   timezone:'America/Chicago', weekly:Array.from({length:7},(_,i)=>i<5?[{start:'09:00',end:'17:00'}]:[]), overrides:[],
-  services:[{id:'synthetic-consultation',name:'Synthetic consultation',duration:30,before:10,after:15,enabled:true}], noticeMinutes:1440,horizonDays:60,incrementMinutes:15,
+  services:[{id:'synthetic-consultation',name:'Synthetic consultation',duration:30,before:10,after:15,enabled:true}], noticeMinutes:1440,horizonDays:60,incrementMinutes:30,
 };
