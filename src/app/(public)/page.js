@@ -9,7 +9,7 @@ export default function Home() {
       <EditorialPortrait priority />
     </section>
     <section className="services-section section-space editorial-section" id="services" aria-labelledby="services-heading"><div className="content-width">
-      <div className="section-heading"><div><p className="eyebrow">Our services</p><h2 id="services-heading">Explore the possibilities.</h2></div><p>Find a service, or start with a consultation to discuss your questions.</p></div>
+      <div className="section-heading"><div><p className="eyebrow">Our services</p><h2 id="services-heading">Explore the possibilities.</h2></div><p>Not sure what you need? Text us at <a className="text-link" href="sms:8329929422">832-992-9422</a> for help choosing a service.</p></div>
       <div className="service-directory"><div className="service-grid">{services.map(service => <a className="service-card service-card-image" href={'/' + service.id} key={service.id}><ServiceImage serviceId={service.id} card /><div className="service-card-label"><h3>{service.name}</h3><span className="card-action" aria-hidden="true">↗</span></div></a>)}</div></div>
     </div></section>
     <section className="content-width consultation-section section-space editorial-section"><p className="eyebrow">A place to begin</p><h2>Unsure what you need?<br/><em>Text us.</em></h2><p>Tell us what you’re considering, and we can help you find the right place to start.</p><a className="button" href="sms:8329929422">Text us <span aria-hidden="true">↗</span></a></section>
