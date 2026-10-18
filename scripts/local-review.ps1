@@ -33,9 +33,14 @@ try {
   $env:BOOKING_ENCRYPTION_KEY=$keyText
   $env:BETTER_AUTH_URL='http://127.0.0.1:3119'
   $env:BOOKING_ADMIN_EMAIL='staff@example.test'
-  $env:BETTER_AUTH_SECRET=[Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(48))
-  $env:BOOKING_RATE_KEY=[Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32)).ToLowerInvariant()
-  $env:BOOKING_JOB_SECRET=[Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32)).ToLowerInvariant()
+  $rng=[Security.Cryptography.RandomNumberGenerator]::Create()
+  try {
+    $authBytes=[byte[]]::new(48); $rateBytes=[byte[]]::new(32); $jobBytes=[byte[]]::new(32)
+    $rng.GetBytes($authBytes); $rng.GetBytes($rateBytes); $rng.GetBytes($jobBytes)
+    $env:BETTER_AUTH_SECRET=[Convert]::ToBase64String($authBytes)
+    $env:BOOKING_RATE_KEY=([BitConverter]::ToString($rateBytes).Replace('-','')).ToLowerInvariant()
+    $env:BOOKING_JOB_SECRET=([BitConverter]::ToString($jobBytes).Replace('-','')).ToLowerInvariant()
+  } finally { $rng.Dispose(); if($authBytes){[Array]::Clear($authBytes,0,$authBytes.Length)}; if($rateBytes){[Array]::Clear($rateBytes,0,$rateBytes.Length)}; if($jobBytes){[Array]::Clear($jobBytes,0,$jobBytes.Length)} }
   $env:BOOKING_EMAIL_ENABLED='false'
   $env:NEXT_TELEMETRY_DISABLED='1'
   foreach($name in @(Get-ChildItem Env: | ForEach-Object Name)) { if($name.StartsWith('GOOGLE_') -or $name -in @('VERCEL','BOOKING_TRUSTED_EDGE','BOOKING_GMAIL_CLIENT_ID','BOOKING_GMAIL_CLIENT_SECRET','BOOKING_GMAIL_SENDER','BOOKING_GMAIL_REFRESH_TOKEN')) { Remove-Item "Env:$name" -ErrorAction SilentlyContinue } }

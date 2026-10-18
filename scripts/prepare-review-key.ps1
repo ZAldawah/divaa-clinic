@@ -37,7 +37,7 @@ try {
  foreach($principal in @($identity,'SYSTEM')) { $rule=[Security.AccessControl.FileSystemAccessRule]::new($principal,[Security.AccessControl.FileSystemRights]::FullControl,$inherit,[Security.AccessControl.PropagationFlags]::None,[Security.AccessControl.AccessControlType]::Allow); $acl.AddAccessRule($rule) }
  [DivaaBeauty.ReviewKey.NativeDirectory]::CreateExclusive($root,$acl)
  Assert-NoReparseComponents $root
- $key=[byte[]]::new(32); [Security.Cryptography.RandomNumberGenerator]::Fill($key)
+ $key=[byte[]]::new(32); $rng=[Security.Cryptography.RandomNumberGenerator]::Create(); try { $rng.GetBytes($key) } finally { $rng.Dispose() }
  $plain=[Text.Encoding]::UTF8.GetBytes([Convert]::ToBase64String($key))
  $protected=[Security.Cryptography.ProtectedData]::Protect($plain,$null,[Security.Cryptography.DataProtectionScope]::CurrentUser)
  $stream=[IO.File]::Open($file,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
