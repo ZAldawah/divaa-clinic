@@ -43,6 +43,8 @@ test('concurrent clients cannot reserve overlapping spans; retries preserve one 
   assert.equal(result.filter(r=>r.status==='fulfilled').length,1);assert.equal(events.size,1);
   const retry=await book(db,cal,a);assert.equal(retry.status,'confirmed');assert.equal(events.size,1);
   await assert.rejects(book(db,cal,{...a,name:'Changed'}),{status:409});
+  const notices=await db.query('SELECT reference,status,idempotency_key FROM booking_notification_outbox');
+  assert.equal(notices.rows.length,1);assert.equal(notices.rows[0].status,'disabled');assert.equal(notices.rows[0].idempotency_key,`booking-confirmation:${retry.reference}`);
   const stored=(await db.query('SELECT contact FROM booking_reservations')).rows[0].contact;assert(!stored.includes('Avery'));assert.equal(JSON.parse(unseal(stored)).name,'Avery Example');await db.end();
 });
 test('invalid contact writes nothing; corrected double submit creates one reservation and event',async()=>{
@@ -65,7 +67,8 @@ test('upstream failure creates no reservation; lost insert response retains hold
   assert.equal((await db.query('SELECT COUNT(*) n FROM booking_reservations')).rows[0].n,0);
   cal.insert=async(e,gate)=>{if(!await gate())return null;events.set(e.id,e);throw new Error('response lost');};
   const r=await book(db,cal,request());assert.equal(r.status,'pending');assert.equal((await reservations(db,0,Infinity)).length,1);
-  const check=await reconcile(db,cal);assert.equal(check.confirmed,1);assert.equal((await db.query('SELECT status FROM booking_reservations')).rows[0].status,'confirmed');await db.end();
+  const check=await reconcile(db,cal);assert.equal(check.confirmed,1);assert.equal((await db.query('SELECT status FROM booking_reservations')).rows[0].status,'confirmed');
+  assert.equal((await db.query('SELECT status FROM booking_notification_outbox')).rows[0].status,'disabled');await db.end();
 });
 test('external edits retain conflict holds; encryption detects tampering; rate limiting persists',async()=>{
   const {db,cal,events}=await fixture();const r=await book(db,cal,request());events.delete(r.reference);const check=await reconcile(db,cal);assert.equal(check.review,1);assert.equal((await reservations(db,0,Infinity)).length,1);

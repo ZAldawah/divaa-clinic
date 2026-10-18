@@ -4,6 +4,7 @@ import { bookingSchema, dateSchema } from './schema.mjs';
 import { readSettings, reservations, transaction } from './store.mjs';
 import { dayBounds, slotsFor } from './slots.mjs';
 import { digest, seal } from './crypto.mjs';
+import { enqueueBookingNotification } from './confirmation-email.mjs';
 export const fail=(status,message)=>{throw Object.assign(new Error(message),{status});};
 export async function availability(db,upstream,date,serviceId,now=Date.now()) {
  dateSchema.parse(date);
@@ -69,7 +70,13 @@ async function finish(db,job,status) {
    next_at=clock_timestamp()+CASE WHEN $3='confirmed' THEN interval '1 hour' WHEN $3='rejected' THEN interval '100 years' ELSE interval '5 minutes' END
    WHERE reservation_id=$1 AND lease_token=$2 AND lease_until>clock_timestamp()`,[job.reservation_id,job.lease_token,status]);
   if(!rowCount)return false;
-  if(status)await c.query(`UPDATE booking_reservations SET status=$2,version=version+1,contact=CASE WHEN $2='rejected' THEN NULL ELSE contact END WHERE id=$1 AND status!='rejected'`,[job.reservation_id,status]);
+  if(status) {
+   const {rows:[reservation]}=await c.query(`UPDATE booking_reservations SET status=$2,version=version+1,contact=CASE WHEN $2='rejected' THEN NULL ELSE contact END WHERE id=$1 AND status!='rejected' RETURNING id,start,status,contact`,[job.reservation_id,status]);
+   if(status==='confirmed' && reservation?.status==='confirmed' && reservation.contact) {
+    const contact=JSON.parse(unseal(reservation.contact));
+    await enqueueBookingNotification(c,{reference:reservation.id,start:new Date(reservation.start).toISOString(),email:contact.email});
+   }
+  }
   return true;
  });
 }
