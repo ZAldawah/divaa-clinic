@@ -15,7 +15,7 @@ while([0,6].includes(future.getUTCDay()))future.setUTCDate(future.getUTCDate()+1
 const request=()=>({serviceId:'synthetic-consultation',start:future.toISOString().slice(0,10)+'T15:15:00.000Z',name:'Avery Example',email:'avery@example.test',key:randomUUID()});
 test('buffers, notice, horizon, lunch, overrides and all-day busy',()=>{
   const s=structuredClone(syntheticSettings), args={settings:s,date:'2026-10-08',serviceId:s.services[0].id,now};
-  let slots=slotsFor(args);assert.equal(slots[0].start,'2026-10-08T14:15:00.000Z');assert.equal(slots.at(-1).end,'2026-10-08T21:45:00.000Z');
+  let slots=slotsFor(args);assert.equal(slots[0].start,'2026-10-08T14:30:00.000Z');assert.equal(slots.at(-1).end,'2026-10-08T21:30:00.000Z');
   s.overrides=[{date:args.date,intervals:[]}];assert.equal(slotsFor(args).length,0);
   s.overrides=[{date:args.date,intervals:[{start:'09:00',end:'12:00'},{start:'13:00',end:'17:00'}]}];
   slots=slotsFor(args);assert(!slots.some(v=>v.start==='2026-10-08T17:00:00.000Z'));

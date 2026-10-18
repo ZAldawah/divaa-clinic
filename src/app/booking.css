@@ -20,6 +20,8 @@
 .booking-shell legend {font-weight:600;margin-bottom:8px;}
 .booking-shell .choice {display:flex;align-items:center;gap:12px;padding:16px;background:#fff;border:1px solid var(--color-border);border-radius:10px;font-weight:400;margin:0;cursor:pointer;}
 .booking-shell .choice:has(input:checked) {outline:2px solid var(--color-text);outline-offset:0;background:var(--color-canvas);}
+.booking-shell .slot-grid .choice:has(input:checked) {background:var(--calendar-selected);border-color:var(--calendar-selected);color:#fff;}
+.booking-shell .slot-grid .choice:has(input:checked) input[type=radio] {accent-color:#fff;}
 .booking-shell small {display:block;font-size:14px;color:var(--color-muted);}
 .appointment-options {display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .slot-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:12px;}
