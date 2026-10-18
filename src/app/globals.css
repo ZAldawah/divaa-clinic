@@ -156,6 +156,26 @@ p {max-width:65ch;}
   .calendar-day.is-available::after {content:"•";display:block;font-size:.85rem;line-height:.7;color:var(--calendar-selected)}
 }
 
+/* Keep visual availability cues in the legend and accessible names, not date cells. */
+.availability-calendar .calendar-day > small {display:none!important}
+.availability-calendar .calendar-day::after {content:none!important;display:none!important}
+.availability-calendar .calendar-day:not(.is-available):not(.is-selected) {
+  border-color:#e5d7cf;
+  background:#fcf8f3;
+  color:#766b65;
+  opacity:1;
+}
+.availability-calendar .calendar-day.outside-month:not(.is-available):not(.is-selected) {
+  border-color:#eee5df;
+  background:#f7f2ed;
+  color:#8a807a;
+}
+.availability-calendar .calendar-day.is-selected {
+  border-color:var(--calendar-selected);
+  background:var(--calendar-selected);
+  color:#fff;
+}
+
 @media (prefers-reduced-motion:reduce) {.calendar-day {transition:none}}
 
 /* Direction A: exact reviewed full-frame images; no clipping or runtime re-encoding. */
