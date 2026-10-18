@@ -8,7 +8,6 @@ function Answer({ entry }) {
 
 export default function ServiceFaq({ service }) {
   const entries = content.services[service.id];
-  const sourceIds = [...new Set(entries.flatMap(entry => entry.sourceIds))];
   const headingId = `${service.id}-faq-heading`;
   return <section className="service-faq content-width section-space" aria-labelledby={headingId}>
     <div className="faq-intro">
@@ -22,10 +21,6 @@ export default function ServiceFaq({ service }) {
         <p><Answer entry={entry} /></p>
         {entry.id === 6 && <a className="text-link" href="/book?service=consulting">Book a consultation <span aria-hidden="true">↗</span></a>}
       </article>)}
-      <aside className="faq-references" aria-labelledby={`${service.id}-faq-sources`}>
-        <h3 id={`${service.id}-faq-sources`}>Further reading</h3>
-        <ul>{sourceIds.map(id => <li key={id}><a href={content.sources[id].url}>{content.sources[id].title}</a></li>)}</ul>
-      </aside>
     </div>
   </section>;
 }

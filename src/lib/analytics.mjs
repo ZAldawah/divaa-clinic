@@ -53,13 +53,9 @@ export function createAnalytics({ send, stop = () => {} }) {
       return pageview();
     },
     setConsent(choice) {
-      consent = choice === 'accepted';
-      if (!consent) {
-        // Revocation does not replay the same page when reaccepted.
-        try { stop(); } catch { /* transport must stop synchronously */ }
-        return false;
-      }
-      return pageview();
+      consent = false;
+      try { stop(); } catch { /* transport must stop synchronously */ }
+      return false;
     },
     action(name) {
       return ACTIONS.has(name) ? emit(name) : false;
