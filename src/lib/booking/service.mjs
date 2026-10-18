@@ -5,6 +5,7 @@ import { readSettings, reservations, transaction } from './store.mjs';
 import { dayBounds, slotsFor } from './slots.mjs';
 import { digest, seal, unseal } from './crypto.mjs';
 import { enqueueBookingNotification } from './confirmation-email.mjs';
+import { isMock } from './calendar.mjs';
 export const fail=(status,message)=>{throw Object.assign(new Error(message),{status});};
 export async function availability(db,upstream,date,serviceId,now=Date.now()) {
  dateSchema.parse(date);
