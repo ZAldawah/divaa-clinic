@@ -130,8 +130,8 @@ p {max-width:65ch;}
 .calendar-weekday {padding:.5rem .1rem;text-align:center;font:600 .8rem/1.2 var(--font-body,Arial,sans-serif);color:var(--calendar-espresso)}
 .calendar-day {display:flex;min-width:0;min-height:3.25rem;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;padding:.2rem;border:1px solid transparent;border-radius:.65rem;background:transparent;color:var(--calendar-espresso);font:600 .9rem/1.2 var(--font-body,Arial,sans-serif);cursor:pointer;transition:background-color 140ms ease,border-color 140ms ease,color 140ms ease}
 .calendar-day small {font-size:.62rem;line-height:1.1;color:var(--calendar-selected)}
-.calendar-day.is-available {border:1px solid #b88f8a;background:var(--calendar-rose);color:var(--calendar-espresso);font-weight:700}
-.calendar-day.is-available small {color:var(--calendar-selected)}
+.calendar-day.is-available {border:1px solid #b88f8a;border-radius:50%;background:var(--calendar-rose);color:var(--calendar-espresso);font-weight:700}
+.calendar-day.is-available small {display:none}
 .calendar-day:not(.is-available):not(.outside-month) {border-color:var(--calendar-line);background:#fffdfa;color:#514743}
 .calendar-day.outside-month {opacity:.65}
 .calendar-day.is-selected {outline:3px solid var(--calendar-selected);outline-offset:1px;background:var(--calendar-selected);border-color:var(--calendar-selected);color:#fff}
