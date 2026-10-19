@@ -5,7 +5,7 @@ export const metadata = { alternates: { canonical: '/' } };
 export default function Home() {
   return <main id="main-content" tabIndex={-1}>
     <section className="home-hero content-width editorial-hero">
-      <div className="hero-copy"><p className="eyebrow">Houston, Texas · Divaa Beauty</p><h1>Divaa Beauty<br/><em>Clinic</em></h1><p className="hero-intro">Explore our services and book a consultation.</p><div className="action-row"><a className="button" href="/book?service=consulting">Book a consultation <span aria-hidden="true">↗</span></a><a className="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a></div></div>
+      <div className="hero-copy"><p className="eyebrow">Houston, Texas · Divaa Beauty</p><h1>Divaa Beauty<br/><em>Clinic</em></h1><p className="hero-intro">Explore our services. Text us for help booking, understanding your options, or asking a question.</p><div className="action-row"><a className="button" href="sms:8329929422?body=Hi%20Divaa%20Beauty%20Clinic%2C%20I%E2%80%99m%20interested%20in%20booking%20a%20service%20or%20learning%20about%20my%20options.%20Could%20you%20help%20me%3F">Text us <span aria-hidden="true">↗</span></a><a className="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a></div></div>
       <EditorialPortrait priority />
     </section>
     <section className="services-section section-space editorial-section" id="services" aria-labelledby="services-heading"><div className="content-width">

@@ -9,6 +9,6 @@ export const services = [
 export function serviceMetadata(id) {
   const service = services.find(item => item.id === id);
   const title = service.name + ' | Divaa Beauty Clinic';
-  const description = 'Explore ' + service.name + ' at Divaa Beauty Clinic. Book a consultation to discuss your questions.';
+  const description = 'Explore ' + service.name + ' at Divaa Beauty Clinic. Text the clinic for help with booking, options, or questions.';
   return { title, description, alternates: { canonical: '/' + id }, openGraph: { title, description, url: 'https://divaabeauty.net/' + id, type: 'website' } };
 }
