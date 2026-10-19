@@ -19,7 +19,7 @@ export default function ServiceFaq({ service }) {
       {entries.map(entry => <article className="faq-answer" key={entry.id} aria-labelledby={`${service.id}-faq-${entry.id}`}>
         <h3 id={`${service.id}-faq-${entry.id}`}>{entry.question}</h3>
         <p><Answer entry={entry} /></p>
-        {entry.id === 6 && <a className="text-link" href={`sms:8329929422?body=${encodeURIComponent(`Hi Divaa Beauty Clinic, I’m interested in ${service.name} and have a question.`)}`}>Text us about {service.name} <span aria-hidden="true">↗</span></a>}
+        {entry.id === 6 && <a className="text-link" href={`sms:8329929606?body=${encodeURIComponent(`Hi Divaa Beauty Clinic, I’m interested in ${service.name} and have a question.`)}`}>Text us about {service.name} <span aria-hidden="true">↗</span></a>}
       </article>)}
     </div>
   </section>;

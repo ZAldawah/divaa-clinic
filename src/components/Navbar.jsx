@@ -21,11 +21,11 @@ export default function Navbar() {
             <a href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
             <a href="/#services" onClick={() => { menu.current.open = false; }}>All services</a>
             <div className="menu-services">{services.map(service => <a key={service.id} href={'/' + service.id} aria-current={pathname === '/' + service.id ? 'page' : undefined}>{service.name}</a>)}</div>
-            <a href="sms:8329929422?body=Hi%20Divaa%20Beauty%20Clinic%2C%20I%E2%80%99d%20like%20help%20with%20booking%2C%20services%2C%20or%20my%20questions.">Text us about booking, services, or questions <span aria-hidden="true">↗</span></a>
+            <a href="sms:8329929606?body=Hi%20Divaa%20Beauty%20Clinic%2C%20I%E2%80%99d%20like%20help%20with%20booking%2C%20services%2C%20or%20my%20questions.">Text us about booking, services, or questions <span aria-hidden="true">↗</span></a>
             <a href="/#contact" onClick={() => { menu.current.open = false; }}>Contact the clinic</a>
           </div>
         </details>
-        <a href="sms:8329929422?body=Hi%20Divaa%20Beauty%20Clinic%2C%20I%E2%80%99d%20like%20help%20with%20booking%2C%20services%2C%20or%20my%20questions." className="button header-book">Text us <span aria-hidden="true">↗</span></a>
+        <a href="sms:8329929606?body=Hi%20Divaa%20Beauty%20Clinic%2C%20I%E2%80%99d%20like%20help%20with%20booking%2C%20services%2C%20or%20my%20questions." className="button header-book">Text us <span aria-hidden="true">↗</span></a>
       </nav>
     </div>
   </header>;
