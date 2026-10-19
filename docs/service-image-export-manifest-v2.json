@@ -1,0 +1,303 @@
+{
+  "createdUtc": "2026-10-08T20:15:21.884Z",
+  "sourceReviewRevision": "ad50e551-5034-4d8c-b480-b9abe8f4d9d0",
+  "versions": {
+    "aom": "3.15.1",
+    "archive": "3.8.9",
+    "cairo": "1.18.6",
+    "cgif": "0.5.4",
+    "exif": "0.6.26",
+    "expat": "2.8.5",
+    "ffi": "3.8.0",
+    "fontconfig": "2.18.3",
+    "freetype": "2.14.3",
+    "fribidi": "1.0.17",
+    "glib": "2.90.0",
+    "harfbuzz": "14.5.0",
+    "heif": "1.23.5",
+    "highway": "1.4.0",
+    "imagequant": "2.4.1",
+    "lcms": "2.19.1",
+    "mozjpeg": "0826579",
+    "pango": "1.58.2",
+    "pixman": "0.46.4",
+    "png": "1.6.58",
+    "proxy-libintl": "0.5",
+    "rsvg": "2.63.2",
+    "tiff": "4.7.2",
+    "uhdr": "2.0.2",
+    "vips": "8.18.7",
+    "webp": "1.6.0",
+    "xml2": "2.15.4",
+    "zlib-ng": "2.3.3",
+    "sharp": "0.35.5"
+  },
+  "crop": {
+    "x": 0,
+    "y": 0,
+    "width": 1536,
+    "height": 1024,
+    "fit": "contain",
+    "position": "50% 50%"
+  },
+  "provenance": {
+    "generationTool": "built-in image_gen",
+    "modelId": "not exposed",
+    "referenceImages": [],
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 1536,
+      "height": 1024,
+      "fit": "contain",
+      "position": "50% 50%",
+      "usage": "identical desktop/mobile card/detail full frame"
+    },
+    "prompts": {
+      "prp": "Create an original photorealistic editorial still life for a PRP service website card and detail hero. Landscape 1536x1024, full-frame 3:2 composition. Conservative preparation concept: two sealed empty transparent laboratory collection tubes with plain neutral caps resting neatly in a simple rack beside folded white gauze on warm ivory surface. No blood, no sample liquid or separated layers, no needle, no treatment in progress, no people, no labels/calibration marks/logos/text, no clinic setting or branded equipment. Credible clean cylindrical glass geometry, realistic reflections, soft warm daylight, elegant cream/taupe palette. Objects centrally composed with generous intact margins for full-frame contain display, readable at small card size. This is a conceptual preparation still life, not documentation of a clinic protocol or a treatment result.",
+      "microneedling": "Create original photorealistic editorial still-life photograph for Microneedling service card/detail hero, 1536x1024 landscape 3:2. A single restrained unbranded pen-shaped skincare instrument lies diagonally on folded white gauze on warm ivory stone. Tip is fully covered by a smooth opaque protective cap; absolutely no exposed needles/spikes/cartridge fields. Simple credible cylindrical metal body and fully closed smooth cap, no calibration markings, numbers, letters, logo, display, buttons or pseudo-text. No people/hands, blood, skin puncture, active procedure, results, specific clinic equipment or premises. Soft warm daylight, realistic metal reflections and contact shadows, cream/taupe editorial aesthetic. Complete instrument in frame with generous margins; focal subject clear at small card size; no text overlays. Conceptual capped instrument, not a documentary representation of clinic device or procedure."
+    },
+    "observations": {
+      "prp": "Original-resolution inspection: empty tubes, intact caps/rack, no sample band or pseudo markings. Conservative preparation concept; not clinic equipment/protocol proof. Independent plausibility and recognition review pending.",
+      "microneedling": "Original-resolution inspection: capped instrument, no exposed spike field or pseudo calibration marks; coherent reflections and gauze. Generic conceptual instrument; independent plausibility and service recognition review pending."
+    },
+    "alt": {
+      "prp": "Two capped empty collection tubes beside gauze.",
+      "microneedling": "Capped pen-shaped skincare instrument resting on gauze."
+    }
+  },
+  "files": [
+    {
+      "file": "prp-384.avif",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "29b3eab6b054fefb5968a095591352b59acc7b6de55942a769902b436e2d0021",
+      "width": 384,
+      "height": 256,
+      "bytes": 6989,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "prp-384.webp",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "b7173efef999a5d95d451a147996a6a759370f4c7b59b8bc94673a35399734cf",
+      "width": 384,
+      "height": 256,
+      "bytes": 7812,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "prp-768.avif",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "3f56401d5ebb0f9b1abfdc602d1a54c1d326874d8f2dd1182b483805ba5d1b50",
+      "width": 768,
+      "height": 512,
+      "bytes": 18630,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "prp-768.webp",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "396e6ac08dfb65d1cde1ea721b52a6cbc732415cfc8dba7d0b96cd14b37db780",
+      "width": 768,
+      "height": 512,
+      "bytes": 20432,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "prp-1152.avif",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "1d13d8249f49811801150f2311fc2d41938af63aad2748344b7d87d0155d293a",
+      "width": 1152,
+      "height": 768,
+      "bytes": 32579,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "prp-1152.webp",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "3250fed1cc4fb466dcd5e25850a986d0043147ecc8e22be0f028867cc705b41a",
+      "width": 1152,
+      "height": 768,
+      "bytes": 36954,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "prp-1536.avif",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "01ca6de1444e5f342801990dc68d576e1d9216771844cfbebf948e413c7063c9",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 48133,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "prp-1536.webp",
+      "route": "/prp",
+      "parentFile": "prp-v2.png",
+      "parentSha256": "059d0fb185abeb0106580a95e42bfbfc1ff67da00e5cfaaa1bcb108f135f7c29",
+      "sha256": "ede95a93ebdd50478a353fd7b6cfba65b2dd618c1fc8e845416feeca0eaf0670",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 53768,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "microneedling-384.avif",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "48bfaef138286aaba9fc0aa9b3c6cfabb3d27206721a66a43e1cd05dae804e3b",
+      "width": 384,
+      "height": 256,
+      "bytes": 12761,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "microneedling-384.webp",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "23f953633f5dcc919207805edbc01ce69f3a0b794f5fd4cada4b7e1b2845d436",
+      "width": 384,
+      "height": 256,
+      "bytes": 15700,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "microneedling-768.avif",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "3015b69c96a295cac7716836181f40706d67b67e83b5ff928fbd603d114de17e",
+      "width": 768,
+      "height": 512,
+      "bytes": 40221,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "microneedling-768.webp",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "575581b858a1791464d02c09f608fcff2ef338c545f14318559e4097209ed639",
+      "width": 768,
+      "height": 512,
+      "bytes": 47782,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "microneedling-1152.avif",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "e349004ce120cc11ed7e34d34cd73b1e2fd99b79f8db78c4f2e5aef67ffbc861",
+      "width": 1152,
+      "height": 768,
+      "bytes": 70992,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "microneedling-1152.webp",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "e3f4cae8b6f1b1d10ab749e321155849f313f1466953db0702926570c2f28a8c",
+      "width": 1152,
+      "height": 768,
+      "bytes": 83348,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    },
+    {
+      "file": "microneedling-1536.avif",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "01dbe8962b2369c195373067e57ea26e51cb546e333351cfaabd81bcc878b629",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 103363,
+      "settings": {
+        "quality": 65,
+        "effort": 6,
+        "chromaSubsampling": "4:4:4"
+      }
+    },
+    {
+      "file": "microneedling-1536.webp",
+      "route": "/microneedling",
+      "parentFile": "microneedling-v2.png",
+      "parentSha256": "4559df47f8f900943f67394e534a5e8330c7a424a867ee8fdf1298e3e0b6ea53",
+      "sha256": "19905025450cb75a9672918000f5fc2ec2bfde81840f6b4a79578f8123c24af7",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 122318,
+      "settings": {
+        "quality": 82,
+        "effort": 6
+      }
+    }
+  ]
+}

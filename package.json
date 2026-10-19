@@ -4,20 +4,29 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src scripts tests",
+    "test": "node --test tests/*.test.mjs",
+    "booking:setup": "node scripts/booking-setup.mjs",
+    "booking:retention": "node scripts/booking-retention.mjs"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.4.10"
+    "@js-temporal/polyfill": "0.5.1",
+    "@vercel/functions": "3.9.11",
+    "better-auth": "1.7.7",
+    "google-auth-library": "11.1.0",
+    "next": "16.4.0",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.5"
   },
   "devDependencies": {
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "15.4.5",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }

@@ -1,0 +1,72 @@
+{
+  "provenance": "Isolated production HTML and exact asset checks; no browser interaction",
+  "routes": [
+    {
+      "route": "/",
+      "portraits": 2,
+      "faqCount": 0
+    },
+    {
+      "route": "/botox",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/filler",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/radiesse",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/sculptra",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/prp",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/rrf",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/facials",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/microneedling",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/collagen",
+      "portraits": 1,
+      "faqCount": 6
+    },
+    {
+      "route": "/book",
+      "portraits": 0,
+      "faqCount": 0
+    },
+    {
+      "route": "/admin/login",
+      "portraits": 0,
+      "faqCount": 0
+    },
+    {
+      "route": "/admin/availability",
+      "portraits": 0,
+      "faqCount": 0
+    }
+  ],
+  "approvedHashMatches": 16,
+  "maxImageBytes": 97196
+}
