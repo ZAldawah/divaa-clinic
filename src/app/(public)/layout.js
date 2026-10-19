@@ -2,7 +2,7 @@ import '../globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 export const metadata = {
-  metadataBase: new URL('https://divaabeauty.net'),
+  metadataBase: new URL('https://www.divaabeauty.com'),
   referrer: 'no-referrer',
   title: 'Divaa Beauty Clinic | Houston, Texas',
   description: 'Explore services at Divaa Beauty Clinic in Houston, Texas. Text the clinic for help with booking, services, and questions.',
